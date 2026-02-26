@@ -143,10 +143,15 @@ class TseFiliadosPipeline(Pipeline):
         if not self.person_rels:
             return
 
-        # Split rels by available matching fields for tiered confidence
+        # Tiered matching: try narrower criteria first, then fall back.
+        # All unmatched rows always get attempted at the lowest tier.
+        # Note: Person nodes currently have name + uf (from TSE candidates).
+        # birth_date and municipality_id are NOT yet on Person nodes, so
+        # higher tiers will match 0 until those properties are populated.
+
         tier_high: list[dict[str, Any]] = []    # name + UF + birth_date
         tier_medium: list[dict[str, Any]] = []   # name + UF + municipality
-        tier_low: list[dict[str, Any]] = []      # name + UF only
+        all_rels = self.person_rels  # ALL go through low tier as fallback
 
         for rel in self.person_rels:
             has_birth = bool(rel["source_birth_date"])
@@ -155,12 +160,10 @@ class TseFiliadosPipeline(Pipeline):
                 tier_high.append(rel)
             elif has_muni:
                 tier_medium.append(rel)
-            else:
-                tier_low.append(rel)
 
         logger.info(
-            "[tse_filiados] Tiered matching: %d high, %d medium, %d low",
-            len(tier_high), len(tier_medium), len(tier_low),
+            "[tse_filiados] Tiered: %d high, %d medium, %d total (all fall through to low)",
+            len(tier_high), len(tier_medium), len(all_rels),
         )
 
         # Tier 1 (high): name + UF + birth_date
@@ -198,19 +201,19 @@ class TseFiliadosPipeline(Pipeline):
             loaded = loader.run_query_with_retry(query, tier_medium)
             logger.info("[tse_filiados] Medium-confidence FILIADO_A: %d", loaded)
 
-        # Tier 3 (low): name + UF only
-        if tier_low:
-            query = (
-                "UNWIND $rows AS row "
-                "MATCH (p:Person) "
-                "WHERE p.name = row.source_name AND p.uf = row.source_uf "
-                "MATCH (m:PartyMembership {membership_id: row.target_key}) "
-                "WHERE NOT (p)-[:FILIADO_A]->(m) "
-                "MERGE (p)-[r:FILIADO_A]->(m) "
-                "SET r.party = row.party, "
-                "    r.affiliation_date = row.affiliation_date, "
-                "    r.status = row.status, "
-                "    r.match_confidence = 'low'"
-            )
-            loaded = loader.run_query_with_retry(query, tier_low)
-            logger.info("[tse_filiados] Low-confidence FILIADO_A: %d", loaded)
+        # Tier 3 (low): name + UF only — runs ALL rels as fallback
+        # WHERE NOT (p)-[:FILIADO_A]->(m) skips rows already matched above
+        query = (
+            "UNWIND $rows AS row "
+            "MATCH (p:Person) "
+            "WHERE p.name = row.source_name AND p.uf = row.source_uf "
+            "MATCH (m:PartyMembership {membership_id: row.target_key}) "
+            "WHERE NOT (p)-[:FILIADO_A]->(m) "
+            "MERGE (p)-[r:FILIADO_A]->(m) "
+            "SET r.party = row.party, "
+            "    r.affiliation_date = row.affiliation_date, "
+            "    r.status = row.status, "
+            "    r.match_confidence = 'low'"
+        )
+        loaded = loader.run_query_with_retry(query, all_rels)
+        logger.info("[tse_filiados] Low-confidence FILIADO_A: %d", loaded)
