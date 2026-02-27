@@ -116,6 +116,15 @@ def main(
                         )
                 excerpt_text = " ".join(p for p in parts if p).strip()
 
+            txt_url = str(row.get("txt_url", "")).strip()
+            text = str(row.get("excerpt") or excerpt_text or "").strip()
+            if text:
+                text_status = "available"
+            elif txt_url.startswith("s3://"):
+                text_status = "forbidden"
+            else:
+                text_status = "missing"
+
             mapped = {
                 "act_id": str(row.get("id", "")),
                 "municipality_name": str(row.get("territory_name", "")),
@@ -123,8 +132,10 @@ def main(
                 "uf": str(row.get("state_code", "")),
                 "date": str(row.get("date", ""))[:10],
                 "title": str(row.get("headline") or row.get("territory_name") or ""),
-                "text": str(row.get("excerpt") or excerpt_text or ""),
-                "source_url": str(row.get("url") or row.get("txt_url") or ""),
+                "text": text,
+                "text_status": text_status,
+                "txt_url": txt_url,
+                "source_url": str(row.get("url") or txt_url or ""),
                 "edition": str(row.get("edition") or row.get("is_extra_edition") or ""),
             }
             f.write(json.dumps(mapped, ensure_ascii=False) + "\n")

@@ -138,9 +138,20 @@ class QueridoDiarioPipeline(Pipeline):
             text = str(row.get("text") or row.get("conteudo") or "").strip()
             source_url = str(row.get("source_url") or row.get("url") or "").strip()
             edition = str(row.get("edition") or row.get("edicao") or "").strip()
+            txt_url = str(row.get("txt_url") or "").strip()
+            text_status_raw = str(row.get("text_status") or "").strip().lower()
 
             if not text and not title:
                 continue
+
+            if text_status_raw in {"available", "missing", "forbidden"}:
+                text_status = text_status_raw
+            elif text:
+                text_status = "available"
+            elif txt_url.startswith("s3://"):
+                text_status = "forbidden"
+            else:
+                text_status = "missing"
 
             act_id = str(row.get("act_id", "")).strip()
             if not act_id:
@@ -154,22 +165,25 @@ class QueridoDiarioPipeline(Pipeline):
                 "published_at": published_at,
                 "title": title,
                 "text_hash": _sha256_text(text),
+                "text_status": text_status,
+                "txt_url": txt_url,
                 "edition": edition,
                 "source_url": source_url,
                 "source": "querido_diario",
             })
 
-            mention_text = f"{title}\n{text}"
-            for cnpj, span in _extract_cnpjs_with_spans(mention_text):
-                mentions.append({
-                    "cnpj": cnpj,
-                    "target_key": act_id,
-                    "method": "text_cnpj_extract",
-                    "confidence": 0.75,
-                    "source_ref": source_url or act_id,
-                    "extract_span": span,
-                    "run_id": self.run_id,
-                })
+            if text_status == "available":
+                mention_text = f"{title}\n{text}"
+                for cnpj, span in _extract_cnpjs_with_spans(mention_text):
+                    mentions.append({
+                        "cnpj": cnpj,
+                        "target_key": act_id,
+                        "method": "text_cnpj_extract",
+                        "confidence": 0.75,
+                        "source_ref": source_url or act_id,
+                        "extract_span": span,
+                        "run_id": self.run_id,
+                    })
 
         self.acts = deduplicate_rows(acts, ["municipal_gazette_act_id"])
         self.company_mentions = deduplicate_rows(

@@ -41,6 +41,17 @@ WHERE b.published_at =~ '\\d{4}-\\d{2}-\\d{2}'
   AND date(b.published_at) > date() + duration('P365D')
 RETURN count(b) AS absurd_future_municipal_bid_dates;
 
+// --- Querido Diario quality ---
+MATCH (a:MunicipalGazetteAct)
+RETURN count(a) AS municipal_gazette_act_count;
+
+MATCH (a:MunicipalGazetteAct)
+RETURN count(a) AS total_acts,
+       sum(CASE WHEN a.text_status = 'available' THEN 1 ELSE 0 END) AS available_text_acts;
+
+MATCH (:Company)-[r:MENCIONADA_EM]->(:MunicipalGazetteAct)
+RETURN count(r) AS municipal_gazette_mention_count;
+
 // --- Identity integrity (must remain green) ---
 MATCH (p:Person) WHERE p.cpf CONTAINS '*' RETURN count(p) AS person_cpf_masked;
 

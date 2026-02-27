@@ -64,12 +64,18 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
 @click.option("--end-date", default="2026-12-31", help="End date")
 @click.option("--max-pages", type=int, default=200, help="Maximum pages")
 @click.option("--skip-existing/--no-skip-existing", default=True)
+@click.option(
+    "--strict-auth/--no-strict-auth",
+    default=False,
+    help="Fail with non-zero exit when credentials are missing.",
+)
 def main(
     output_dir: str,
     start_date: str,
     end_date: str,
     max_pages: int,
     skip_existing: bool,
+    strict_auth: bool,
 ) -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
@@ -87,13 +93,13 @@ def main(
     api_key = os.getenv("DATAJUD_API_KEY", "").strip()
 
     if not api_url or not api_key:
-        _write_dry_run_manifest(
-            out,
-            (
-                "Missing credentials. Configure DATAJUD_API_URL and DATAJUD_API_KEY "
-                "to enable ingestion."
-            ),
+        message = (
+            "Missing credentials. Configure DATAJUD_API_URL and DATAJUD_API_KEY "
+            "to enable ingestion."
         )
+        _write_dry_run_manifest(out, message)
+        if strict_auth:
+            raise click.ClickException(message)
         return
 
     cases: list[dict[str, Any]] = []

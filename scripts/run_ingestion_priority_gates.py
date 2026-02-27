@@ -94,6 +94,12 @@ NUMERIC_GATES: list[NumericGate] = [
         expected=0,
     ),
     NumericGate(
+        name="municipal_gazette_act_count",
+        query="MATCH (a:MunicipalGazetteAct) RETURN count(a) AS value",
+        operator="gt",
+        expected=0,
+    ),
+    NumericGate(
         name="person_cpf_masked",
         query="MATCH (p:Person) WHERE p.cpf CONTAINS '*' RETURN count(p) AS value",
         operator="eq",
@@ -131,6 +137,17 @@ DATE_GATES: list[DateFreshnessGate] = [
         max_age_days=60,
     ),
 ]
+
+GAZETTE_TEXT_RATIO_QUERY = (
+    "MATCH (a:MunicipalGazetteAct) "
+    "RETURN count(a) AS total, "
+    "sum(CASE WHEN a.text_status = 'available' THEN 1 ELSE 0 END) AS available"
+)
+
+GAZETTE_MENTION_COUNT_QUERY = (
+    "MATCH (:Company)-[r:MENCIONADA_EM]->(:MunicipalGazetteAct) "
+    "RETURN count(r) AS value"
+)
 
 
 def _passes(operator: str, value: int, expected: int) -> bool:
@@ -211,6 +228,30 @@ def main() -> int:
                 )
                 if not ok:
                     failed += 1
+
+            ratio_row = session.run(GAZETTE_TEXT_RATIO_QUERY).single()
+            total_acts = int(ratio_row["total"] or 0)
+            available_acts = int(ratio_row["available"] or 0)
+            ratio = (available_acts / total_acts) if total_acts > 0 else 0.0
+            print(
+                "[INFO] gazette_text_available_ratio: "
+                f"available={available_acts} total={total_acts} ratio={ratio:.3f}",
+            )
+
+            if ratio >= 0.2:
+                mention_count = int(session.run(GAZETTE_MENTION_COUNT_QUERY).single()["value"])
+                ok = mention_count > 0
+                print(
+                    f"[{'PASS' if ok else 'FAIL'}] municipal_gazette_mentions: "
+                    f"value={mention_count} expected > 0 (ratio >= 0.2)",
+                )
+                if not ok:
+                    failed += 1
+            else:
+                print(
+                    "[WARN] municipal_gazette_mentions gate relaxed: "
+                    f"gazette_text_available_ratio={ratio:.3f} < 0.2",
+                )
     finally:
         driver.close()
 
