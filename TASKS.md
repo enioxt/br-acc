@@ -553,6 +553,19 @@
 - [x] Prioridades filtradas: só tasks com ROI real (Evidence Chain, Activity Feed, Eagle Eye)
 > **Documento:** Análise entregue no chat + knowledge base
 
+### TASK-070: Activity Feed — Mycelium Event Trail ✅ (02/03/2026)
+- [x] Backend: `activity.py` router com `/api/v1/activity/feed` + `/api/v1/activity/stats`
+- [x] In-memory event store (500 max, Redis upgrade futuro)
+- [x] Chat endpoint loga cada query como evento de atividade
+- [x] Cada evento: type, title, source, result_count, cost_usd, timestamp
+- [x] Frontend: `/app/activity` com timeline real-time (refresh 15s)
+- [x] Stats bar: total events, by type (chat/search/report), custo total
+- [x] Filtro por tipo de evento (click no stat)
+- [x] Sidebar: Clock icon + nav.activity i18n
+- [x] Testado: chat query → evento logado → visível no feed
+> **Conceito Mycelium:** Cada ação do sistema é um evento auditável — transparência total.
+> **Arquivos:** `api/src/bracc/routers/activity.py`, `frontend/src/pages/Activity.tsx`
+
 ### TASK-043: Gem Hunter v2 — Melhorar Busca de Projetos ⏳ (P2)
 - [x] Adicionar keywords semanticas: "accountability", "civic tech", "open government"
 - [x] Busca automatizada via GitHub Search API (5 categorias, 02/03/2026)
@@ -574,7 +587,7 @@
 | **Nós no grafo** | 317.583 | 02/03/2026 |
 | **Relacionamentos** | 34.507 | 02/03/2026 |
 | **Issues GitHub abertas** | 27 | 02/03/2026 |
-| **Tasks concluídas** | 50/69 | 02/03/2026 |
+| **Tasks concluídas** | 51/70 | 02/03/2026 |
 | **Chatbot Tools** | 18 (3 grafo + 8 livres + 6 Portal + 1 DataJud) | 02/03/2026 |
 | **ETL Status** | Phase 1 file 6/10 (15%) — Contabo CPU | 02/03/2026 |
 | **Website** | inteligencia.egos.ia.br (SSL ✅) | 02/03/2026 |
