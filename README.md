@@ -12,12 +12,13 @@ Idioma: **Português (Brasil)** | [English](#english)
 > **Em uma frase:** O EGOS Inteligência conecta dados públicos do Brasil (empresas, políticos, contratos, sanções, doações eleitorais) em um grafo interativo que mostra quem se relaciona com quem.
 
 Site: [inteligencia.egos.ia.br](https://inteligencia.egos.ia.br) | Ecossistema: [EGOS](https://egos.ia.br) | Comunidade: [@ethikin](https://t.me/ethikin)
+- **Investigation Engine**: Multi-step reasoning with evidence tracking
+- **Source Management**: Automatic source verification and credibility scoring
+- **Report Generation**: Structured markdown reports with citations
+- **Premium Search**: Support for SerpAPI and Brave Search APIs (optional)
 
----
+## Quick Start
 
-## Origem e Diferenças
-
-Este projeto é um **fork** do [World-Open-Graph/br-acc](https://github.com/World-Open-Graph/br-acc), uma infraestrutura open-source para dados públicos brasileiros em grafo.
 
 O EGOS Inteligência diverge significativamente do upstream:
 
@@ -27,9 +28,9 @@ O EGOS Inteligência diverge significativamente do upstream:
 | **Interface** | Desktop-only, requer login | Mobile-first, público, chatbot AI |
 | **Dados carregados** | Demo/seed | 278k nós + 53.6M empresas (ETL em andamento) |
 | **Bots AI** | Nenhum | Discord + Telegram (14 ferramentas OSINT) |
-| **Investigações** | Não | Upload, fork, compartilhamento público |
-| **Relatórios** | Não | 11 relatórios publicados (ex: Patense R$217M BNDES) |
-| **Infraestrutura** | Local/demo | Contabo VPS (12 vCPU, 48GB RAM) + Redis |
+   cp .env.example .env
+   # Edit .env with your OpenAI API key
+   
 | **LGPD** | Parcial | CPF bloqueado em todo o sistema, masking middleware |
 | **Fontes planejadas** | 13 | 79 fontes no roadmap |
 | **Algoritmos** | Básico | PageRank, Benford, HHI, Community Detection (roadmap) |
