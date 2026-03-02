@@ -13,6 +13,7 @@
 .dialog {
   width: 100%;
   max-width: 560px;
+  margin: 0 var(--space-md);
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -118,5 +119,49 @@
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+/* === Mobile Responsive === */
+@media (max-width: 640px) {
+  .overlay {
+    padding-top: 10vh;
+    align-items: flex-start;
+  }
+
+  .dialog {
+    margin: 0 var(--space-sm);
+    max-width: calc(100% - var(--space-lg));
+  }
+
+  .input {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+  }
+
+  .list {
+    max-height: 60vh;
+  }
+
+  .itemShortcut {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .overlay {
+    padding-top: 5vh;
+  }
+
+  .list {
+    max-height: 70vh;
+  }
+
+  .group {
+    font-size: var(--font-size-xs);
+  }
+
+  .item {
+    padding: var(--space-sm) var(--space-md);
   }
 }

@@ -194,3 +194,29 @@
     opacity: 1;
   }
 }
+
+/* === Mobile Responsive === */
+@media (max-width: 768px) {
+  .body {
+    flex-direction: column;
+  }
+
+  .graphArea {
+    flex-direction: column;
+  }
+
+  .modal {
+    width: calc(100% - var(--space-lg) * 2);
+    max-width: 360px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    padding: var(--space-md);
+  }
+
+  .invTitle {
+    font-size: 11px;
+  }
+}

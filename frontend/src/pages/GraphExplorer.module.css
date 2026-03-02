@@ -1,6 +1,7 @@
 .explorer {
   height: calc(100vh - 72px);
   overflow: hidden;
+  display: flex;
 }
 
 .resizeHandle {
@@ -19,6 +20,7 @@
   width: 100%;
   height: 100%;
   background: var(--bg-primary);
+  flex: 1;
 }
 
 .loadingOverlay {
@@ -45,4 +47,45 @@
   overflow-y: auto;
   background: var(--bg-secondary);
   border-left: 1px solid var(--border);
+  width: 320px;
+  flex-shrink: 0;
+}
+
+/* Mobile: Stack panels vertically */
+@media (max-width: 768px) {
+  .explorer {
+    flex-direction: column;
+    height: calc(100vh - 60px);
+  }
+
+  .resizeHandle {
+    display: none;
+  }
+
+  .canvasArea {
+    height: 60%;
+    min-height: 300px;
+  }
+
+  .detailPanel {
+    width: 100%;
+    height: 40%;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 480px) {
+  .explorer {
+    height: calc(100vh - 52px);
+  }
+
+  .canvasArea {
+    height: 55%;
+  }
+
+  .detailPanel {
+    height: 45%;
+  }
 }

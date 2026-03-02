@@ -134,3 +134,32 @@
   color: var(--text-muted);
   text-align: center;
 }
+
+/* === Mobile Responsive === */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 180px;
+  }
+
+  .sidebar.collapsed {
+    width: 40px;
+  }
+
+  .toggleLabel {
+    font-size: var(--font-size-2xs);
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    width: 160px;
+  }
+
+  .content {
+    padding: var(--space-xs);
+  }
+
+  .section {
+    gap: var(--space-2xs);
+  }
+}

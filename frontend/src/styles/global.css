@@ -290,3 +290,31 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+/* === Mobile Responsive === */
+@media (max-width: 768px) {
+  :root {
+    --font-size-2xs: 0.6rem;
+    --font-size-xs: 0.7rem;
+    --font-size-sm: 0.82rem;
+    --font-size-md: 0.95rem;
+    --font-size-lg: 1.15rem;
+    --font-size-xl: 1.35rem;
+    --font-size-2xl: 1.75rem;
+    --font-size-3xl: 2.5rem;
+  }
+
+  body {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --font-size-3xl: 2rem;
+    --font-size-4xl: 2.5rem;
+    --space-lg: 20px;
+    --space-xl: 28px;
+    --space-2xl: 40px;
+  }
+}

@@ -169,3 +169,49 @@
   font-size: var(--font-size-xs);
   color: var(--text-muted);
 }
+
+/* === Mobile Responsive === */
+@media (max-width: 640px) {
+  .page {
+    padding: var(--space-md);
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-lg);
+  }
+
+  .searchForm {
+    flex-direction: column;
+  }
+
+  .searchBtn {
+    width: 100%;
+  }
+
+  .quickResultLink {
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .quickResultDoc {
+    margin-left: 0;
+    width: 100%;
+    margin-top: var(--space-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: var(--space-sm);
+  }
+
+  .investigationCard {
+    padding: var(--space-sm);
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-xs);
+  }
+}

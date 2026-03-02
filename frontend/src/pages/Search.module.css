@@ -17,3 +17,21 @@
   justify-content: center;
   padding: var(--space-xl);
 }
+
+/* === Mobile Responsive === */
+@media (max-width: 640px) {
+  .page {
+    padding: var(--space-md);
+    gap: var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: var(--space-sm);
+  }
+
+  .loading {
+    padding: var(--space-lg);
+  }
+}
