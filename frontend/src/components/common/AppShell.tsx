@@ -5,6 +5,7 @@ import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import {
   Activity,
   BarChart3,
+  FileText,
   ChevronLeft,
   ChevronRight,
   FolderOpen,
@@ -31,6 +32,7 @@ const NAV_ITEMS = [
   { path: "/app/search", icon: Search, labelKey: "nav.search" },
   { path: "/app/investigations", icon: FolderOpen, labelKey: "nav.investigations" },
   { path: "/app/analytics", icon: Activity, labelKey: "nav.analytics" },
+  { path: "/app/reports", icon: FileText, labelKey: "nav.reports" },
 ] as const;
 
 export function AppShell() {
