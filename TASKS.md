@@ -370,6 +370,27 @@
 > **Status:** Frontend JA TEM 8 paginas funcionais + Journey. Falta auth backend + feed comunitario.
 > **Arquivos:** `frontend/src/pages/Dashboard.tsx`, `Investigations.tsx`, `SharedInvestigation.tsx`, `Search.tsx`, `EntityAnalysis.tsx`, `GraphExplorer.tsx`, `Patterns.tsx`, `Baseline.tsx`
 
+### TASK-048: Chatbot Investigativo — 8 Tools + Transparência ✅ (02/03/2026)
+- [x] web_search: busca DuckDuckGo HTML (sem API key) para notícias, denúncias, investigações
+- [x] search_emendas: emendas parlamentares por município (TransfereGov API)
+- [x] search_transferencias: transferências federais/convênios por município (TransfereGov API)
+- [x] search_ceap: gastos CEAP de deputados (Dados Abertos da Câmara — por nome ou por UF)
+- [x] search_pep_city: PEPs por cidade (deputados do estado + web search de políticos locais)
+- [x] System prompt investigativo: cross-reference, caminho do dinheiro, busca por cidade
+- [x] Max rounds 4→6, max tokens 800→1200
+- [x] Testado: Uberlândia, Patos de Minas, CEAP MG (Aécio, Janones, etc.)
+- [ ] Portal da Transparência API key (registro gratuito — mais dados com chave)
+- [ ] DataJud (processos judiciais) — futuro
+> **Arquivos:** `api/src/bracc/services/transparency_tools.py`, `api/src/bracc/routers/chat.py`
+> **APIs usadas:** DuckDuckGo HTML, TransfereGov, Dados Abertos da Câmara (todas gratuitas, sem API key)
+
+### TASK-049: Avaliação Unikraft + ESAA ✅ (02/03/2026)
+- [x] Unikraft avaliado: NÃO aplicável (unikernels para microserviços stateless, nosso stack é Docker + Neo4j + Python)
+- [x] ESAA avaliado: EXCELENTE padrão para egos-lab (event sourcing para agentes AI, audit trail, contracts)
+- [ ] Implementar event sourcing no egos-lab agent runtime (inspirado ESAA) — P2
+> **Unikraft:** github.com/unikraft/unikraft — 4.1k★. Boot em ms, footprint mínimo. Não roda Neo4j/Redis.
+> **ESAA:** github.com/elzobrito/ESAA — Event Sourcing for Autonomous Agents. Append-only .jsonl, SHA-256 verified projections, contracts YAML.
+
 ### TASK-043: Gem Hunter v2 — Melhorar Busca de Projetos ⏳ (P2)
 - [x] Adicionar keywords semanticas: "accountability", "civic tech", "open government"
 - [x] Busca automatizada via GitHub Search API (5 categorias, 02/03/2026)
@@ -391,7 +412,7 @@
 | **Nós no grafo** | 317.583 | 02/03/2026 |
 | **Relacionamentos** | 34.507 | 02/03/2026 |
 | **Issues GitHub abertas** | 23 | 02/03/2026 |
-| **Tasks concluídas** | 27/47 | 02/03/2026 |
+| **Tasks concluídas** | 29/49 | 02/03/2026 |
 | **ETL Status** | Phase 1 em andamento | 02/03/2026 |
 | **Website** | inteligencia.egos.ia.br (SSL ✅) | 02/03/2026 |
 | **Projetos Gem Hunter** | 9 encontrados | 02/03/2026 |
