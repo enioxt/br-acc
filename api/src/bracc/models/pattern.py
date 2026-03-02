@@ -234,4 +234,28 @@ PATTERN_METADATA: dict[str, dict[str, str]] = {
             " for the same agency and object"
         ),
     },
+    "hhi_contract_concentration": {
+        "name_pt": "Concentração contratual HHI",
+        "name_en": "HHI contract concentration",
+        "desc_pt": (
+            "Índice Herfindahl-Hirschman elevado na distribuição"
+            " de contratos por órgão contratante"
+        ),
+        "desc_en": (
+            "High Herfindahl-Hirschman Index in the distribution"
+            " of contracts across contracting agencies"
+        ),
+    },
+    "benford_contract_values": {
+        "name_pt": "Desvio de Benford nos valores contratuais",
+        "name_en": "Benford deviation in contract values",
+        "desc_pt": (
+            "Distribuição do primeiro dígito dos valores contratuais"
+            " diverge da Lei de Benford além do limiar configurado"
+        ),
+        "desc_en": (
+            "Leading-digit distribution of contract values"
+            " deviates from Benford's Law beyond configured threshold"
+        ),
+    },
 }

@@ -30,6 +30,9 @@ class Settings(BaseSettings):
     pattern_share_threshold: float = 0.6
     pattern_srp_min_orgs: int = 5
     pattern_inexig_min_recurrence: int = 3
+    pattern_hhi_threshold: float = 0.25
+    pattern_benford_min_contracts: int = 30
+    pattern_benford_mad_threshold: float = 0.015
     pattern_max_evidence_refs: int = 50
 
     openrouter_api_key: str = ""

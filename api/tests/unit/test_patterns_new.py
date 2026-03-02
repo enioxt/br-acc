@@ -8,7 +8,7 @@ from bracc.services.neo4j_service import CypherLoader
 
 
 def test_community_pattern_registry_exact_ids() -> None:
-    assert len(COMMUNITY_PATTERN_IDS) == 8
+    assert len(COMMUNITY_PATTERN_IDS) == 10
     assert set(COMMUNITY_PATTERN_IDS) == {
         "sanctioned_still_receiving",
         "amendment_beneficiary_contracts",
@@ -18,6 +18,8 @@ def test_community_pattern_registry_exact_ids() -> None:
         "debtor_contracts",
         "srp_multi_org_hitchhiking",
         "inexigibility_recurrence",
+        "hhi_contract_concentration",
+        "benford_contract_values",
     }
 
 
@@ -70,6 +72,8 @@ def test_threshold_params_used_in_threshold_patterns() -> None:
         "public_pattern_contract_concentration": "$pattern_share_threshold",
         "public_pattern_srp_multi_org_hitchhiking": "$pattern_srp_min_orgs",
         "public_pattern_inexigibility_recurrence": "$pattern_inexig_min_recurrence",
+        "public_pattern_hhi_contract_concentration": "$pattern_hhi_threshold",
+        "public_pattern_benford_contract_values": "$pattern_benford_mad_threshold",
     }
     for query_name, required_param in query_params.items():
         try:

@@ -26,6 +26,8 @@ COMMUNITY_PATTERN_IDS = (
     "debtor_contracts",
     "srp_multi_org_hitchhiking",
     "inexigibility_recurrence",
+    "hhi_contract_concentration",
+    "benford_contract_values",
 )
 
 COMMUNITY_PATTERN_QUERIES: dict[str, str] = {
@@ -37,6 +39,8 @@ COMMUNITY_PATTERN_QUERIES: dict[str, str] = {
     "debtor_contracts": "public_pattern_debtor_contracts",
     "srp_multi_org_hitchhiking": "public_pattern_srp_multi_org_hitchhiking",
     "inexigibility_recurrence": "public_pattern_inexigibility_recurrence",
+    "hhi_contract_concentration": "public_pattern_hhi_contract_concentration",
+    "benford_contract_values": "public_pattern_benford_contract_values",
 }
 
 _CNPJ_PATTERN = re.compile(r"^\d{14}$")
@@ -146,6 +150,9 @@ def _community_pattern_params(
         "pattern_share_threshold": settings.pattern_share_threshold,
         "pattern_srp_min_orgs": settings.pattern_srp_min_orgs,
         "pattern_inexig_min_recurrence": settings.pattern_inexig_min_recurrence,
+        "pattern_hhi_threshold": settings.pattern_hhi_threshold,
+        "pattern_benford_min_contracts": settings.pattern_benford_min_contracts,
+        "pattern_benford_mad_threshold": settings.pattern_benford_mad_threshold,
         "pattern_max_evidence_refs": settings.pattern_max_evidence_refs,
     }
 
