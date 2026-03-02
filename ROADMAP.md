@@ -549,14 +549,15 @@ O projeto [Intelink](https://intelink.ia.br) (EGOS) já implementou capacidades 
 
 | Área | Upstream | EGOS Fork |
 |------|----------|-----------|
-| **Bots** | ❌ Nenhum | ✅ Discord + Telegram (13 tools cada) |
-| **IA** | ❌ Nenhuma | ✅ Chat com RAG, Entity Resolution, Tool Calling |
-| **Investigações** | ❌ Nenhuma | ✅ 11 relatórios reais com dados do Neo4j |
-| **API BNDES** | ❌ | ✅ Consulta automática de operações (ex: Patense) |
-| **Token** | ❌ | ✅ ETHIK token com price ticker |
-| **Comunidade** | ❌ Abandonado | ✅ Discord, Telegram, GitHub Issues automáticos |
-| **Dados** | ~40k nós | 278k nós + 4.1M OpenSanctions |
-| **Docs** | README básico | ROADMAP + SHOWCASE + INVESTIGATIONS + DIAGNOSTIC |
+| **Bots** | ❌ Nenhum | ✅ Discord + Telegram (14 tools cada, 24/7) |
+| **IA** | ❌ Nenhuma | ✅ Model fallback (free→paid), memória persistente (Supabase) |
+| **Investigações** | ❌ Nenhuma | ✅ 11 relatórios reais (incl. Patense R$217M BNDES) |
+| **API BNDES** | ❌ | ✅ Consulta automática de financiamentos (2002-presente) |
+| **CNPJ** | Demo data | 🔄 53.6M empresas em carregamento (ETL pronto) |
+| **Custos** | Não publicado | ✅ $36/mo transparente, 100% autofinanciado |
+| **Comunidade** | Discord básico | ✅ Discord, Telegram, GitHub Issues automáticos |
+| **Dados** | ~40k nós (demo) | 278k nós reais + 4.1M OpenSanctions |
+| **Docs** | README básico | ROADMAP + SHOWCASE + INVESTIGATIONS + DIAGNOSTIC + COMPARISON |
 | **CI/CD** | ❌ | ✅ Gitleaks + Bandit + Privacy Gate |
 
 ### Plano de Rename
