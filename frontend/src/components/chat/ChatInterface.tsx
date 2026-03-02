@@ -347,7 +347,7 @@ export function ChatInterface({ embedded = false }: { embedded?: boolean }) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="CNPJ, nome da empresa ou pergunta..."
+          placeholder="Cidade, deputado, CNPJ ou pergunta..."
           disabled={isLoading}
           style={{
             flex: 1, padding: "11px 16px", borderRadius: 10, fontSize: 14,
