@@ -380,9 +380,9 @@
 - [x] System prompt: puxar o fio, cross-reference, caminho do dinheiro
 - [x] Suggestions: recuperações judiciais, supersalários, fornecedores, investigações
 - [x] 18 tools total (3 grafo + 8 livres + 6 Portal Transparência + 1 DataJud)
-- [ ] Brave Search API ($5/mês) para substituir DuckDuckGo (issue #28)
+- [x] Brave Search API integrado como primário ($5/mês), DDG fallback ✅ (02/03/2026)
 > **Arquivos:** `api/src/bracc/services/transparency_tools.py`, `api/src/bracc/routers/chat.py`
-> **APIs:** DuckDuckGo, TransfereGov, Câmara, Querido Diário (grátis) + Portal Transparência, DataJud (com chave)
+> **APIs:** Brave Search (primário) + DDG (fallback), TransfereGov, Câmara, Querido Diário + Portal Transparência, DataJud
 
 ### TASK-049: Avaliação Unikraft + ESAA ✅ (02/03/2026)
 - [x] Unikraft avaliado: NÃO aplicável (unikernels para microserviços stateless, nosso stack é Docker + Neo4j + Python)
@@ -396,8 +396,9 @@
 - [x] Redis-backed: page views por dia, unique visitors (IP hash), hourly, 7-day history
 - [x] Frontend tracking: App.tsx useLocation → POST pageview em cada navegação
 - [x] Microsoft Clarity ativado (project ID: vpkwrlf847) — session recordings, heatmaps
+- [x] Analytics dashboard page: `/app/analytics` (page views, UV, hourly, 7-day chart) ✅ (02/03/2026)
 - [ ] Sentry para error tracking (ou self-hosted alternative)
-> **Arquivos:** `api/src/bracc/routers/analytics.py`, `frontend/src/App.tsx`, `frontend/index.html`
+> **Arquivos:** `api/src/bracc/routers/analytics.py`, `frontend/src/App.tsx`, `frontend/index.html`, `frontend/src/pages/Analytics.tsx`
 
 ### TASK-051: Avaliação De Olho em Você + Mission Control ✅ (02/03/2026)
 - [x] De Olho em Você (deolhoemvoce.com.br): monitora emendas Pix, CEAP, votações
@@ -461,6 +462,40 @@
 - [x] Recomendação: Brave para chatbot produção, Exa para pesquisa interna
 > **Economia:** R$1.188/ano evitando ReceitaWS, $840/ano evitando SerpAPI
 
+### TASK-058: GitGuardian Fix — Chaves em Env Vars ✅ (02/03/2026)
+- [x] Removidas chaves hardcoded de `transparency_tools.py` (alerta GitGuardian)
+- [x] Chaves movidas para `docker-compose.yml` como env vars
+- [x] PORTAL_TRANSPARENCIA_API_KEY, DATAJUD_API_KEY, BRAVE_API_KEY
+- [x] Código usa `os.environ.get()` — chaves nunca mais no código fonte
+> **Nota:** DataJud e Portal Transparência são chaves públicas (registro gratuito), mas best practice é env vars.
+
+### TASK-059: Brave Search Integration ✅ (02/03/2026)
+- [x] Brave Search API como busca primária (key de `/home/enio/egos-lab/.env`)
+- [x] DuckDuckGo como fallback automático
+- [x] #1 benchmark (14.89), 669ms latência, 2k queries grátis/mês
+- [x] Issue #28 fechada com comentário
+
+### TASK-060: Analytics Dashboard Frontend ✅ (02/03/2026)
+- [x] Página `/app/analytics` com visualização em tempo real
+- [x] Cards: views hoje, visitantes únicos, total all-time
+- [x] Gráfico de barras: últimos 7 dias + distribuição por hora
+- [x] Tabela: páginas mais visitadas
+> **Arquivos:** `frontend/src/pages/Analytics.tsx`, `Analytics.module.css`
+
+### TASK-061: Monitor Endpoints (Sanções + Auto-Report) ✅ (02/03/2026)
+- [x] `GET /api/v1/monitor/sanctions/recent` — últimas sanções CEIS+CNEP
+- [x] `GET /api/v1/monitor/report/{municipio}` — relatório automático por município
+- [x] Testado: 20 sanções recentes retornadas, Patos de Minas report funcional
+> **Arquivos:** `api/src/bracc/routers/monitor.py`
+
+### TASK-062: Sincronização GitHub Issues ↔ Tasks ✅ (02/03/2026)
+- [x] Issue #25 (Portal Transparência): CLOSED — integrado
+- [x] Issue #26 (DataJud): CLOSED — integrado
+- [x] Issue #27 (ReceitaWS): CLOSED wontfix — ETL melhor
+- [x] Issue #28 (SerpAPI/Brave): CLOSED — Brave integrado
+- [ ] Criar issues para novas tasks pendentes
+- [ ] Automatizar sync (script ou GitHub Action)
+
 ### TASK-043: Gem Hunter v2 — Melhorar Busca de Projetos ⏳ (P2)
 - [x] Adicionar keywords semanticas: "accountability", "civic tech", "open government"
 - [x] Busca automatizada via GitHub Search API (5 categorias, 02/03/2026)
@@ -482,14 +517,15 @@
 | **Nós no grafo** | 317.583 | 02/03/2026 |
 | **Relacionamentos** | 34.507 | 02/03/2026 |
 | **Issues GitHub abertas** | 27 | 02/03/2026 |
-| **Tasks concluídas** | 38/57 | 02/03/2026 |
+| **Tasks concluídas** | 43/62 | 02/03/2026 |
 | **Chatbot Tools** | 18 (3 grafo + 8 livres + 6 Portal + 1 DataJud) | 02/03/2026 |
-| **ETL Status** | Phase 1 em andamento (12.5%) | 02/03/2026 |
+| **ETL Status** | Phase 1 file 6/10 (15%) — Contabo CPU | 02/03/2026 |
 | **Website** | inteligencia.egos.ia.br (SSL ✅) | 02/03/2026 |
-| **Analytics** | Self-hosted + Clarity (vpkwrlf847) ✅ | 02/03/2026 |
-| **Projetos Gem Hunter** | 21+ avaliados (incl. OpenPlanter) | 02/03/2026 |
-| **APIs com chave** | Portal Transparência + DataJud | 02/03/2026 |
-| **Portais pesquisados** | 10.335 (PNTP) | 02/03/2026 |
+| **Analytics** | Self-hosted + Clarity + Dashboard frontend ✅ | 02/03/2026 |
+| **Web Search** | Brave Search (primário) + DDG (fallback) | 02/03/2026 |
+| **Issues GitHub** | 23 abertas (4 fechadas: #25-#28) | 02/03/2026 |
+| **APIs com chave** | Portal Transparência + DataJud + Brave | 02/03/2026 |
+| **Segurança** | GitGuardian fix — chaves em env vars | 02/03/2026 |
 
 ---
 
