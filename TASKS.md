@@ -1,6 +1,6 @@
 # TASKS.md — EGOS Inteligência (SSOT)
 
-> **Updated:** 2026-03-02 | **GitHub Issues:** https://github.com/enioxt/br-acc/issues
+> **Updated:** 2026-03-02 (session 2) | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
 
 ---
 
@@ -35,8 +35,8 @@
 
 ## P1 — Sprint Atual
 
-### TASK-004: Redis Cache-Aside (GitHub #19) ⬜
-- [ ] Adicionar Redis ao docker-compose.prod.yml
+### TASK-004: Redis Cache-Aside (GitHub #19) ⏳
+- [x] Redis rodando no docker-compose (bracc network)
 - [ ] Criar `api/src/bracc/services/cache.py`
 - [ ] Wrap endpoints: search (TTL 2min), entity (TTL 5min), stats (TTL 1min)
 - [ ] Endpoint `/api/v1/meta/cache-stats` para monitorar hit rate
@@ -118,11 +118,14 @@
 - [ ] Accessibility (a11y)
 > **Referência:** Intelink `components/shared/GlobalSearch.tsx`
 
-### TASK-015: Bot Integration — Discord/Telegram/WhatsApp (GitHub #8) ⬜
-- [ ] Discord: integrar BR/ACC como tool no bot existente
-- [ ] Telegram: integrar no @ethikin bot
+### TASK-015: Bot Integration — Discord/Telegram (GitHub #8) ✅ (02/03/2026)
+- [x] Discord: `EGOS Intelligence#2881` — 14 OSINT tools, slash commands, Supabase persistence
+- [x] Telegram: `@EGOSin_bot` — 14 OSINT tools, long polling, conversation memory
+- [x] Both bots stable via PM2 ecosystem.config.cjs with .env loading
+- [x] Model fallback: paid Gemini 2.0 Flash first, free tier as backup
+- [x] Auto-create GitHub issues from user feedback (||TASK|| markers)
 - [ ] WhatsApp: estrutura pronta para qualquer número
-- [ ] Passo a passo para leigos no egos.ia.br
+> **Arquivos:** `/opt/egos-bot/packages/shared/src/social/` (discord-bot.ts, telegram-bot.ts, ai-engine.ts)
 
 ### TASK-016: Pipeline Extrateto — Supersalários (GitHub #5) ⬜
 - [ ] ETL para dados de salários do judiciário
@@ -262,7 +265,7 @@
 | **Nós no grafo** | 317.583 | 02/03/2026 |
 | **Relacionamentos** | 34.507 | 02/03/2026 |
 | **Issues GitHub abertas** | 23 | 02/03/2026 |
-| **Tasks concluídas** | 12/34 | 02/03/2026 |
+| **Tasks concluídas** | 15/34 | 02/03/2026 |
 | **ETL Status** | Phase 1 em andamento | 02/03/2026 |
 | **Website** | inteligencia.egos.ia.br (SSL ✅) | 02/03/2026 |
 | **Projetos Gem Hunter** | 9 encontrados | 02/03/2026 |
