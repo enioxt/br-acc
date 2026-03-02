@@ -59,19 +59,41 @@ export function ChatInterface({ embedded = false }: { embedded?: boolean }) {
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      setMessages([{
-        id: "welcome",
-        role: "assistant",
-        text: "Olá! Sou o agente investigativo do **EGOS Inteligência**.\n\n🔍 Tenho acesso a **317 mil entidades** e **34 mil conexões** em dados públicos brasileiros — empresas, políticos, contratos, sanções, licitações e muito mais.\n\n📊 **18 ferramentas** de busca integradas: Portal da Transparência, DataJud, Querido Diário, CEAP, e mais.\n\n📋 **4 relatórios** de investigação já publicados.\n\nDigite um CNPJ, nome de empresa, cidade, ou escolha uma sugestão abaixo:",
-        suggestions: [
-          "Investigar empresa por CNPJ",
-          "Ver relatórios de investigação",
-          "Deputados que mais gastaram em 2024",
-          "Emendas parlamentares para minha cidade",
-          "Empresas sancionadas com contratos ativos",
-          "Buscar licitações suspeitas",
-        ],
-      }]);
+      fetch("/api/v1/meta/stats")
+        .then((r) => r.json())
+        .then((s) => {
+          const nodes = Math.round(s.total_nodes / 1000);
+          const rels = Math.round(s.total_relationships / 1000);
+          const sources = s.data_sources || 108;
+          setMessages([{
+            id: "welcome",
+            role: "assistant",
+            text: `Olá! Sou o agente investigativo do **EGOS Inteligência**.\n\n🔍 Tenho acesso a **${nodes} mil entidades** e **${rels} mil conexões** em dados públicos brasileiros — empresas, políticos, contratos, sanções, licitações e muito mais.\n\n📊 **18 ferramentas** de busca integradas em **${sources} fontes**: Portal da Transparência, DataJud, Querido Diário, CEAP, e mais.\n\n📋 **4 relatórios** de investigação já publicados.\n\nDigite um CNPJ, nome de empresa, cidade, ou escolha uma sugestão abaixo:`,
+            suggestions: [
+              "Investigar empresa por CNPJ",
+              "Ver relatórios de investigação",
+              "Deputados que mais gastaram em 2024",
+              "Emendas parlamentares para minha cidade",
+              "Empresas sancionadas com contratos ativos",
+              "Buscar licitações suspeitas",
+            ],
+          }]);
+        })
+        .catch(() => {
+          setMessages([{
+            id: "welcome",
+            role: "assistant",
+            text: "Olá! Sou o agente investigativo do **EGOS Inteligência**. Digite um CNPJ, nome de empresa, ou cidade para começar.",
+            suggestions: [
+              "Investigar empresa por CNPJ",
+              "Ver relatórios de investigação",
+              "Deputados que mais gastaram em 2024",
+              "Emendas parlamentares para minha cidade",
+              "Empresas sancionadas com contratos ativos",
+              "Buscar licitações suspeitas",
+            ],
+          }]);
+        });
     }
   }, [isOpen, messages.length]);
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Reports.module.css";
 
 interface Report {
@@ -44,6 +44,14 @@ export function Reports() {
   const [generating, setGenerating] = useState(false);
   const [genQuery, setGenQuery] = useState("");
   const [genResult, setGenResult] = useState<string>("");
+  const [stats, setStats] = useState<{ total_nodes: number; total_relationships: number } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/v1/meta/stats")
+      .then((r) => r.json())
+      .then((d) => setStats({ total_nodes: d.total_nodes, total_relationships: d.total_relationships }))
+      .catch(() => {});
+  }, []);
 
   const loadReport = async (file: string) => {
     setLoading(true);
@@ -156,7 +164,7 @@ export function Reports() {
           <div className={styles.step}>
             <div className={styles.stepNumber}>1</div>
             <h3>Busca no Grafo</h3>
-            <p>317.583 entidades e 34.507 conexões em Neo4j</p>
+            <p>{stats ? `${stats.total_nodes.toLocaleString("pt-BR")} entidades e ${stats.total_relationships.toLocaleString("pt-BR")} conexões em Neo4j` : "Carregando..."}</p>
           </div>
           <div className={styles.step}>
             <div className={styles.stepNumber}>2</div>
