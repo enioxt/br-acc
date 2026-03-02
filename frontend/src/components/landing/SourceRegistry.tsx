@@ -63,7 +63,7 @@ export function SourceRegistry() {
   // Reset page when filter changes
   useEffect(() => { setPage(0); }, [filter]);
 
-  if (!data) return null;
+  if (!data || !Array.isArray(data.sources) || data.sources.length === 0) return null;
 
   const filtered =
     filter === "all"
@@ -77,7 +77,7 @@ export function SourceRegistry() {
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
-  const categories = Object.entries(data.categories).sort(
+  const categories = Object.entries(data.categories ?? {}).sort(
     (a, b) => b[1].loaded - a[1].loaded
   );
 
