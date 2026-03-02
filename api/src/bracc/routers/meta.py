@@ -115,3 +115,90 @@ async def cache_stats() -> dict[str, Any]:
 async def flush_cache() -> dict[str, Any]:
     count = await cache.flush()
     return {"flushed_keys": count}
+
+
+@router.get("/etl-progress")
+async def etl_progress() -> dict[str, Any]:
+    """Parse ETL log to show current progress."""
+    import os
+    import re
+    from datetime import datetime
+
+    log_path = os.environ.get("ETL_LOG_PATH", "/opt/bracc/cnpj-etl.log")
+    result: dict[str, Any] = {
+        "running": False,
+        "phase": None,
+        "current_file": None,
+        "files_processed": 0,
+        "total_files": 10,
+        "percent": 0.0,
+        "last_update": None,
+        "phases": {
+            1: "Building establishment lookup",
+            2: "Loading companies + socios",
+            3: "Creating SOCIO_DE relationships",
+            4: "Post-optimization (indexes, constraints)",
+        },
+    }
+
+    if not os.path.exists(log_path):
+        return result
+
+    try:
+        with open(log_path, "r") as f:
+            lines = f.readlines()
+
+        # Check if ETL is running by checking if log was updated recently
+        import subprocess
+        try:
+            stat = os.stat(log_path)
+            import time as _time
+            age_seconds = _time.time() - stat.st_mtime
+            result["running"] = age_seconds < 600  # updated in last 10 min
+        except Exception:
+            result["running"] = False
+
+        # Parse phases and files
+        current_phase = 0
+        files_done = 0
+        current_file = None
+        last_ts = None
+
+        for line in lines:
+            if "Phase 1:" in line:
+                current_phase = 1
+            elif "Phase 2:" in line:
+                current_phase = 2
+            elif "Phase 3:" in line:
+                current_phase = 3
+            elif "Phase 4:" in line:
+                current_phase = 4
+
+            file_match = re.search(r"Reading (K3241\.\w+\.\w+\.\w+)", line)
+            if file_match:
+                current_file = file_match.group(1)
+                files_done += 1
+
+            ts_match = re.match(r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", line)
+            if ts_match:
+                last_ts = ts_match.group(1)
+
+        # In phase 1, each file is ~10% of the phase
+        if current_phase == 1:
+            result["percent"] = round((files_done / 10) * 25, 1)  # Phase 1 = 25% of total
+        elif current_phase == 2:
+            result["percent"] = 25 + 50  # rough estimate
+        elif current_phase == 3:
+            result["percent"] = 75 + 15
+        elif current_phase == 4:
+            result["percent"] = 95
+
+        result["phase"] = current_phase
+        result["current_file"] = current_file
+        result["files_processed"] = files_done
+        result["last_update"] = last_ts
+
+    except Exception as e:
+        result["error"] = str(e)
+
+    return result
