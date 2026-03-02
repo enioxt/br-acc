@@ -31,6 +31,8 @@ from bracc.services.transparency_tools import (
     tool_search_transferencias,
     tool_search_ceap,
     tool_search_pep_city,
+    tool_search_gazettes,
+    tool_cnpj_info,
 )
 from bracc.services.public_guard import (
     has_person_labels,
@@ -330,6 +332,36 @@ TOOLS = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_gazettes",
+            "description": "Busca em diarios oficiais municipais via Querido Diario (Open Knowledge Brasil). Encontra licitacoes, contratos, nomeacoes, decretos publicados no diario oficial da cidade.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "municipio": {"type": "string", "description": "Nome do municipio (ex: Uberlandia, Sao Paulo)"},
+                    "query": {"type": "string", "description": "Termo de busca no diario oficial (ex: 'licitacao', 'contrato', nome de empresa)"},
+                    "max_results": {"type": "integer", "description": "Maximo de resultados (1-10)", "default": 5},
+                },
+                "required": ["municipio"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "cnpj_info",
+            "description": "Busca informacoes de empresa por CNPJ: razao social, socios, capital social, CNAE, situacao cadastral. Use para investigar fornecedores encontrados no CEAP ou em contratos.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "cnpj": {"type": "string", "description": "CNPJ da empresa (com ou sem formatacao, ex: 12.345.678/0001-90 ou 12345678000190)"},
+                },
+                "required": ["cnpj"],
+            },
+        },
+    },
 ]
 
 SYSTEM_PROMPT = """Você é o agente investigativo do EGOS Inteligência (inteligencia.egos.ia.br).
@@ -341,6 +373,8 @@ SYSTEM_PROMPT = """Você é o agente investigativo do EGOS Inteligência (inteli
 - Acesso ao Portal da Transparência (emendas, transferências, convênios)
 - Acesso ao CEAP (gastos de deputados federais — Dados Abertos da Câmara)
 - Busca de Pessoas Politicamente Expostas (PEPs) por cidade
+- Busca em diários oficiais municipais (Querido Diário — 510+ cidades)
+- Consulta CNPJ: razão social, sócios, capital social, situação cadastral
 - Bases internas: CEIS, CNEP, OpenSanctions, PEP, CEAF, CPGF, TSE, BNDES, IBAMA, DATASUS, TransfereGov, RAIS, INEP
 - Projeto 100% open-source, sem investidores, autofinanciado
 
@@ -352,6 +386,8 @@ SYSTEM_PROMPT = """Você é o agente investigativo do EGOS Inteligência (inteli
 - SEMPRE cruze informações: se encontrar um CNPJ de fornecedor no CEAP, busque no grafo com search_entities
 - Use web_search para encontrar notícias de jornal, investigações, denúncias do Ministério Público
 - Sugira ao usuário buscar os CNPJs dos fornecedores de políticos para descobrir conexões
+- Use search_gazettes para buscar menções em diários oficiais (licitações, contratos, nomeações)
+- Use cnpj_info para descobrir sócios e situação de empresas (depois busque os sócios no grafo)
 
 ## Regras
 - Responda SEMPRE em português brasileiro
@@ -478,6 +514,14 @@ async def _call_openrouter(
                         fn_args.get("cidade", ""),
                         fn_args.get("uf", ""),
                     )
+                elif fn_name == "search_gazettes":
+                    result = await tool_search_gazettes(
+                        fn_args.get("municipio", ""),
+                        fn_args.get("query", ""),
+                        min(fn_args.get("max_results", 5), 10),
+                    )
+                elif fn_name == "cnpj_info":
+                    result = await tool_cnpj_info(fn_args.get("cnpj", ""))
                 else:
                     result = {"error": f"Tool {fn_name} not found"}
 

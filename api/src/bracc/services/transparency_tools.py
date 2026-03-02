@@ -276,3 +276,139 @@ async def tool_search_pep_city(cidade: str, uf: str = "") -> dict[str, Any]:
         "dica": f"Use search_ceap com o nome do deputado para ver gastos. Use search_emendas com '{cidade}' para ver emendas direcionadas.",
         "fonte": "Dados Abertos da Câmara + Web Search",
     }
+
+
+# Querido Diário API (Open Knowledge Brasil) — free, no API key
+_QD_BASE = "https://api.queridodiario.ok.org.br"
+
+# IBGE codes for major cities (expand as needed)
+_IBGE_CODES: dict[str, str] = {
+    "uberlandia": "3170206", "sao paulo": "3550308", "rio de janeiro": "3304557",
+    "belo horizonte": "3106200", "brasilia": "5300108", "curitiba": "4106902",
+    "salvador": "2927408", "fortaleza": "2304400", "recife": "2611606",
+    "porto alegre": "4314902", "goiania": "5208707", "manaus": "1302603",
+    "campinas": "3509502", "patos de minas": "3148004", "uberaba": "3170107",
+    "juiz de fora": "3136702", "florianopolis": "4205407", "vitoria": "3205309",
+    "natal": "2408102", "joao pessoa": "2507507", "maceio": "2704302",
+    "campo grande": "5002704", "teresina": "2211001", "sao luis": "2111300",
+    "aracaju": "2800308", "cuiaba": "5103403", "belem": "1501402",
+    "macapa": "1600303", "palmas": "1721000", "boa vista": "1400100",
+    "porto velho": "1100205", "rio branco": "1200401",
+}
+
+
+async def tool_search_gazettes(municipio: str, query: str = "", max_results: int = 5) -> dict[str, Any]:
+    """Search municipal official gazettes via Querido Diário API."""
+    municipio_lower = municipio.lower().strip()
+
+    # Try to find IBGE code
+    territory_id = _IBGE_CODES.get(municipio_lower, "")
+
+    results: list[dict[str, Any]] = []
+    try:
+        # If we don't have the IBGE code, search for the city first
+        if not territory_id:
+            async with httpx.AsyncClient(timeout=15.0) as client:
+                city_resp = await client.get(f"{_QD_BASE}/cities?city_name={quote_plus(municipio)}")
+                if city_resp.status_code == 200:
+                    cities = city_resp.json().get("cities", [])
+                    if cities:
+                        territory_id = cities[0].get("territory_id", "")
+
+        if not territory_id:
+            return {"municipio": municipio, "error": "Cidade nao encontrada no Querido Diario", "dica": "Tente o nome completo da cidade"}
+
+        # Search gazettes
+        search_query = query if query else municipio
+        params = {
+            "territory_ids": territory_id,
+            "querystring": search_query,
+            "excerpt_size": 300,
+            "number_of_excerpts": 2,
+            "size": min(max_results, 10),
+            "sort_by": "descending_date",
+        }
+
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            resp = await client.get(f"{_QD_BASE}/gazettes", params=params)
+            if resp.status_code == 200:
+                data = resp.json()
+                total = data.get("total_gazettes", 0)
+                for gz in data.get("gazettes", [])[:max_results]:
+                    excerpts = gz.get("excerpts", [])
+                    results.append({
+                        "data": gz.get("date", ""),
+                        "municipio": gz.get("territory_name", municipio),
+                        "uf": gz.get("state_code", ""),
+                        "url": gz.get("url", ""),
+                        "trechos": [e[:300] for e in excerpts[:2]],
+                        "edicao": gz.get("edition", ""),
+                    })
+
+                return {
+                    "municipio": municipio,
+                    "territory_id": territory_id,
+                    "query": search_query,
+                    "total_resultados": total,
+                    "resultados": results,
+                    "fonte": "Querido Diário (queridodiario.ok.org.br) — Open Knowledge Brasil",
+                }
+
+    except Exception as e:
+        logger.warning("Querido Diario search failed: %s", e)
+
+    return {"municipio": municipio, "query": query, "resultados": results, "fonte": "Querido Diário"}
+
+
+async def tool_cnpj_info(cnpj: str) -> dict[str, Any]:
+    """Get company info and partners by CNPJ via Querido Diário API."""
+    # Clean CNPJ
+    cnpj_clean = re.sub(r"[^0-9]", "", cnpj)
+    if len(cnpj_clean) != 14:
+        return {"error": f"CNPJ invalido: {cnpj}. Deve ter 14 digitos."}
+
+    info: dict[str, Any] = {}
+    partners: list[dict[str, str]] = []
+
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            # Company info
+            resp = await client.get(f"{_QD_BASE}/company/info/{cnpj_clean}")
+            if resp.status_code == 200:
+                data = resp.json()
+                info = {
+                    "cnpj": data.get("cnpj_basico", cnpj_clean),
+                    "razao_social": data.get("razao_social", ""),
+                    "nome_fantasia": data.get("nome_fantasia", ""),
+                    "situacao": data.get("situacao_cadastral", ""),
+                    "natureza_juridica": data.get("natureza_juridica", ""),
+                    "porte": data.get("porte_empresa", ""),
+                    "capital_social": data.get("capital_social", 0),
+                    "cnae_principal": data.get("cnae_fiscal_principal", ""),
+                    "municipio": data.get("municipio", ""),
+                    "uf": data.get("uf", ""),
+                    "data_inicio": data.get("data_inicio_atividade", ""),
+                }
+
+            # Partners
+            resp2 = await client.get(f"{_QD_BASE}/company/partners/{cnpj_clean}")
+            if resp2.status_code == 200:
+                data2 = resp2.json()
+                for p in data2.get("socios", data2 if isinstance(data2, list) else []):
+                    if isinstance(p, dict):
+                        partners.append({
+                            "nome": p.get("nome_socio", p.get("nome", "")),
+                            "qualificacao": p.get("qualificacao_socio", ""),
+                            "data_entrada": p.get("data_entrada_sociedade", ""),
+                        })
+
+    except Exception as e:
+        logger.warning("CNPJ lookup failed: %s", e)
+
+    return {
+        "cnpj": cnpj_clean,
+        "empresa": info,
+        "socios": partners,
+        "dica": "Use search_entities com o nome dos sócios para encontrar conexões no grafo. Use search_gazettes com o CNPJ para ver menções em diários oficiais.",
+        "fonte": "Querido Diário (CNPJ) + Receita Federal",
+    }
