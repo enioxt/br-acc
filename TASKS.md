@@ -183,13 +183,17 @@
 - [x] Mobile layout funcional com Outlet + nav fixa
 > **Arquivos:** `frontend/src/components/common/AppShell.tsx`
 
-### TASK-027: Chatbot AI na Landing Page ⏳
-- [ ] Backend: `POST /api/v1/chat` — endpoint conversacional
-- [ ] Frontend: `ChatInterface.tsx` — componente mobile-first
-- [ ] Integrar na Landing como interface primária
-- [ ] Phase 1: busca estruturada Neo4j (sem LLM)
-- [ ] Phase 2: LLM via OpenRouter para NLU
-- [ ] Phase 3: rich results (entity cards, mini-grafos)
+### TASK-027: Chatbot AI na Landing Page ✅ (02/03/2026)
+- [x] Backend: `POST /api/v1/chat` — endpoint conversacional
+- [x] Frontend: `ChatInterface.tsx` — componente mobile-first (dark theme)
+- [x] Integrar na Landing como interface primária
+- [x] Phase 1: busca estruturada Neo4j (sem LLM)
+- [x] Phase 2: LLM via OpenRouter (Gemini 2.0 Flash) com function calling
+- [x] Memória de conversa por sessão (IP-based, 30min TTL, 20 msgs)
+- [x] 3 tools: search_entities, get_graph_stats, get_entity_connections
+- [x] Sugestões contextuais dinâmicas
+- [ ] Phase 3: rich results (entity cards clicáveis, mini-grafos)
+> **Arquivos:** `api/src/bracc/routers/chat.py`, `frontend/src/components/chat/ChatInterface.tsx`
 
 ### TASK-028: Investigações — Upload, Fork, Compartilhamento ⬜
 - [ ] Formatos de exportação: MD, PDF, DOCX, JSON, HTML
