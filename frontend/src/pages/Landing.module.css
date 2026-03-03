@@ -744,6 +744,200 @@
   }
 }
 
+/* === Hero Search === */
+
+.heroSearch {
+  width: 100%;
+  max-width: 36rem;
+  margin-top: 1.2rem;
+}
+
+.heroSearchForm {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #111416;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.heroSearchForm:focus-within {
+  border-color: rgba(0, 229, 195, 0.5);
+  box-shadow: 0 0 0 3px rgba(0, 229, 195, 0.1);
+}
+
+.heroSearchIcon {
+  padding: 0 0 0 1rem;
+  font-size: 1.1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.heroSearchInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0.85rem 0.75rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f1f4f2;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  letter-spacing: 0.005em;
+}
+
+.heroSearchInput::placeholder {
+  color: rgba(148, 163, 154, 0.6);
+}
+
+.heroSearchBtn {
+  flex-shrink: 0;
+  padding: 0.85rem 1.4rem;
+  background: linear-gradient(180deg, rgba(0, 229, 195, 0.9) 0%, rgba(0, 200, 170, 0.9) 100%);
+  border: none;
+  color: #0a0a0a;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.heroSearchBtn:hover {
+  background: linear-gradient(180deg, rgba(0, 229, 195, 1) 0%, rgba(0, 210, 180, 1) 100%);
+}
+
+.heroSearchBtn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.heroSuggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.heroSuggestionChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.7rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  color: rgba(232, 237, 233, 0.8);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.heroSuggestionChip:hover {
+  background: rgba(0, 229, 195, 0.1);
+  border-color: rgba(0, 229, 195, 0.3);
+  color: #f1f4f2;
+}
+
+.heroResults {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  padding: 0.6rem;
+  background: #111416;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.75rem;
+  max-height: 20rem;
+  overflow-y: auto;
+}
+
+.heroResultItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+.heroResultItem:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.heroResultType {
+  flex-shrink: 0;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.3rem;
+  background: rgba(0, 229, 195, 0.12);
+  color: rgba(0, 229, 195, 0.9);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.heroResultName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e8ede9;
+  font-size: 0.85rem;
+}
+
+.heroResultDoc {
+  flex-shrink: 0;
+  color: rgba(148, 163, 154, 0.7);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.heroSendToChat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+  padding: 0.65rem 1rem;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(0, 229, 195, 0.12));
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 0.5rem;
+  color: rgba(232, 237, 233, 0.9);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.heroSendToChat:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(0, 229, 195, 0.2));
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #f1f4f2;
+}
+
+.heroNoResults {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background: #111416;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  color: rgba(148, 163, 154, 0.8);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cta,
   .sourceCard,
