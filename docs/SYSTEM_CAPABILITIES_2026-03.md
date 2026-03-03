@@ -268,11 +268,11 @@ Live-tested scan returned **102 alerts** across 10 cities in 7 days. Pattern typ
 
 | Resource | Monthly Cost |
 |----------|-------------|
-| **VPS (Contabo)** | ~€15/month |
+| **VPS (Contabo)** | ~€35/month |
 | **OpenRouter (Gemini Flash)** | ~$3-5/month (at 1000 queries) |
 | **Brave Search** | Free tier (2000/month) |
 | **All other APIs** | Free (public government APIs) |
-| **Total** | ~**$25/month** |
+| **Total** | ~**$40/month** |
 
 ---
 
