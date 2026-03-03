@@ -285,6 +285,16 @@ export NEO4J_PASSWORD=your_password && bash infra/scripts/seed-dev.sh
 
 CPF (Brazilian personal tax ID) is **never** searchable, displayable, or exportable. Only CNPJ (company ID) and publicly mandated data are exposed. All JSON responses pass through a CPF masking middleware as a safety net.
 
+## Documentação Técnica
+
+| Documento | O que contém |
+|-----------|-------------|
+| **[Dossiê Técnico](docs/TECHNICAL_DOSSIE_2026-03.md)** | Audit completo: arquitetura, 23 features, 10 pontos fortes, 10 fracos, 8 riscos, 16 recomendações |
+| **[Análise Intelink vs EGOS](docs/MERGE_ANALYSIS.md)** | Comparação frame-by-frame, 3 alternativas de merge |
+| [Stack Decision](docs/analysis/STACK_SCALING_DECISION_2026-03.md) | Python vs Go — decisão de manter Python |
+| [Fontes de Dados](docs/data-sources.md) | 108 fontes documentadas |
+| [Compliance Legal](docs/legal/legal-index.md) | LGPD, ETHICS, PRIVACY, TERMS |
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) · [ROADMAP.md](ROADMAP.md) · [Issues](https://github.com/enioxt/br-acc/issues)
