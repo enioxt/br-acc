@@ -36,7 +36,7 @@ class Settings(BaseSettings):
     pattern_max_evidence_refs: int = 50
 
     openrouter_api_key: str = ""
-    ai_model: str = "google/gemini-2.0-flash-001"
+    ai_model: str = "openai/gpt-4o-mini"
     redis_url: str = "redis://localhost:6379/0"
 
     model_config = {"env_prefix": "", "env_file": ".env"}

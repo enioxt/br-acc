@@ -530,6 +530,15 @@ PORTAL_HEADERS = {
 
 async def tool_search_servidores(nome: str = "", cpf: str = "", orgao: str = "") -> dict[str, Any]:
     """Search federal public servants — name, salary, position, org."""
+    # SIAPE org codes for common searches (supersalários)
+    SIAPE_CODES = {
+        "senado": "11001", "camara": "1001", "tcu": "3001",
+        "stf": "10001", "stj": "10002", "tse": "10003",
+        "presidencia": "20101", "mre": "30101", "fazenda": "25101",
+        "defesa": "52101", "saude": "36101", "educacao": "26101",
+        "justica": "30901", "planejamento": "47101", "cgu": "20109",
+        "agu": "56101", "mpf": "34101", "dpf": "30107",
+    }
     results: list[dict[str, Any]] = []
     try:
         async with httpx.AsyncClient(timeout=20.0) as client:
@@ -537,30 +546,42 @@ async def tool_search_servidores(nome: str = "", cpf: str = "", orgao: str = "")
             if cpf:
                 params["cpfServidor"] = cpf.replace(".", "").replace("-", "")
             elif orgao:
-                params["codigoOrgaoServidorExercicio"] = orgao
-            else:
-                # API requires CPF or orgao code — try by-name endpoint
-                resp = await client.get(
-                    f"{PORTAL_BASE}/servidores/remuneracao",
-                    params={"nome": nome, "pagina": "1"} if nome else {"pagina": "1"},
-                    headers=PORTAL_HEADERS,
-                )
-                if resp.status_code == 200:
-                    for s in resp.json()[:10]:
-                        results.append({
-                            "nome": s.get("nome", ""),
-                            "cpf": s.get("cpf", ""),
-                            "cargo": s.get("descricaoCargo", ""),
-                            "orgao": s.get("orgaoExercicio", ""),
-                            "remuneracao_bruta": s.get("remuneracaoBruta", ""),
-                            "remuneracao_liquida": s.get("remuneracaoLiquida", ""),
-                        })
+                # Try to resolve org name to SIAPE code
+                orgao_lower = orgao.lower().strip()
+                resolved_code = SIAPE_CODES.get(orgao_lower, orgao)
+                params["codigoOrgaoServidorExercicio"] = resolved_code
+            elif nome:
+                # Name-only search: try top organs for supersalários
+                for org_name, org_code in [("senado", "11001"), ("stf", "10001"), ("camara", "1001")]:
+                    params_try = {"pagina": "1", "codigoOrgaoServidorExercicio": org_code}
+                    resp = await client.get(
+                        f"{PORTAL_BASE}/servidores",
+                        params=params_try,
+                        headers=PORTAL_HEADERS,
+                    )
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        if isinstance(data, list):
+                            for s in data[:5]:
+                                srv_nome = s.get("nome", "")
+                                if nome.upper() in srv_nome.upper() or not nome:
+                                    results.append({
+                                        "nome": srv_nome,
+                                        "cargo": s.get("cargo", {}).get("descricao", "") if isinstance(s.get("cargo"), dict) else "",
+                                        "orgao_exercicio": s.get("orgaoServidorExercicio", {}).get("nome", "") if isinstance(s.get("orgaoServidorExercicio"), dict) else org_name.upper(),
+                                        "situacao": s.get("situacaoServidor", {}).get("descricao", "") if isinstance(s.get("situacaoServidor"), dict) else "",
+                                    })
+                    if len(results) >= 10:
+                        break
                 return {
-                    "query": nome or cpf,
-                    "servidores": results,
-                    "fonte": "Portal da Transparência — Servidores",
-                    "nota": "Busca por nome pode ser limitada. Use CPF para resultado exato." if not cpf else "",
+                    "query": nome,
+                    "servidores": results[:10],
+                    "fonte": "Portal da Transparência — Servidores do Poder Executivo Federal",
+                    "nota": "Busca por nome pesquisa nos 3 maiores órgãos (Senado, STF, Câmara). Use CPF para busca exata.",
                 }
+            else:
+                # No filters: search Senado (highest salaries)
+                params["codigoOrgaoServidorExercicio"] = "11001"
 
             resp = await client.get(
                 f"{PORTAL_BASE}/servidores",
@@ -932,3 +953,347 @@ async def tool_search_processos(numero_processo: str = "", nome_parte: str = "",
         "tribunais_disponiveis": list(DATAJUD_TRIBUNAIS.keys())[:10],
         "dica": "Use número do processo para busca exata. Busque por classe: 'Recuperação Judicial', 'Ação de Improbidade', 'Execução Fiscal'.",
     }
+
+
+# ─── BNMP — Mandados de Prisão (CNJ) ──────────────────────────────────
+
+async def tool_bnmp_mandados(nome: str) -> dict[str, Any]:
+    """Search arrest warrants in BNMP (Banco Nacional de Mandados de Prisão)."""
+    results: list[dict[str, Any]] = []
+    try:
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            resp = await client.post(
+                "https://portalbnmp.cnj.jus.br/bnmpportal/api/pesquisa-pecas/filter",
+                json={
+                    "blespidasDesdeDataFato": False,
+                    "nomePessoa": nome,
+                    "page": 0,
+                    "size": 10,
+                    "sort": ["dataExpedicao,DESC"],
+                },
+                headers={"Content-Type": "application/json", "Accept": "application/json"},
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                content = data.get("content", []) if isinstance(data, dict) else []
+                for item in content[:10]:
+                    results.append({
+                        "nome": item.get("nomePessoa", ""),
+                        "tipo_peca": item.get("tipoPeca", ""),
+                        "orgao_expeditor": item.get("orgaoExpeditor", ""),
+                        "data_expedicao": item.get("dataExpedicao", ""),
+                        "situacao": item.get("situacao", ""),
+                        "municipio": item.get("municipio", ""),
+                        "uf": item.get("uf", ""),
+                    })
+            else:
+                logger.warning("BNMP HTTP %s", resp.status_code)
+    except Exception as e:
+        logger.warning("BNMP search failed: %s", e)
+
+    if not results:
+        web = await tool_web_search(f"mandado prisão {nome} site:cnj.jus.br OR site:jusbrasil.com.br", 3)
+        return {
+            "query": nome,
+            "mandados": [],
+            "web_references": web,
+            "fonte": "BNMP (CNJ) + busca web",
+            "nota": "Nenhum mandado encontrado no BNMP público. Verifique referências web.",
+        }
+
+    return {
+        "query": nome,
+        "mandados": results,
+        "fonte": "BNMP — Banco Nacional de Mandados de Prisão (CNJ)",
+        "nota": "Dados públicos. Mandados sob sigilo não aparecem nesta busca.",
+    }
+
+
+# ─── Procurados — Polícia Federal + Interpol ──────────────────────────
+
+async def tool_procurados_lookup(nome: str) -> dict[str, Any]:
+    """Search wanted persons — PF and Interpol Brazil."""
+    results: list[dict[str, Any]] = []
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            parts = nome.split() if nome else [""]
+            resp = await client.get(
+                "https://ws-public.interpol.int/notices/v1/red",
+                params={"forename": parts[0], "name": parts[-1], "nationality": "BR", "resultPerPage": 5},
+                headers={"Accept": "application/json"},
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                for notice in data.get("_embedded", {}).get("notices", []):
+                    results.append({
+                        "nome": notice.get("forename", "") + " " + notice.get("name", ""),
+                        "nacionalidade": ", ".join(notice.get("nationalities", [])),
+                        "data_nascimento": notice.get("date_of_birth", ""),
+                        "fonte": "Interpol Red Notice",
+                        "link": notice.get("_links", {}).get("self", {}).get("href", ""),
+                    })
+    except Exception as e:
+        logger.warning("Interpol search failed: %s", e)
+
+    web = await tool_web_search(f"procurado polícia federal {nome} site:gov.br/pf OR site:jusbrasil.com.br", 3)
+
+    return {
+        "query": nome,
+        "interpol_notices": results,
+        "web_references": web,
+        "fonte": "Interpol Red Notices + Polícia Federal (web)",
+    }
+
+
+# ─── Lista Suja — Trabalho Escravo (MTE) ──────────────────────────────
+
+async def tool_lista_suja(nome: str, uf: str = "") -> dict[str, Any]:
+    """Search the 'Lista Suja' (dirty list) of slave labor employers."""
+    results: list[dict[str, Any]] = []
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            params: dict[str, str] = {"pagina": "1"}
+            if nome:
+                params["nomeEmpregador"] = nome
+            if uf:
+                params["uf"] = uf.upper()
+            resp = await client.get(
+                f"{PORTAL_BASE}/empregadores",
+                params=params,
+                headers=PORTAL_HEADERS,
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                if isinstance(data, list):
+                    for item in data[:10]:
+                        results.append({
+                            "empregador": item.get("nomeEmpregador", ""),
+                            "cnpj_cpf": item.get("cpfCnpjEmpregador", ""),
+                            "uf": item.get("uf", ""),
+                            "municipio": item.get("municipio", ""),
+                            "ano_acao_fiscal": item.get("anoAcaoFiscal", ""),
+                            "trabalhadores_resgatados": item.get("qtdTrabalhadores", 0),
+                        })
+            else:
+                logger.warning("Lista Suja HTTP %s", resp.status_code)
+    except Exception as e:
+        logger.warning("Lista Suja search failed: %s", e)
+
+    if not results:
+        web = await tool_web_search(f"lista suja trabalho escravo {nome} {uf}", 3)
+        return {
+            "query": nome,
+            "empregadores": [],
+            "web_references": web,
+            "fonte": "Portal da Transparência — Lista Suja + busca web",
+        }
+
+    return {
+        "query": nome,
+        "empregadores": results,
+        "fonte": "Portal da Transparência — Cadastro de Empregadores (Lista Suja do Trabalho Escravo)",
+        "nota": "Empregador na Lista Suja = flagrado pelo MTE com trabalho análogo à escravidão.",
+    }
+
+
+# ─── PNCP — Portal Nacional de Contratações Públicas ──────────────────
+
+async def tool_pncp_licitacoes(cnpj_orgao: str = "", uf: str = "", data_inicio: str = "20240101", data_fim: str = "20241231") -> dict[str, Any]:
+    """Search national procurement portal (federal + state + municipal)."""
+    results: list[dict[str, Any]] = []
+    try:
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            params: dict[str, str] = {
+                "dataInicial": f"{data_inicio[:4]}-{data_inicio[4:6]}-{data_inicio[6:8]}",
+                "dataFinal": f"{data_fim[:4]}-{data_fim[4:6]}-{data_fim[6:8]}",
+                "pagina": "1",
+                "tamanhoPagina": "10",
+            }
+            if cnpj_orgao:
+                params["cnpj"] = cnpj_orgao.replace(".", "").replace("/", "").replace("-", "")
+            if uf:
+                params["uf"] = uf.upper()
+
+            resp = await client.get(
+                "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao",
+                params=params,
+                headers={"Accept": "application/json"},
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                items = data if isinstance(data, list) else data.get("data", data.get("content", []))
+                if isinstance(items, list):
+                    for item in items[:10]:
+                        results.append({
+                            "orgao": item.get("nomeOrgao", item.get("orgaoEntidade", {}).get("razaoSocial", "")),
+                            "objeto": str(item.get("objetoCompra", item.get("descricao", "")))[:200],
+                            "modalidade": item.get("modalidadeLicitacao", item.get("modalidadeNome", "")),
+                            "valor_estimado": item.get("valorEstimado", item.get("valorTotalEstimado", "")),
+                            "uf": item.get("uf", uf),
+                            "data_publicacao": item.get("dataPublicacao", ""),
+                            "situacao": item.get("situacaoCompra", item.get("situacaoCompraNome", "")),
+                        })
+            else:
+                logger.warning("PNCP HTTP %s: %s", resp.status_code, resp.text[:200])
+    except Exception as e:
+        logger.warning("PNCP search failed: %s", e)
+
+    if not results:
+        web = await tool_web_search(f"licitação PNCP {uf} {cnpj_orgao} 2024 site:pncp.gov.br", 3)
+        return {
+            "query": cnpj_orgao or uf or "nacional",
+            "licitacoes": [],
+            "web_references": web,
+            "fonte": "PNCP + busca web",
+        }
+
+    return {
+        "query": cnpj_orgao or uf or "nacional",
+        "licitacoes": results,
+        "fonte": "PNCP — Portal Nacional de Contratações Públicas (todas as esferas)",
+        "nota": "PNCP inclui federal, estadual e municipal. Compare com search_licitacoes (apenas federal).",
+    }
+
+
+# ─── OAB — Consulta de Advogados ──────────────────────────────────────
+
+async def tool_oab_advogado(nome: str = "", numero_oab: str = "", seccional: str = "") -> dict[str, Any]:
+    """Search OAB (Brazilian Bar Association) lawyer registry."""
+    results: list[dict[str, Any]] = []
+    try:
+        async with httpx.AsyncClient(timeout=15.0, follow_redirects=True) as client:
+            if numero_oab and seccional:
+                resp = await client.get(
+                    f"https://cna.oab.org.br/api/v1/advogados/{seccional.upper()}/{numero_oab}",
+                    headers={"Accept": "application/json"},
+                )
+                if resp.status_code == 200:
+                    data = resp.json()
+                    if isinstance(data, dict) and data.get("nome"):
+                        results.append({
+                            "nome": data.get("nome", ""),
+                            "numero_oab": data.get("inscricao", numero_oab),
+                            "seccional": data.get("uf", seccional),
+                            "situacao": data.get("tipoInscricao", ""),
+                            "subtipo": data.get("subtipo", ""),
+                        })
+            elif nome:
+                resp = await client.get(
+                    "https://cna.oab.org.br/api/v1/advogados",
+                    params={"nome": nome, "seccional": seccional.upper() if seccional else ""},
+                    headers={"Accept": "application/json"},
+                )
+                if resp.status_code == 200:
+                    data = resp.json()
+                    items = data if isinstance(data, list) else data.get("content", data.get("data", []))
+                    if isinstance(items, list):
+                        for adv in items[:10]:
+                            results.append({
+                                "nome": adv.get("nome", ""),
+                                "numero_oab": adv.get("inscricao", ""),
+                                "seccional": adv.get("uf", ""),
+                                "situacao": adv.get("tipoInscricao", ""),
+                            })
+    except Exception as e:
+        logger.warning("OAB search failed: %s", e)
+
+    if not results:
+        web = await tool_web_search(f"advogado OAB {nome} {numero_oab} {seccional} site:oab.org.br", 3)
+        return {
+            "query": nome or numero_oab,
+            "advogados": [],
+            "web_references": web,
+            "fonte": "OAB CNA + busca web",
+            "nota": "API OAB pode estar indisponível. Verifique manualmente em cna.oab.org.br",
+        }
+
+    return {
+        "query": nome or numero_oab,
+        "advogados": results,
+        "fonte": "OAB — Cadastro Nacional de Advogados",
+    }
+
+
+# ─── OpenCNPJ — Dados Cadastrais Gratuitos ────────────────────────────
+
+async def tool_opencnpj(cnpj: str) -> dict[str, Any]:
+    """Lookup company data via OpenCNPJ (free public API)."""
+    clean = cnpj.replace(".", "").replace("/", "").replace("-", "").strip()
+    if len(clean) != 14:
+        return {"error": "CNPJ deve ter 14 dígitos", "query": cnpj}
+
+    result: dict[str, Any] = {}
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            resp = await client.get(
+                f"https://opencnpj.org/api/cnpj/{clean}",
+                headers={"Accept": "application/json"},
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                socios = []
+                for s in data.get("qsa", data.get("socios", []))[:10]:
+                    socios.append({
+                        "nome": s.get("nome_socio", s.get("nome", "")),
+                        "qualificacao": s.get("qualificacao_socio", s.get("qualificacao", "")),
+                        "data_entrada": s.get("data_entrada_sociedade", ""),
+                    })
+                cnaes = []
+                for c in data.get("cnaes_secundarios", data.get("cnaes_secundarias", []))[:5]:
+                    cnaes.append(f"{c.get('codigo', '')} - {c.get('descricao', '')}")
+
+                result = {
+                    "cnpj": clean,
+                    "razao_social": data.get("razao_social", ""),
+                    "nome_fantasia": data.get("nome_fantasia", ""),
+                    "situacao_cadastral": data.get("descricao_situacao_cadastral", data.get("situacao_cadastral", "")),
+                    "data_situacao": data.get("data_situacao_cadastral", ""),
+                    "data_abertura": data.get("data_inicio_atividade", data.get("data_abertura", "")),
+                    "natureza_juridica": data.get("natureza_juridica", ""),
+                    "capital_social": data.get("capital_social", 0),
+                    "porte": data.get("porte", data.get("descricao_porte", "")),
+                    "cnae_principal": data.get("cnae_fiscal", data.get("cnae_principal", "")),
+                    "cnae_principal_descricao": data.get("cnae_fiscal_descricao", ""),
+                    "cnaes_secundarios": cnaes,
+                    "municipio": data.get("municipio", ""),
+                    "uf": data.get("uf", ""),
+                    "socios_qsa": socios,
+                    "total_socios": len(socios),
+                }
+            elif resp.status_code == 404:
+                return {"error": "CNPJ não encontrado", "query": cnpj, "fonte": "OpenCNPJ"}
+            else:
+                logger.warning("OpenCNPJ HTTP %s", resp.status_code)
+    except Exception as e:
+        logger.warning("OpenCNPJ failed: %s", e)
+
+    if not result:
+        # Fallback to BrasilAPI
+        try:
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                resp = await client.get(f"https://brasilapi.com.br/api/cnpj/v1/{clean}")
+                if resp.status_code == 200:
+                    data = resp.json()
+                    socios = [{"nome": s.get("nome_socio", ""), "qualificacao": s.get("qualificacao_socio", "")} for s in data.get("qsa", [])[:10]]
+                    result = {
+                        "cnpj": clean,
+                        "razao_social": data.get("razao_social", ""),
+                        "nome_fantasia": data.get("nome_fantasia", ""),
+                        "situacao_cadastral": data.get("descricao_situacao_cadastral", ""),
+                        "capital_social": data.get("capital_social", 0),
+                        "cnae_principal": data.get("cnae_fiscal", ""),
+                        "cnae_principal_descricao": data.get("cnae_fiscal_descricao", ""),
+                        "municipio": data.get("municipio", ""),
+                        "uf": data.get("uf", ""),
+                        "socios_qsa": socios,
+                        "total_socios": len(socios),
+                    }
+        except Exception as e:
+            logger.warning("BrasilAPI CNPJ fallback failed: %s", e)
+
+    if not result:
+        return {"error": "Não foi possível consultar o CNPJ", "query": cnpj}
+
+    result["fonte"] = "OpenCNPJ (Receita Federal)"
+    result["dica"] = "Busque os sócios no grafo com search_entities para descobrir outras empresas."
+    return result

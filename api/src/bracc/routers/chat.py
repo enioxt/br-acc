@@ -1,7 +1,7 @@
 """Chat endpoint — AI agent for EGOS Inteligência.
 
 Full conversational agent with:
-- LLM via OpenRouter (Gemini 2.0 Flash)
+- LLM via OpenRouter (GPT-4o-mini — optimized for multi-tool calling)
 - Neo4j graph search tools
 - Conversation memory (in-memory per session, Redis planned)
 - Contextual suggestions
@@ -42,6 +42,12 @@ from bracc.services.transparency_tools import (
     tool_search_contratos,
     tool_search_sancoes,
     tool_search_processos,
+    tool_bnmp_mandados,
+    tool_procurados_lookup,
+    tool_lista_suja,
+    tool_pncp_licitacoes,
+    tool_oab_advogado,
+    tool_opencnpj,
 )
 from bracc.services.public_guard import (
     has_person_labels,
@@ -510,6 +516,96 @@ TOOLS = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "bnmp_mandados",
+            "description": "Busca mandados de prisao no BNMP (Banco Nacional de Mandados de Prisao - CNJ). Verifica se pessoa tem mandado ativo.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "nome": {"type": "string", "description": "Nome completo da pessoa"},
+                },
+                "required": ["nome"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "procurados_lookup",
+            "description": "Busca pessoas procuradas pela Policia Federal e Interpol Brasil.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "nome": {"type": "string", "description": "Nome da pessoa procurada"},
+                },
+                "required": ["nome"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "lista_suja_lookup",
+            "description": "Consulta a Lista Suja do Trabalho Escravo (MTE). Verifica se empresa ou empregador foi flagrado com trabalho analogo a escravidao.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "nome": {"type": "string", "description": "Nome do empregador ou empresa"},
+                    "uf": {"type": "string", "description": "Sigla do estado (opcional)"},
+                },
+                "required": ["nome"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "pncp_licitacoes",
+            "description": "Busca licitacoes no PNCP (Portal Nacional de Contratacoes Publicas). Inclui TODAS as esferas: federal, estadual e municipal.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "cnpj_orgao": {"type": "string", "description": "CNPJ do orgao contratante"},
+                    "uf": {"type": "string", "description": "Sigla do estado (ex: SP, MG)"},
+                    "data_inicio": {"type": "string", "description": "Data inicio (YYYYMMDD)", "default": "20240101"},
+                    "data_fim": {"type": "string", "description": "Data fim (YYYYMMDD)", "default": "20241231"},
+                },
+                "required": [],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "oab_advogado",
+            "description": "Consulta advogado pelo numero OAB ou nome. Verifica se inscricao esta ativa, seccional, situacao.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "nome": {"type": "string", "description": "Nome do advogado"},
+                    "numero_oab": {"type": "string", "description": "Numero de inscricao OAB"},
+                    "seccional": {"type": "string", "description": "Seccional OAB (ex: SP, RJ, MG)"},
+                },
+                "required": [],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "opencnpj",
+            "description": "Consulta CNPJ via OpenCNPJ (API publica gratuita). Retorna dados cadastrais completos: razao social, socios (QSA), CNAEs, capital social, situacao cadastral. Use como alternativa/complemento a cnpj_info.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "cnpj": {"type": "string", "description": "CNPJ da empresa (com ou sem formatacao)"},
+                },
+                "required": ["cnpj"],
+            },
+        },
+    },
 
 ]
 
@@ -532,22 +628,27 @@ SYSTEM_PROMPT = """Você é o agente investigativo do EGOS Inteligência (inteli
 - Contratos federais: fornecedor, valor, vigência, aditivos
 - Sanções: CEIS (empresas inidôneas) + CNEP (empresas punidas)
 - Processos judiciais: DataJud (CNJ) — todos os tribunais do Brasil
-- Bases internas: CEIS, CNEP, OpenSanctions, PEP, CEAF, CPGF, TSE, BNDES, IBAMA, DATASUS, TransfereGov, RAIS, INEP
+- Mandados de prisão: BNMP (Banco Nacional de Mandados de Prisão)
+- Pessoas procuradas: Polícia Federal + Interpol
+- Lista Suja do trabalho escravo (MTE)
+- PNCP: licitações de TODAS as esferas (federal, estadual, municipal)
+- OAB: consulta de advogados (situação, seccional)
+- OpenCNPJ: dados cadastrais completos gratuitos (sócios, CNAEs, capital)
 - Projeto 100% open-source, sem investidores, autofinanciado
+- **24 ferramentas** de investigação integradas
 
-## Como investigar
-- Quando o usuário digitar um NOME DE CIDADE: use search_pep_city para mostrar deputados e políticos locais, depois search_emendas para emendas e search_transferencias para convênios
-- Quando mencionar um POLÍTICO: use search_ceap para gastos + search_entities para verificar no grafo + web_search para notícias
-- Quando mencionar EMPRESA ou CNPJ: use search_entities no grafo + web_search para denúncias
-- Quando pedir sobre DINHEIRO PÚBLICO: combine search_emendas + search_transferencias + search_ceap
-- SEMPRE cruze informações: se encontrar um CNPJ de fornecedor no CEAP, busque no grafo com search_entities
-- Use web_search para encontrar notícias de jornal, investigações, denúncias do Ministério Público
-- Sugira ao usuário buscar os CNPJs dos fornecedores de políticos para descobrir conexões
-- Use search_gazettes para buscar menções em diários oficiais (licitações, contratos, nomeações)
-- Use cnpj_info para descobrir sócios e situação de empresas (depois busque os sócios no grafo)
-- Use search_votacoes para ver como deputados votaram — combine com CEAP para ver se votos e gastos são coerentes
-- SEMPRE sugira próximos passos de investigação: 'puxe o fio' — se encontrou um CNPJ, busque os sócios; se encontrou um sócio, busque outros CNPJs dele
-- Sugira investigações: recuperações judiciais, supersalários, licitações suspeitas, emendas Pix
+## REGRA PRINCIPAL: USE MÚLTIPLAS FERRAMENTAS
+Você DEVE chamar 2-4 ferramentas em PARALELO em cada resposta. NUNCA responda com apenas 1 ferramenta.
+
+## Como investigar (chame MÚLTIPLAS ferramentas de uma vez)
+- CIDADE: chame search_pep_city + search_emendas + search_transferencias + search_gazettes SIMULTANEAMENTE
+- POLÍTICO: chame search_ceap + search_entities + web_search SIMULTANEAMENTE
+- EMPRESA/CNPJ: chame opencnpj + search_entities + search_sancoes + lista_suja_lookup + search_processos SIMULTANEAMENTE
+- DINHEIRO PÚBLICO: chame search_emendas + search_transferencias + search_ceap + pncp_licitacoes SIMULTANEAMENTE
+- PESSOA SUSPEITA: chame bnmp_mandados + procurados_lookup + search_entities + web_search SIMULTANEAMENTE
+- Cruze informações: CNPJ de fornecedor → opencnpj → sócios → search_entities → search_sancoes
+- Use search_gazettes para diários oficiais, search_votacoes para votos
+- SEMPRE sugira próximos passos: 'puxe o fio'
 
 ## Regras CRÍTICAS
 - Responda SEMPRE em português brasileiro
@@ -656,8 +757,8 @@ async def _call_openrouter(
         "temperature": 0.3,
     }
 
-    max_rounds = 6
-    async with httpx.AsyncClient(timeout=30.0) as client:
+    max_rounds = 8
+    async with httpx.AsyncClient(timeout=45.0) as client:
         for _ in range(max_rounds):
             try:
                 resp = await client.post(
@@ -675,11 +776,11 @@ async def _call_openrouter(
             choice = data.get("choices", [{}])[0]
             message = choice.get("message", {})
 
-            # Track token cost (~$0.075/1M input, $0.30/1M output for Gemini Flash)
+            # Track token cost (~$0.15/1M input, $0.60/1M output for GPT-4o-mini)
             usage = data.get("usage", {})
             prompt_tokens = usage.get("prompt_tokens", 0)
             completion_tokens = usage.get("completion_tokens", 0)
-            total_cost += (prompt_tokens * 0.000000075) + (completion_tokens * 0.0000003)
+            total_cost += (prompt_tokens * 0.00000015) + (completion_tokens * 0.0000006)
 
             tool_calls = message.get("tool_calls")
             if not tool_calls:
@@ -795,6 +896,30 @@ async def _call_openrouter(
                         fn_args.get("tribunal", "TJSP"),
                         fn_args.get("classe", ""),
                     )
+                elif fn_name == "bnmp_mandados":
+                    result = await tool_bnmp_mandados(fn_args.get("nome", ""))
+                elif fn_name == "procurados_lookup":
+                    result = await tool_procurados_lookup(fn_args.get("nome", ""))
+                elif fn_name == "lista_suja_lookup":
+                    result = await tool_lista_suja(
+                        fn_args.get("nome", ""),
+                        fn_args.get("uf", ""),
+                    )
+                elif fn_name == "pncp_licitacoes":
+                    result = await tool_pncp_licitacoes(
+                        fn_args.get("cnpj_orgao", ""),
+                        fn_args.get("uf", ""),
+                        fn_args.get("data_inicio", "20240101"),
+                        fn_args.get("data_fim", "20241231"),
+                    )
+                elif fn_name == "oab_advogado":
+                    result = await tool_oab_advogado(
+                        fn_args.get("nome", ""),
+                        fn_args.get("numero_oab", ""),
+                        fn_args.get("seccional", ""),
+                    )
+                elif fn_name == "opencnpj":
+                    result = await tool_opencnpj(fn_args.get("cnpj", ""))
                 else:
                     result = {"error": f"Tool {fn_name} not found"}
 
@@ -818,6 +943,12 @@ async def _call_openrouter(
                     "search_contratos": ("Portal da Transparência — Contratos", "api.portaldatransparencia.gov.br"),
                     "search_sancoes": ("Portal da Transparência — CEIS/CNEP", "api.portaldatransparencia.gov.br"),
                     "search_processos": ("DataJud — CNJ", "api-publica.datajud.cnj.jus.br"),
+                    "bnmp_mandados": ("BNMP — Mandados de Prisão (CNJ)", "portalbnmp.cnj.jus.br"),
+                    "procurados_lookup": ("Polícia Federal — Procurados", "www.gov.br/pf"),
+                    "lista_suja_lookup": ("MTE — Lista Suja Trabalho Escravo", "www.gov.br/trabalho-e-emprego"),
+                    "pncp_licitacoes": ("PNCP — Licitações Nacionais", "pncp.gov.br"),
+                    "oab_advogado": ("OAB — Cadastro de Advogados", "cna.oab.org.br"),
+                    "opencnpj": ("OpenCNPJ — Receita Federal", "opencnpj.org"),
                 }.get(fn_name, ("Desconhecido", ""))
                 
                 result_count = 0

@@ -317,36 +317,96 @@ class CommunityIntelligenceProvider:
         session: AsyncSession,
         entity_id: str,
     ) -> ExposureResponse:
-        degree_records = await execute_query(
-            session,
-            "node_degree",
-            {"entity_id": entity_id},
-            timeout=5,
-        )
-        if not degree_records:
-            raise HTTPException(status_code=404, detail="Entity not found")
-        degree = int(degree_records[0]["degree"])
-        percentile = 0.0
-        if degree > 0:
-            percentile = 25.0
-        if degree > 5:
-            percentile = 50.0
-        if degree > 15:
-            percentile = 75.0
-        if degree > 50:
-            percentile = 90.0
+        import math
+        from bracc.services.neo4j_service import execute_query_single
 
-        factor = ExposureFactor(
-            name="connections",
-            value=float(degree),
-            percentile=percentile,
-            weight=1.0,
-            sources=["neo4j_graph"],
+        record = await execute_query_single(
+            session, "entity_score", {"entity_id": entity_id}
         )
+        if record is None:
+            raise HTTPException(status_code=404, detail="Entity not found")
+
+        connection_count = int(record["connection_count"])
+        source_count = int(record["source_count"])
+        financial_volume = float(record["financial_volume"])
+        sanction_count = int(record.get("sanction_count", 0) or 0)
+        embargo_count = int(record.get("embargo_count", 0) or 0)
+        contract_count = int(record.get("contract_count", 0) or 0)
+        amendment_count = int(record.get("amendment_count", 0) or 0)
+
+        # Connection percentile (power-law)
+        conn_pct = 0.0
+        if connection_count > 0:
+            conn_pct = 25.0
+        if connection_count > 5:
+            conn_pct = 50.0
+        if connection_count > 15:
+            conn_pct = 75.0
+        if connection_count > 50:
+            conn_pct = min(99.0, 90.0 + math.log10(connection_count) * 3)
+
+        # Source percentile
+        source_pct = min(source_count * 25.0, 100.0)
+
+        # Financial percentile (log-normal)
+        fin_pct = 0.0
+        if financial_volume > 0:
+            log_v = math.log10(financial_volume + 1)
+            if log_v < 5:
+                fin_pct = min(25.0, log_v * 5)
+            elif log_v < 6:
+                fin_pct = 25.0 + (log_v - 5) * 25
+            elif log_v < 7:
+                fin_pct = 50.0 + (log_v - 6) * 25
+            elif log_v < 8:
+                fin_pct = 75.0 + (log_v - 7) * 15
+            else:
+                fin_pct = min(99.0, 90.0 + (log_v - 8) * 5)
+
+        # Pattern percentile from real risk signals
+        risk_score = 0.0
+        if sanction_count > 0 and contract_count > 0:
+            risk_score += 60.0 + min(sanction_count * 5.0, 20.0)
+        elif sanction_count > 0:
+            risk_score += 30.0 + min(sanction_count * 5.0, 15.0)
+        if embargo_count > 0 and contract_count > 0:
+            risk_score += 50.0 + min(embargo_count * 5.0, 15.0)
+        elif embargo_count > 0:
+            risk_score += 25.0 + min(embargo_count * 5.0, 10.0)
+        if amendment_count > 0 and contract_count > 0:
+            risk_score += 20.0 + min(amendment_count * 2.0, 10.0)
+        if contract_count > 10:
+            risk_score += 15.0
+        elif contract_count > 3:
+            risk_score += 8.0
+        elif contract_count > 0:
+            risk_score += 3.0
+        pattern_pct = min(99.0, risk_score)
+
+        # Baseline percentile
+        evidence_count = sanction_count + embargo_count + amendment_count
+        baseline_pct = 0.0
+        if evidence_count > 0 and financial_volume > 0:
+            baseline_pct = min(99.0, fin_pct * 0.5 + evidence_count * 10.0)
+        elif financial_volume > 100000:
+            baseline_pct = min(50.0, fin_pct * 0.3)
+
+        weights = {"connections": 0.25, "sources": 0.25, "financial": 0.20, "patterns": 0.20, "baseline": 0.10}
+        factors = [
+            ExposureFactor(name="connections", value=float(connection_count), percentile=conn_pct, weight=weights["connections"], sources=["neo4j_graph"]),
+            ExposureFactor(name="sources", value=float(source_count), percentile=source_pct, weight=weights["sources"], sources=["neo4j_graph"]),
+            ExposureFactor(name="financial", value=financial_volume, percentile=fin_pct, weight=weights["financial"], sources=["transparencia", "tse"]),
+            ExposureFactor(name="patterns", value=float(sanction_count + embargo_count + amendment_count), percentile=pattern_pct, weight=weights["patterns"], sources=["ceis_cnep", "ibama"]),
+            ExposureFactor(name="baseline", value=float(evidence_count), percentile=baseline_pct, weight=weights["baseline"], sources=["neo4j_analysis"]),
+        ]
+
+        exposure_index = sum(f.percentile * f.weight for f in factors) / sum(f.weight for f in factors)
+        exposure_index = max(0.0, min(100.0, round(exposure_index, 2)))
+
         return ExposureResponse(
             entity_id=entity_id,
-            exposure_index=round(percentile, 2),
-            factors=[factor],
+            exposure_index=exposure_index,
+            factors=factors,
             peer_group="community_baseline",
             peer_count=0,
             sources=[SourceAttribution(database="neo4j_public")],

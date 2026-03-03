@@ -45,8 +45,25 @@ WITH e, lbls, equivs, connection_count, source_list, contract_volume,
 // Debt/loan volume across all equivalents
 UNWIND equivs AS eq4
 OPTIONAL MATCH (eq4)-[:RECEBEU_EMPRESTIMO|DEVE]->(f:Finance)
-WITH e, lbls, connection_count, source_list, contract_volume, donation_volume,
+WITH e, lbls, equivs, connection_count, source_list, contract_volume, donation_volume,
      COALESCE(sum(f.value), 0) AS debt_loan_volume
+// Pattern signals: sanctions, embargoes, contract count, amendments
+UNWIND equivs AS eq5
+OPTIONAL MATCH (eq5)-[:SANCIONADA]->(s:Sanction)
+WITH e, lbls, equivs, connection_count, source_list, contract_volume, donation_volume, debt_loan_volume,
+     count(DISTINCT s) AS sanction_count
+UNWIND equivs AS eq6
+OPTIONAL MATCH (eq6)-[:EMBARGADA]->(emb:Embargo)
+WITH e, lbls, equivs, connection_count, source_list, contract_volume, donation_volume, debt_loan_volume, sanction_count,
+     count(DISTINCT emb) AS embargo_count
+UNWIND equivs AS eq7
+OPTIONAL MATCH (eq7)-[:VENCEU]->(ct:Contract)
+WITH e, lbls, equivs, connection_count, source_list, contract_volume, donation_volume, debt_loan_volume, sanction_count, embargo_count,
+     count(DISTINCT ct) AS contract_count
+UNWIND equivs AS eq8
+OPTIONAL MATCH (eq8)-[:BENEFICIOU]->(am:Amendment)
+WITH e, lbls, connection_count, source_list, contract_volume, donation_volume, debt_loan_volume, sanction_count, embargo_count, contract_count,
+     count(DISTINCT am) AS amendment_count
 RETURN
   elementId(e) AS entity_id,
   lbls AS entity_labels,
@@ -54,4 +71,8 @@ RETURN
   size(source_list) AS source_count,
   contract_volume + donation_volume + debt_loan_volume AS financial_volume,
   e.cnae_principal AS cnae_principal,
-  e.role AS role
+  e.role AS role,
+  sanction_count,
+  embargo_count,
+  contract_count,
+  amendment_count

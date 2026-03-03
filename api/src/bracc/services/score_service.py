@@ -66,6 +66,12 @@ async def compute_exposure(
     entity_labels: list[str] = record["entity_labels"]
     cnae = record["cnae_principal"]
 
+    # Pattern signal counts from extended query
+    sanction_count = int(record.get("sanction_count", 0) or 0)
+    embargo_count = int(record.get("embargo_count", 0) or 0)
+    contract_count = int(record.get("contract_count", 0) or 0)
+    amendment_count = int(record.get("amendment_count", 0) or 0)
+
     is_company = "Company" in entity_labels
 
     # Determine peer group label
@@ -84,9 +90,47 @@ async def compute_exposure(
     # Source percentile: scale 0-4 sources to 0-100
     source_percentile = min(source_count * 25.0, 100.0)
 
-    # Pattern and baseline factors — defaults until pattern count is available
-    pattern_percentile = 0.0
-    baseline_percentile = 0.0
+    # Pattern percentile: computed from real risk signals
+    # Each risk signal contributes to the score:
+    #   - sanctioned + has contracts = critical (base 60)
+    #   - embargoed + has contracts = high (base 50)
+    #   - amendment beneficiary + contracts = medium (base 40)
+    #   - multiple sanctions/embargoes amplify
+    risk_score = 0.0
+    if sanction_count > 0 and contract_count > 0:
+        risk_score += 60.0 + min(sanction_count * 5.0, 20.0)
+    elif sanction_count > 0:
+        risk_score += 30.0 + min(sanction_count * 5.0, 15.0)
+    if embargo_count > 0 and contract_count > 0:
+        risk_score += 50.0 + min(embargo_count * 5.0, 15.0)
+    elif embargo_count > 0:
+        risk_score += 25.0 + min(embargo_count * 5.0, 10.0)
+    if amendment_count > 0 and contract_count > 0:
+        risk_score += 20.0 + min(amendment_count * 2.0, 10.0)
+    # Contract volume ratio: many contracts = higher exposure
+    if contract_count > 10:
+        risk_score += 15.0
+    elif contract_count > 3:
+        risk_score += 8.0
+    elif contract_count > 0:
+        risk_score += 3.0
+    pattern_percentile = min(99.0, risk_score)
+
+    # Baseline percentile: financial volume relative to typical entity
+    # Uses the same log-scale but shifted to represent deviation from baseline
+    # Entities with both high financial exposure AND risk signals score higher
+    evidence_count = sanction_count + embargo_count + amendment_count
+    if evidence_count > 0 and financial_volume > 0:
+        # Entity has both evidence and financial exposure
+        baseline_percentile = min(99.0, fin_percentile * 0.5 + evidence_count * 10.0)
+    elif financial_volume > 100000:
+        # High financial exposure without specific evidence
+        baseline_percentile = min(50.0, fin_percentile * 0.3)
+    else:
+        baseline_percentile = 0.0
+
+    # Total pattern signals value for display
+    pattern_value = float(sanction_count + embargo_count + amendment_count)
 
     # Build factors
     factors: list[ExposureFactor] = [
@@ -113,14 +157,14 @@ async def compute_exposure(
         ),
         ExposureFactor(
             name="patterns",
-            value=0.0,
+            value=pattern_value,
             percentile=pattern_percentile,
             weight=FACTOR_WEIGHTS["patterns"],
-            sources=["neo4j_analysis"],
+            sources=["ceis_cnep", "ibama", "transparencia"],
         ),
         ExposureFactor(
             name="baseline",
-            value=0.0,
+            value=float(evidence_count),
             percentile=baseline_percentile,
             weight=FACTOR_WEIGHTS["baseline"],
             sources=["neo4j_analysis"],
