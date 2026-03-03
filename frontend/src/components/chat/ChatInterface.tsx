@@ -240,6 +240,19 @@ export function ChatInterface({ embedded = false }: { embedded?: boolean }) {
     }
   }, [input, isLoading]);
 
+  // Listen for "send to chat" events from landing page search
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail?.query) {
+        setIsOpen(true);
+        setTimeout(() => handleSend(detail.query), 300);
+      }
+    };
+    window.addEventListener("egos-send-to-chat", handler);
+    return () => window.removeEventListener("egos-send-to-chat", handler);
+  }, [handleSend]);
+
   const handleEntityClick = useCallback((entity: ChatEntityCard) => {
     addJourneyEntry({
       type: "entity",
