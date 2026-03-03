@@ -241,7 +241,7 @@ Live-tested scan returned **102 alerts** across 10 cities in 7 days. Pattern typ
 |-------|--------|------|
 | API keys in git history | Security | TASK-113 (BFG Repo Cleaner) |
 | ~~Pattern engine disabled~~ | ~~No risk detection~~ | ✅ Enabled session 17 |
-| CORS `allow_headers=["*"]` | Security surface | TASK-115 |
+| ~~CORS `allow_headers=["*"]`~~ | ~~Security surface~~ | ✅ TASK-115 (explicit headers, session 18) |
 
 ### Moderate
 
@@ -251,7 +251,7 @@ Live-tested scan returned **102 alerts** across 10 cities in 7 days. Pattern typ
 | Brave Search (2000/month) | ~66 searches/day max |
 | Portal Transparência (30/min) | Adequate for chat, too slow for bulk |
 | Neo4j Community (no hot backup) | Hot tar = possible inconsistency |
-| No integration tests | Zero test coverage on API |
+| ~~No integration tests~~ | ✅ 232 API tests (219 unit + 13 sanitizer), 18 live integration |
 | ETL not running locally | 8.8M companies only on VPS |
 
 ### Low
