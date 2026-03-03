@@ -970,11 +970,12 @@
 - [ ] Migrar todas as 21 tools para usar `safe_get()` (progressivo, P2)
 > **Arquivos:** `services/circuit_breaker.py`, `services/transparency_tools.py`
 
-### TASK-112: Input Sanitization (Prompt Injection) ⬜ (P2)
-- [ ] Regex filter para padrões conhecidos: "ignore instructions", "system prompt", injection patterns
-- [ ] Log suspicious inputs (sem bloquear — soft warning)
-- [ ] Rate limit agressivo para IPs com inputs suspeitos
-> **Esforço:** 4h | **Impacto:** Segurança (defesa em profundidade)
+### TASK-112: Input Sanitization (Prompt Injection) ✅ (03/03/2026)
+- [x] 10 regex patterns: ignore instructions, system prompt reveal, jailbreak, DAN mode, special tokens
+- [x] Soft detection: log suspicious inputs via activity feed (não bloqueia)
+- [x] 13 unit tests cobrindo todos os patterns + queries normais PT/EN
+- [ ] Rate limit agressivo para IPs com inputs suspeitos (P2 futuro)
+> **Arquivos:** `middleware/input_sanitizer.py`, `tests/unit/test_input_sanitizer.py`, `routers/chat.py`
 
 ### TASK-113: BFG Repo Cleaner — Git History ⬜ (P2)
 - [ ] Executar BFG para remover API keys do history completo
@@ -991,10 +992,11 @@
 > **Evidência:** LGPD Art. 18 — hoje é via issue manual
 > **Esforço:** 8h
 
-### TASK-115: CORS Explícito + JWT Startup Validation ⬜ (P2)
-- [ ] Substituir `allow_headers=["*"]` por lista explícita em `main.py`
-- [ ] Adicionar startup check: se `jwt_secret == "change-me-in-production"` → raise error
-> **Esforço:** 30min
+### TASK-115: CORS Explícito + JWT Startup Validation ✅ (03/03/2026)
+- [x] CORS: `allow_headers` explícito (Authorization, Content-Type, Accept, Origin, X-Requested-With)
+- [x] CORS: `allow_methods` explícito (GET, POST, PUT, DELETE, OPTIONS)
+- [x] JWT: `raise RuntimeError` em production se secret fraco/default (dev apenas loga)
+> **Arquivos:** `main.py`
 
 ### TASK-116: Componentizar Landing.tsx ⬜ (P2)
 - [ ] Extrair HeroSearch component
@@ -1002,11 +1004,12 @@
 - [ ] Cada componente com seu próprio CSS module
 > **Esforço:** 3h
 
-### TASK-117: Registro de Tratamento LGPD (Art. 37) ⬜ (P2)
-- [ ] Documentar base legal por tipo de dado (público, pessoal, PEP)
-- [ ] Mapear finalidade, período de retenção, medidas de segurança
-- [ ] Publicar em `docs/legal/REGISTRO_TRATAMENTO.md`
-> **Esforço:** 4h | **Obrigatório** pela LGPD para tratamento em larga escala
+### TASK-117: Registro de Tratamento LGPD (Art. 37) ✅ (03/03/2026)
+- [x] 6 categorias documentadas: CNPJ, TSE, Contratos, Sanções, PEP, Interação
+- [x] Base legal, finalidade, retenção, medidas de segurança por categoria
+- [x] Tabela de medidas técnicas e organizacionais
+- [x] Workflow de direitos do titular (Art. 18)
+> **Arquivos:** `docs/legal/REGISTRO_TRATAMENTO.md`
 
 ---
 
