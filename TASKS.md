@@ -723,6 +723,17 @@
 - [ ] Observability: structured logging, request tracing
 > **Issue:** #34 (P2)
 
+### TASK-119: SSOT Governance Scaffolding ✅ (03/03/2026)
+- [x] AGENTS.md — project config, stack, commands, frozen zones, key metrics
+- [x] .windsurfrules v1.0.0 — 12 mandamentos, orchestration protocol, doc SSOT table
+- [x] .guarani/IDENTITY.md — agent identity, mission, ethical language rules
+- [x] .guarani/PREFERENCES.md — Python/FastAPI/React coding standards
+- [x] .guarani/orchestration/DOMAIN_RULES.md — domain checklists
+- [x] .windsurf/workflows/start.md + end.md — session lifecycle
+- [x] Doc dedup: symlinks for fontes-de-dados.md + system-capabilities
+- [x] Cross-repo rules referencing egos-lab as canonical orchestration source
+> **Arquivos:** `AGENTS.md`, `.windsurfrules`, `.guarani/`, `.windsurf/workflows/`
+
 ### TASK-098: BYOK Settings Page ⬜ (GitHub #35)
 - [ ] Frontend: modal de settings no chat header
 - [ ] Instruções: criar conta OpenRouter, inserir créditos, colar chave
