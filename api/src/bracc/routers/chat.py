@@ -73,12 +73,12 @@ _usage_counts: dict[str, int] = defaultdict(int)
 _usage_day: dict[str, str] = {}
 
 # Tier thresholds: msgs 1-10 = premium, 11-30 = free, 31+ = blocked (suggest BYOK)
-_TIER_PREMIUM_LIMIT = 10
-_TIER_FREE_LIMIT = 30
+_TIER_PREMIUM_LIMIT = 30
+_TIER_FREE_LIMIT = 50
 
-# Model tiers
-MODEL_PREMIUM = "openai/gpt-4o-mini"           # ~$0.001/query, best tool-calling
-MODEL_FREE = "google/gemini-2.0-flash-001"      # ~$0.0003/query, decent but single-tool
+# Model tiers — all Gemini Flash for cost optimization (~$0.0003/query)
+MODEL_PREMIUM = "google/gemini-2.0-flash-001"   # ~$0.0003/query, good tool-calling
+MODEL_FREE = "google/gemini-2.0-flash-001"      # same model, no tier difference now
 
 def _get_client_id(request: Request) -> str:
     forwarded = request.headers.get("x-forwarded-for")
