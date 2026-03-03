@@ -29,7 +29,7 @@ O relatório é escrito em `scripts/bracc-monitor-report.json`. O estado (forks/
 
 | Variável | Obrigatória | Descrição |
 |----------|-------------|-----------|
-| `GITHUB_TOKEN` ou `GH_TOKEN` | Sim | Token da GitHub API (scope `repo` para repositórios públicos basta o token padrão). |
+| `GITHUB_TOKEN` ou `GH_TOKEN` | Sim | Token da GitHub API com **mínimos privilégios de leitura**. Para PAT clássico, use `public_repo` (não `repo` completo). Para PAT fine‑grained, conceda apenas `metadata:read`, `pull_requests:read`, `issues:read` (ou escopos de leitura equivalentes). Para o `GITHUB_TOKEN` padrão do Actions, `contents:read` ou permissões de leitura no repositório são suficientes; sempre que possível, use apenas endpoints públicos e leia‑only. |
 | `REPORT_PATH` | Não | Caminho do relatório JSON (padrão: `scripts/bracc-monitor-report.json`). |
 | `STATE_PATH` | Não | Caminho do arquivo de estado (padrão: `scripts/.bracc-monitor-state.json`). |
 | `DISCORD_WEBHOOK_URL` | Não | URL do webhook do Discord para notificações. |
