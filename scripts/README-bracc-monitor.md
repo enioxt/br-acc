@@ -11,7 +11,7 @@ Script que roda **2x ao dia** e monitora o upstream **World-Open-Graph/br-acc**:
 
 ## Requisitos
 
-- **Node.js 18+**
+- **Node.js 20+**
 - **Variável de ambiente:** `GITHUB_TOKEN` ou `GH_TOKEN` (obrigatória para a GitHub API).
 
 ## Uso local
@@ -55,7 +55,7 @@ Para receber notificações no Discord/Telegram, configure os secrets do reposit
 
 ## Rodar no servidor (Contabo / cron)
 
-Para rodar em um servidor com cron (por exemplo Contabo), use Node 18+ e carregue as variáveis de ambiente (por exemplo a partir de um `.env` em `/opt/bracc` ou no crontab):
+Para rodar em um servidor com cron (por exemplo Contabo), use Node 20+ e carregue as variáveis de ambiente (por exemplo a partir de um `.env` em `/opt/bracc` ou no crontab):
 
 ```bash
 # Exemplo crontab (06:00 e 18:00 UTC-3)
