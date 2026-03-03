@@ -261,13 +261,34 @@ async def _tool_stats(session: AsyncSession) -> dict[str, Any]:
     return {"error": "Não foi possível obter estatísticas"}
 
 
+_CYPHER_ALLOWED_KEYWORDS = {
+    "MATCH", "OPTIONAL", "RETURN", "WITH", "WHERE", "UNWIND", "ORDER", "BY",
+    "LIMIT", "SKIP", "AS", "DISTINCT", "AND", "OR", "NOT", "IN", "IS", "NULL",
+    "TRUE", "FALSE", "CONTAINS", "STARTS", "ENDS", "EXISTS", "CASE", "WHEN",
+    "THEN", "ELSE", "END", "ASC", "DESC", "ASCENDING", "DESCENDING", "XOR",
+    "COUNT", "SUM", "AVG", "MIN", "MAX", "COLLECT", "SIZE", "LENGTH", "KEYS",
+    "LABELS", "TYPE", "ID", "COALESCE", "HEAD", "LAST", "TAIL", "RANGE",
+    "TOSTRING", "TOINTEGER", "TOFLOAT", "TOBOOLEAN", "ELEMENTID",
+}
+
+_CYPHER_BLOCKED_PATTERNS = [
+    "CREATE", "DELETE", "MERGE", "SET ", "REMOVE", "DROP", "DETACH",
+    "CALL ", "CALL{", "LOAD CSV", "FOREACH", "USING PERIODIC",
+    "CREATE INDEX", "CREATE CONSTRAINT", "GRANT", "REVOKE", "DENY",
+]
+
+
 async def _tool_cypher(session: AsyncSession, query: str, params: dict[str, Any] | None = None) -> list[dict[str, Any]]:
-    """Execute a safe read-only Cypher query. Only MATCH/RETURN/WITH/UNWIND/CALL allowed."""
+    """Execute a safe read-only Cypher query. Whitelist-based: only MATCH/RETURN/WITH/UNWIND allowed."""
     q = query.strip().upper()
-    forbidden = ["CREATE", "DELETE", "MERGE", "SET ", "REMOVE", "DROP", "DETACH"]
-    for kw in forbidden:
-        if kw in q:
-            return [{"error": f"Query contains forbidden keyword: {kw.strip()}"}]
+    for pattern in _CYPHER_BLOCKED_PATTERNS:
+        if pattern in q:
+            return [{"error": f"Query blocked: contains '{pattern.strip()}'. Only read-only queries allowed."}]
+    tokens = re.findall(r'[A-Z_]+', q)
+    for token in tokens:
+        if len(token) >= 3 and token not in _CYPHER_ALLOWED_KEYWORDS and not token.startswith("$"):
+            if token in {"CREATE", "DELETE", "MERGE", "REMOVE", "DROP", "DETACH", "CALL", "LOAD", "FOREACH", "GRANT", "REVOKE", "DENY"}:
+                return [{"error": f"Query blocked: '{token}' is not allowed. Only read-only queries."}]
     try:
         result = await session.run(query, params or {})
         rows = []
