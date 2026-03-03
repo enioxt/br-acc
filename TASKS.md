@@ -1,6 +1,6 @@
 # TASKS.md — EGOS Inteligência (SSOT)
 
-> **Updated:** 2026-03-03 (session 9) | **Stars:** 74 ⭐ | **Forks:** 8 | **Patterns:** 10 | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
+> **Updated:** 2026-03-03 (session 17) | **Stars:** 74 ⭐ | **Forks:** 8 | **Patterns:** 10 | **Nodes:** 9.1M | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
 
 ---
 
@@ -9,11 +9,12 @@
 ### TASK-001: CNPJ ETL — 53.6M empresas ⏳
 - [x] Upload 6.8GB zip para Contabo
 - [x] Extrair dados (26GB descomprimido)
-- [ ] Phase 1: Build estab_lookup (em execução, PID 555786)
-- [ ] Phase 2: Create Company nodes
-- [ ] Phase 3: Create Person/Partner nodes + SOCIO_DE relationships
+- [x] Phase 2: Create Company nodes (8,860,601 loaded)
+- [ ] Phase 1: Build estab_lookup (em execução, PID 1997365, file 7/10 ESTABELE ~70%)
+- [ ] Phase 3: Create Person/Partner nodes + SOCIO_DE relationships (ETA: ~6-8h from session 17 start)
 - [ ] Phase 4: Post-load hooks (entity linking)
-> **Server:** 217.216.95.126 | **Log:** `/opt/bracc/cnpj-etl.log`
+> **Server:** 217.216.95.126 | **Service:** `bracc-etl.service` (systemd, auto-restart) | **RAM:** 13.6GB | **Log:** `/opt/bracc/cnpj-etl.log`
+> **Status (session 17):** Phase 1 rebuilding estab_lookup, reading ESTABELE file Y6 (7/10). Process running 10h+, healthy. Will auto-proceed to Phase 3 (socios + SOCIO_DE relationships).
 
 ### TASK-002: Neo4j Performance Optimization ⏳
 - [x] Criar script `neo4j-memory-upgrade.sh` (16G heap, 22G pagecache)
