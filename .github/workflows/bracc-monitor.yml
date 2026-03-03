@@ -32,7 +32,9 @@ jobs:
         id: cache-state
         with:
           path: scripts/.bracc-monitor-state.json
-          key: bracc-monitor-state-${{ github.repository }}
+          key: bracc-monitor-state-${{ github.repository }}-${{ github.run_id }}
+          restore-keys: |
+            bracc-monitor-state-${{ github.repository }}-
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -57,7 +59,7 @@ jobs:
         if: success() || failure()
         with:
           path: scripts/.bracc-monitor-state.json
-          key: bracc-monitor-state-${{ github.repository }}
+          key: bracc-monitor-state-${{ github.repository }}-${{ github.run_id }}
 
       - name: Upload report
         uses: actions/upload-artifact@v4
