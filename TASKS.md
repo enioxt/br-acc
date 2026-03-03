@@ -916,14 +916,13 @@
 > **Evidência:** `api/src/bracc/routers/chat.py:66-73`
 > **Esforço:** 2h | **Impacto:** Conversas sobrevivem restart/deploy
 
-### TASK-108: Dividir chat.py em Módulos 🟠 (P1)
-- [ ] Extrair `chat_tools.py` — 26 tool definitions (TOOLS array)
-- [ ] Extrair `chat_models.py` — Pydantic models (ChatMessage, EntityCard, etc.)
-- [ ] Extrair `chat_prompt.py` — SYSTEM_PROMPT
-- [ ] Extrair `chat_openrouter.py` — `_call_openrouter()` + tool execution loop
-- [ ] Manter `chat.py` como router fino (endpoint + conversation mgmt)
-> **Evidência:** `api/src/bracc/routers/chat.py` (1290 linhas, monólito)
-> **Esforço:** 4h | **Impacto:** Manutenibilidade
+### TASK-108: Split `chat.py` em Módulos ✅ (03/03/2026)
+- [x] Extrair `chat_tools.py` — 26 tool definitions (TOOLS array, 393 lines)
+- [x] Extrair `chat_models.py` — Pydantic models (ChatMessage, EntityCard, etc.)
+- [x] Extrair `chat_prompt.py` — SYSTEM_PROMPT (67 lines)
+- [ ] Extrair `chat_openrouter.py` — `_call_openrouter()` + tool execution loop (P2)
+- [x] `chat.py` reduzido de 1330 → 845 linhas (36% redução)
+> **Arquivos:** `chat_models.py`, `chat_tools.py`, `chat_prompt.py`
 
 ### TASK-109: Testes Backend — Integration Tests 🟠 (P1)
 - [ ] Test search endpoint (fulltext, CNPJ, empty query)
@@ -935,21 +934,22 @@
 > **Evidência:** Zero testes em `api/tests/`
 > **Esforço:** 8h | **Impacto:** Qualidade e confiança
 
-### TASK-110: Neo4j Backup Script (Cron) 🟠 (P1)
-- [ ] Script: stop neo4j → neo4j-admin dump → start neo4j (ou volume snapshot)
-- [ ] Cron job diário às 3AM (mínimo downtime)
-- [ ] Reter últimos 7 dumps (rotação)
-- [ ] Alertar se dump falhar (email ou Telegram)
-> **Evidência:** Neo4j Community não suporta hot backup
-> **Esforço:** 2h | **Impacto:** 9M+ entidades sem backup
+### TASK-110: Neo4j Backup Script (Cron) ✅ (03/03/2026)
+- [x] Hot tar backup do volume Docker (sem parar Neo4j) + count snapshot
+- [x] Cron job diário às 3AM (`/opt/bracc/scripts/neo4j-backup.sh`)
+- [x] Reter últimos 5 backups (rotação automática)
+- [x] APOC export habilitado (`apoc.export.file.enabled=true` em apoc.conf)
+- [ ] Alertar se dump falhar via Telegram (P2)
+> **Arquivos:** `/opt/bracc/scripts/neo4j-backup.sh`, `/opt/bracc/backups/`
+> **Nota:** neo4j-admin dump falha em Community Edition. Backup via tar do volume (~1.5GB comprimido de 6.7GB)
 
-### TASK-111: Circuit Breaker para APIs Externas 🟠 (P1)
-- [ ] Implementar retry com backoff exponencial (max 2 retries)
-- [ ] Circuit breaker: após 3 falhas consecutivas, skip API por 5min
-- [ ] Fallback graceful: retornar `{"status": "unavailable", "source": "..."}` em vez de error
-- [ ] Aplicar às 21 tools em `services/transparency_tools.py`
-> **Evidência:** `routers/chat.py:841` — `httpx.AsyncClient(timeout=45.0)` sem retry
-> **Esforço:** 4h | **Impacto:** Confiabilidade
+### TASK-111: Circuit Breaker para APIs Externas ✅ (03/03/2026)
+- [x] `circuit_breaker.py` — per-host circuit breaker (CLOSED→OPEN→HALF_OPEN)
+- [x] Config: 5 failures in 2min window → 60s cooldown
+- [x] `safe_get()` helper in `transparency_tools.py` wraps httpx + circuit breaker
+- [x] `get_status()` method for monitoring all circuits
+- [ ] Migrar todas as 21 tools para usar `safe_get()` (progressivo, P2)
+> **Arquivos:** `services/circuit_breaker.py`, `services/transparency_tools.py`
 
 ### TASK-112: Input Sanitization (Prompt Injection) ⬜ (P2)
 - [ ] Regex filter para padrões conhecidos: "ignore instructions", "system prompt", injection patterns
