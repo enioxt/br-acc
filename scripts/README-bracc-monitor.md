@@ -59,7 +59,7 @@ Para rodar em um servidor com cron (por exemplo Contabo), use Node 20+ e carregu
 
 ```bash
 # Exemplo crontab (06:00 e 18:00 UTC-3)
-0 6,18 * * * cd /opt/bracc/scripts && . ../.env 2>/dev/null; npm run monitor >> /var/log/bracc-monitor.log 2>&1
+0 6,18 * * * cd /opt/bracc/scripts && . ../.env 2>/dev/null && npm run monitor >> /var/log/bracc-monitor.log 2>&1
 ```
 
 Defina `STATE_PATH` para um caminho persistente (por exemplo `/opt/bracc/scripts/.bracc-monitor-state.json`) para que o script reconheça forks e PRs já vistos entre execuções.
