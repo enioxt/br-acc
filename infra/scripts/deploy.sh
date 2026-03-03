@@ -20,7 +20,7 @@ DOMAIN="${DOMAIN:-localhost}"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
 
-log "Deploying BRACC..."
+log "Deploying BR-ACC..."
 
 cd "$DEPLOY_DIR"
 

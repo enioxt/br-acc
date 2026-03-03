@@ -61,6 +61,84 @@ wheels = [
 ]
 
 [[package]]
+name = "bracc-etl"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "click" },
+    { name = "defusedxml" },
+    { name = "httpx" },
+    { name = "neo4j" },
+    { name = "pandas" },
+    { name = "pandera" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "pypdf" },
+]
+
+[package.optional-dependencies]
+bigquery = [
+    { name = "db-dtypes" },
+    { name = "google-cloud-bigquery" },
+    { name = "google-cloud-bigquery-storage" },
+    { name = "pyarrow" },
+]
+dev = [
+    { name = "mypy" },
+    { name = "pandas-stubs" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "ruff" },
+    { name = "testcontainers", extra = ["neo4j"] },
+]
+resolution = [
+    { name = "splink" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "mypy" },
+    { name = "pandas-stubs" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "click", specifier = ">=8.1.0" },
+    { name = "db-dtypes", marker = "extra == 'bigquery'", specifier = ">=1.3.0" },
+    { name = "defusedxml", specifier = ">=0.7.0" },
+    { name = "google-cloud-bigquery", marker = "extra == 'bigquery'", specifier = ">=3.25.0" },
+    { name = "google-cloud-bigquery-storage", marker = "extra == 'bigquery'", specifier = ">=2.27.0" },
+    { name = "httpx", specifier = ">=0.28.0" },
+    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.14.0" },
+    { name = "neo4j", specifier = ">=5.27.0" },
+    { name = "pandas", specifier = ">=2.2.0" },
+    { name = "pandas-stubs", marker = "extra == 'dev'", specifier = ">=2.2.0" },
+    { name = "pandera", specifier = ">=0.21.0" },
+    { name = "pyarrow", marker = "extra == 'bigquery'", specifier = ">=17.0.0" },
+    { name = "pydantic", specifier = ">=2.10.0" },
+    { name = "pydantic-settings", specifier = ">=2.7.0" },
+    { name = "pypdf", specifier = ">=5.2.0" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
+    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.24.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },
+    { name = "splink", marker = "extra == 'resolution'", specifier = ">=4.0.0" },
+    { name = "testcontainers", extras = ["neo4j"], marker = "extra == 'dev'", specifier = ">=4.0" },
+]
+provides-extras = ["dev", "resolution", "bigquery"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mypy", specifier = ">=1.19.1" },
+    { name = "pandas-stubs", specifier = ">=3.0.0.260204" },
+    { name = "pytest", specifier = ">=9.0.2" },
+    { name = "pytest-asyncio", specifier = ">=1.3.0" },
+    { name = "ruff", specifier = ">=0.15.2" },
+]
+
+[[package]]
 name = "certifi"
 version = "2026.1.4"
 source = { registry = "https://pypi.org/simple" }
@@ -270,6 +348,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/27/3d/8c021df7796bde3bc4a9f8129865676a45d95ba8c5fd14b1de82997ff0b4/db_dtypes-1.5.0.tar.gz", hash = "sha256:ad9e94243f53e104bc77dbf9ae44b580d83a770d3694483aba59c9767966daa5", size = 34800, upload-time = "2025-12-15T21:47:21.874Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/01/80/171c7c5b78e60ab25d6f11e3d38675fe7ef843ddc79a7fd26916d3a6ca05/db_dtypes-1.5.0-py3-none-any.whl", hash = "sha256:abdbb2e4eb965800ed6f98af0c5c1cafff9063ace09114be2d26a7f046be2c8a", size = 18267, upload-time = "2025-12-15T21:47:21.026Z" },
+]
+
+[[package]]
+name = "defusedxml"
+version = "0.7.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0f/d5/c66da9b79e5bdb124974bfe172b4daf3c984ebd9c2a06e2b8a4dc7331c72/defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69", size = 75520, upload-time = "2021-03-08T10:59:26.269Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/6c/aa3f2f849e01cb6a001cd8554a88d4c77c5c1a31c95bdf1cf9301e6d9ef4/defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61", size = 25604, upload-time = "2021-03-08T10:59:24.45Z" },
 ]
 
 [[package]]
@@ -535,80 +622,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b1/df/48c586a5fe32a0f01324ee087459e112ebb7224f646c0b5023f5e79e9956/httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc", size = 141406, upload-time = "2024-12-06T15:37:23.222Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2a/39/e50c7c3a983047577ee07d2a9e53faf5a69493943ec3f6a384bdc792deb2/httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad", size = 73517, upload-time = "2024-12-06T15:37:21.509Z" },
-]
-
-[[package]]
-name = "bracc-etl"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "click" },
-    { name = "httpx" },
-    { name = "neo4j" },
-    { name = "pandas" },
-    { name = "pydantic" },
-    { name = "pydantic-settings" },
-    { name = "pypdf" },
-]
-
-[package.optional-dependencies]
-bigquery = [
-    { name = "db-dtypes" },
-    { name = "google-cloud-bigquery" },
-    { name = "google-cloud-bigquery-storage" },
-    { name = "pyarrow" },
-]
-dev = [
-    { name = "mypy" },
-    { name = "pandas-stubs" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "ruff" },
-    { name = "testcontainers", extra = ["neo4j"] },
-]
-resolution = [
-    { name = "splink" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "mypy" },
-    { name = "pandas-stubs" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "click", specifier = ">=8.1.0" },
-    { name = "db-dtypes", marker = "extra == 'bigquery'", specifier = ">=1.3.0" },
-    { name = "google-cloud-bigquery", marker = "extra == 'bigquery'", specifier = ">=3.25.0" },
-    { name = "google-cloud-bigquery-storage", marker = "extra == 'bigquery'", specifier = ">=2.27.0" },
-    { name = "httpx", specifier = ">=0.28.0" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.14.0" },
-    { name = "neo4j", specifier = ">=5.27.0" },
-    { name = "pandas", specifier = ">=2.2.0" },
-    { name = "pandas-stubs", marker = "extra == 'dev'", specifier = ">=2.2.0" },
-    { name = "pyarrow", marker = "extra == 'bigquery'", specifier = ">=17.0.0" },
-    { name = "pydantic", specifier = ">=2.10.0" },
-    { name = "pydantic-settings", specifier = ">=2.7.0" },
-    { name = "pypdf", specifier = ">=5.2.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
-    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.24.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },
-    { name = "splink", marker = "extra == 'resolution'", specifier = ">=4.0.0" },
-    { name = "testcontainers", extras = ["neo4j"], marker = "extra == 'dev'", specifier = ">=4.0" },
-]
-provides-extras = ["dev", "resolution", "bigquery"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "mypy", specifier = ">=1.19.1" },
-    { name = "pandas-stubs", specifier = ">=3.0.0.260204" },
-    { name = "pytest", specifier = ">=9.0.2" },
-    { name = "pytest-asyncio", specifier = ">=1.3.0" },
-    { name = "ruff", specifier = ">=0.15.2" },
 ]
 
 [[package]]
@@ -1001,6 +1014,22 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/27/1d/297ff2c7ea50a768a2247621d6451abb2a07c0e9be7ca6d36ebe371658e5/pandas_stubs-3.0.0.260204.tar.gz", hash = "sha256:bf9294b76352effcffa9cb85edf0bed1339a7ec0c30b8e1ac3d66b4228f1fbc3", size = 109383, upload-time = "2026-02-04T15:17:17.247Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7c/2f/f91e4eee21585ff548e83358332d5632ee49f6b2dcd96cb5dca4e0468951/pandas_stubs-3.0.0.260204-py3-none-any.whl", hash = "sha256:5ab9e4d55a6e2752e9720828564af40d48c4f709e6a2c69b743014a6fcb6c241", size = 168540, upload-time = "2026-02-04T15:17:15.615Z" },
+]
+
+[[package]]
+name = "pandera"
+version = "0.29.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+    { name = "pydantic" },
+    { name = "typeguard" },
+    { name = "typing-extensions" },
+    { name = "typing-inspect" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/80/ee/8e0d40dad2c0947b933fc9c0959b2c17cc3419ccdf50df683216f37a3f96/pandera-0.29.0.tar.gz", hash = "sha256:06bc4fc1e4ff02534dd44482a9bc704fb2e58fe3fbb11be906aa714f7f5ec801", size = 575324, upload-time = "2026-01-29T02:49:36.891Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/75/7b/03299e4ccc5e3cfb0f9e234207ac43ef08b3ba6c4c2882c890e550ceadba/pandera-0.29.0-py3-none-any.whl", hash = "sha256:b3b25d6c00d7c100fbab96aff0e81e52d3dae543a880d24135cca705fa97c516", size = 295876, upload-time = "2026-01-29T02:49:34.812Z" },
 ]
 
 [[package]]
@@ -1528,12 +1557,37 @@ wheels = [
 ]
 
 [[package]]
+name = "typeguard"
+version = "4.5.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2b/e8/66e25efcc18542d58706ce4e50415710593721aae26e794ab1dec34fb66f/typeguard-4.5.1.tar.gz", hash = "sha256:f6f8ecbbc819c9bc749983cc67c02391e16a9b43b8b27f15dc70ed7c4a007274", size = 80121, upload-time = "2026-02-19T16:09:03.392Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/91/88/b55b3117287a8540b76dbdd87733808d4d01c8067a3b339408c250bb3600/typeguard-4.5.1-py3-none-any.whl", hash = "sha256:44d2bf329d49a244110a090b55f5f91aa82d9a9834ebfd30bcc73651e4a8cc40", size = 36745, upload-time = "2026-02-19T16:09:01.6Z" },
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.15.0"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/72/94/1a15dd82efb362ac84269196e94cf00f187f7ed21c242792a923cdb1c61f/typing_extensions-4.15.0.tar.gz", hash = "sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466", size = 109391, upload-time = "2025-08-25T13:49:26.313Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/18/67/36e9267722cc04a6b9f15c7f3441c2363321a3ea07da7ae0c0707beb2a9c/typing_extensions-4.15.0-py3-none-any.whl", hash = "sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548", size = 44614, upload-time = "2025-08-25T13:49:24.86Z" },
+]
+
+[[package]]
+name = "typing-inspect"
+version = "0.9.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mypy-extensions" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/dc/74/1789779d91f1961fa9438e9a8710cdae6bd138c80d7303996933d117264a/typing_inspect-0.9.0.tar.gz", hash = "sha256:b23fc42ff6f6ef6954e4852c1fb512cdd18dbea03134f91f856a95ccc9461f78", size = 13825, upload-time = "2023-05-24T20:25:47.612Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/65/f3/107a22063bf27bdccf2024833d3445f4eea42b2e598abfbd46f6a63b6cb0/typing_inspect-0.9.0-py3-none-any.whl", hash = "sha256:9ee6fc59062311ef8547596ab6b955e1b8aa46242d854bfc78f4f6b0eff35f9f", size = 8827, upload-time = "2023-05-24T20:25:45.287Z" },
 ]
 
 [[package]]

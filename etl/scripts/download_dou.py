@@ -89,8 +89,18 @@ def _download_zip(
     xml_count = 0
 
     try:
+        resolved_dir = section_dir.resolve()
         with zipfile.ZipFile(BytesIO(resp.content)) as zf:
             for member in zf.namelist():
+                # Path traversal guard
+                target = (section_dir / member).resolve()
+                if not target.is_relative_to(resolved_dir):
+                    logger.warning(
+                        "Path traversal detected in %s: %s — skipping",
+                        zip_name,
+                        member,
+                    )
+                    continue
                 if member.lower().endswith(".xml"):
                     zf.extract(member, section_dir)
                     xml_count += 1

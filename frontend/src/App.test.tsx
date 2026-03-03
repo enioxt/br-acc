@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 
@@ -11,34 +11,48 @@ vi.mock("./stores/auth", () => ({
       const state = {
         token: null,
         user: null,
+        restored: true,
         restore: () => Promise.resolve(),
       };
       return selector ? selector(state) : state;
     },
     {
-      getState: () => ({ token: null }),
+      getState: () => ({ token: null, restored: true }),
     },
   ),
+}));
+
+// Keep App route test deterministic without Landing async effects.
+vi.mock("./pages/Landing", () => ({
+  Landing: () => <div>BR-ACC</div>,
 }));
 
 import { App } from "./App";
 
 describe("App", () => {
-  it("renders the landing page with title", () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>,
-    );
-    expect(screen.getAllByText("BRACC").length).toBeGreaterThan(0);
+  it("renders the landing page with title", async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>,
+      );
+    });
+    await waitFor(() => {
+      expect(screen.getAllByText("BR-ACC").length).toBeGreaterThan(0);
+    });
   });
 
-  it("renders login page at /login", () => {
-    render(
-      <MemoryRouter initialEntries={["/login"]}>
-        <App />
-      </MemoryRouter>,
-    );
-    expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
+  it("renders login page at /login", async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={["/login"]}>
+          <App />
+        </MemoryRouter>,
+      );
+    });
+    await waitFor(() => {
+      expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
+    });
   });
 });

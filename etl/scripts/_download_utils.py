@@ -36,12 +36,21 @@ def download_file(url: str, dest: Path, *, timeout: int = 600) -> bool:
 
             response.raise_for_status()
 
+            # If we requested a range but server returned full content (200 vs 206),
+            # start fresh to avoid corruption
+            if start_byte > 0 and response.status_code != 206:
+                logger.warning(
+                    "Server ignored Range header for %s, restarting download",
+                    dest.name,
+                )
+                start_byte = 0
+
             total = response.headers.get("content-length")
             total_mb = f"{int(total) / 1e6:.1f} MB" if total else "unknown size"
             logger.info("Downloading %s (%s)...", dest.name, total_mb)
 
-            mode = "ab" if start_byte > 0 else "wb"
-            downloaded = start_byte
+            mode = "ab" if start_byte > 0 and response.status_code == 206 else "wb"
+            downloaded = start_byte if mode == "ab" else 0
             with open(partial, mode) as f:
                 for chunk in response.iter_bytes(chunk_size=65_536):
                     f.write(chunk)
@@ -56,21 +65,49 @@ def download_file(url: str, dest: Path, *, timeout: int = 600) -> bool:
         return False
 
 
-def extract_zip(zip_path: Path, output_dir: Path) -> list[Path]:
-    """Extract ZIP and return list of extracted files.
+def safe_extract_zip(
+    zip_path: Path,
+    output_dir: Path,
+    *,
+    max_total_bytes: int = 50 * 1024**3,  # 50GB default (CNPJ zips are huge)
+) -> list[Path]:
+    """Safely extract ZIP with path traversal and bomb guards.
 
     Deletes corrupted ZIPs for re-download.
     """
     try:
         with zipfile.ZipFile(zip_path, "r") as zf:
+            # Check for path traversal
+            resolved_output = output_dir.resolve()
+            for info in zf.infolist():
+                target = (output_dir / info.filename).resolve()
+                if not target.is_relative_to(resolved_output):
+                    raise ValueError(
+                        f"Path traversal detected in {zip_path.name}: {info.filename}"
+                    )
+
+            # Check total uncompressed size (zip bomb guard)
+            total_size = sum(info.file_size for info in zf.infolist())
+            if total_size > max_total_bytes:
+                raise ValueError(
+                    f"ZIP bomb guard: {zip_path.name} would extract to "
+                    f"{total_size / 1e9:.1f}GB (limit: {max_total_bytes / 1e9:.1f}GB)"
+                )
+
             names = zf.namelist()
             zf.extractall(output_dir)
+
         logger.info("Extracted %d files from %s", len(names), zip_path.name)
         return [output_dir / n for n in names]
     except zipfile.BadZipFile:
         logger.warning("Bad ZIP file: %s — deleting for re-download", zip_path.name)
         zip_path.unlink()
         return []
+
+
+def extract_zip(zip_path: Path, output_dir: Path) -> list[Path]:
+    """Extract ZIP and return list of extracted files."""
+    return safe_extract_zip(zip_path, output_dir)
 
 
 def validate_csv(

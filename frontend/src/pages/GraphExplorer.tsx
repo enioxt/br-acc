@@ -22,13 +22,13 @@ export function GraphExplorer() {
   }, [entityId]);
 
   const store = useGraphExplorerStore();
-  const { depth, enabledTypes, enabledRelTypes, selectedNodeIds, sidebarCollapsed, detailPanelOpen } = store;
+  const { depth, enabledTypes, enabledRelTypes, selectedNodeIds, sidebarCollapsed, detailPanelOpen, reset } = store;
 
   const { data, loading, error } = useGraphData(entityId, depth);
 
   useEffect(() => {
-    store.reset();
-  }, [entityId]);
+    reset();
+  }, [entityId, reset]);
 
   const typeCounts = useMemo(() => {
     const counts: Record<string, number> = {};

@@ -1,3 +1,6 @@
+from typing import Literal
+
+from pydantic import Field
 from pydantic_settings import BaseSettings
 
 
@@ -19,6 +22,11 @@ class Settings(BaseSettings):
     rate_limit_auth: str = "300/minute"
     invite_code: str = ""
     cors_origins: str = "http://localhost:3000"
+    auth_cookie_name: str = "bracc_session"
+    auth_cookie_secure: bool = False
+    auth_cookie_samesite: Literal["lax", "strict", "none"] = "lax"
+    trust_proxy_headers: bool = False
+    share_token_ttl_hours: int = 168  # 7 days
     product_tier: str = "community"
     patterns_enabled: bool = False
     public_mode: bool = False
@@ -32,9 +40,15 @@ class Settings(BaseSettings):
     pattern_inexig_min_recurrence: int = 3
     pattern_max_evidence_refs: int = 50
 
-    openrouter_api_key: str = ""
-    ai_model: str = "google/gemini-2.0-flash-001"
-    redis_url: str = "redis://localhost:6379/0"
+    # Pattern hardening defaults (decision-complete contract)
+    pattern_temporal_window_years: int = Field(default=4, ge=1, le=20)
+    pattern_min_contract_value: float = Field(default=100000.0, ge=0)
+    pattern_min_contract_count: int = Field(default=2, ge=1)
+    pattern_min_debt_value: float = Field(default=50000.0, ge=0)
+    pattern_same_as_min_confidence: float = Field(default=0.85, ge=0, le=1)
+    pattern_pep_min_confidence: float = Field(default=0.85, ge=0, le=1)
+    pattern_min_recurrence: int = Field(default=2, ge=1)
+    pattern_min_discrepancy_ratio: float = Field(default=0.30, ge=0, le=1)
 
     model_config = {"env_prefix": "", "env_file": ".env"}
 

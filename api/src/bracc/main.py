@@ -10,18 +10,12 @@ from slowapi.middleware import SlowAPIMiddleware
 
 from bracc.config import settings
 from bracc.dependencies import close_driver, init_driver
-from bracc.services.cache import cache
 from bracc.middleware.cpf_masking import CPFMaskingMiddleware
 from bracc.middleware.rate_limit import limiter
 from bracc.middleware.security_headers import SecurityHeadersMiddleware
 from bracc.routers import (
-    gazette_monitor,
-    activity,
-    analytics,
     auth,
     baseline,
-    monitor,
-    chat,
     entity,
     graph,
     investigation,
@@ -37,23 +31,28 @@ _logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    if settings.jwt_secret_key == "change-me-in-production" or len(settings.jwt_secret_key) < 32:
-        _logger.critical(
-            "JWT secret is weak or default"
-            " — set JWT_SECRET_KEY env var (>= 32 chars)"
-        )
+    weak_or_default_jwt = (
+        settings.jwt_secret_key == "change-me-in-production"
+        or len(settings.jwt_secret_key) < 32
+    )
+    if weak_or_default_jwt:
+        msg = "JWT secret is weak or default — set JWT_SECRET_KEY env var (>= 32 chars)"
+        app_env = settings.app_env.strip().lower()
+        if app_env in {"dev", "test"}:
+            _logger.warning("%s [allowed in %s]", msg, app_env)
+        else:
+            _logger.critical(msg)
+            raise RuntimeError(msg)
     driver = await init_driver()
     app.state.neo4j_driver = driver
     await ensure_schema(driver)
-    await cache.connect()
     yield
-    await cache.close()
     await close_driver()
 
 
 app = FastAPI(
-    title="EGOS Inteligência API",
-    description="Plataforma aberta de cruzamento de dados públicos brasileiros",
+    title="BR-ACC API",
+    description="Brazilian public data graph analysis tool",
     version="0.1.0",
     lifespan=lifespan,
     redirect_slashes=False,
@@ -65,7 +64,8 @@ app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins.split(","),
+    allow_origins=[origin.strip() for origin in settings.cors_origins.split(",") if origin.strip()],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -82,11 +82,6 @@ app.include_router(patterns.router)
 app.include_router(baseline.router)
 app.include_router(investigation.router)
 app.include_router(investigation.shared_router)
-app.include_router(chat.router)
-app.include_router(analytics.router)
-app.include_router(monitor.router)
-app.include_router(activity.router)
-app.include_router(gazette_monitor.router)
 
 
 @app.get("/health")

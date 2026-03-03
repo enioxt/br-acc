@@ -16,7 +16,7 @@ import hashlib
 import json
 import logging
 import re
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any

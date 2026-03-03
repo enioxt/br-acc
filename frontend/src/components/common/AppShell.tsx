@@ -3,10 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link, Outlet, useLocation, useNavigate } from "react-router";
 
 import {
-  Activity,
   BarChart3,
-  FileText,
-  Clock,
   ChevronLeft,
   ChevronRight,
   FolderOpen,
@@ -32,9 +29,6 @@ const NAV_ITEMS = [
   { path: "/app", icon: BarChart3, labelKey: "nav.dashboard" },
   { path: "/app/search", icon: Search, labelKey: "nav.search" },
   { path: "/app/investigations", icon: FolderOpen, labelKey: "nav.investigations" },
-  { path: "/app/analytics", icon: Activity, labelKey: "nav.analytics" },
-  { path: "/app/reports", icon: FileText, labelKey: "nav.reports" },
-  { path: "/app/activity", icon: Clock, labelKey: "nav.activity" },
 ] as const;
 
 export function AppShell() {
@@ -48,7 +42,7 @@ export function AppShell() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileBlocked, setIsMobileBlocked] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     try {
       const saved = localStorage.getItem("bracc_theme");
@@ -58,10 +52,10 @@ export function AppShell() {
     return "dark";
   });
 
-  // Detect mobile viewport
+  // Desktop-only: check viewport on mount and resize
   useEffect(() => {
     function check() {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobileBlocked(window.innerWidth < 1024);
     }
     check();
     window.addEventListener("resize", check);
@@ -135,37 +129,12 @@ export function AppShell() {
     return location.pathname.startsWith(path);
   };
 
-  if (isMobile) {
+  if (isMobileBlocked) {
     return (
-      <div className={styles.shell} style={{ flexDirection: 'column' }}>
-        <div className={styles.content} style={{ paddingBottom: '60px' }}>
-          <main className={styles.main}><Outlet /></main>
-        </div>
-        <nav style={{
-          position: 'fixed', bottom: 0, left: 0, right: 0, height: '60px',
-          display: 'flex', justifyContent: 'space-around', alignItems: 'center',
-          background: 'var(--color-surface, #0f172a)', borderTop: '1px solid var(--color-border, #1e293b)',
-          zIndex: 50,
-        }}>
-          {NAV_ITEMS
-            .filter((item) => !(IS_PUBLIC_MODE && item.path.includes("investigations")))
-            .map(({ path, icon: Icon, labelKey }) => (
-            <Link
-              key={path}
-              to={path}
-              style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px',
-                padding: '8px 12px', borderRadius: '8px', textDecoration: 'none', fontSize: '10px',
-                color: isActive(path) ? 'var(--color-primary, #3b82f6)' : 'var(--color-text-secondary, #94a3b8)',
-              }}
-            >
-              <Icon size={20} />
-              <span>{t(labelKey)}</span>
-            </Link>
-          ))}
-        </nav>
-        <CommandPalette open={commandOpen} onOpenChange={setCommandOpen} />
-        <ToastContainer />
+      <div className={styles.mobileBlock}>
+        <h1 className={styles.mobileTitle}>{t("mobile.title")}</h1>
+        <p className={styles.mobileMessage}>{t("mobile.message")}</p>
+        <p className={styles.mobileHint}>{t("mobile.hint")}</p>
       </div>
     );
   }
@@ -175,7 +144,7 @@ export function AppShell() {
       <nav className={`${styles.sidebar} ${sidebarCollapsed ? styles.collapsed : ""}`}>
         <div className={styles.sidebarHeader}>
           <Link to="/app" className={styles.logo}>
-            {sidebarCollapsed ? "EI" : "EGOS Inteligência"}
+            {sidebarCollapsed ? "B" : "BR-ACC"}
           </Link>
         </div>
 

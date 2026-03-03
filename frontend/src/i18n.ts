@@ -5,16 +5,16 @@ const resources = {
   "pt-BR": {
     translation: {
       app: {
-        title: "EGOS Inteligência",
-        subtitle: "Plataforma aberta de cruzamento de dados públicos brasileiros",
+        title: "BR-ACC",
+        subtitle: "Plataforma de inteligência em dados públicos brasileiros",
         disclaimer:
-          "Pesquisa pessoal com dados públicos. Padrões são sinais, não prova jurídica. Não constitui acusação.",
+          "Dados de registros públicos. Não constitui acusação.",
       },
       landing: {
         hero: "Siga o dinheiro público",
         heroSubtitle:
-          "Cruzamento de dados entre empresas, políticos e contratos públicos. Múltiplas fontes governamentais. Dados abertos.",
-        badge: "EGOS Inteligência · Dados abertos",
+          "87 milhões de conexões entre empresas, políticos e contratos. 13 fontes governamentais. Dados abertos.",
+        badge: "BR-ACC · Dados abertos",
         cta: "Explorar o grafo",
         stats: {
           entities: "entidades",
@@ -23,26 +23,26 @@ const resources = {
         },
         features: {
           sectionLabel: "Capacidades",
-          sectionHeading: "O que o EGOS Inteligência revela",
+          sectionHeading: "O que o BR-ACC revela",
           graph: "Mapeie qualquer conexão",
           graphDesc:
-            "Navegue por entidades — empresas, pessoas, contratos, doações, sanções — em um grafo interativo com dados reais.",
+            "Navegue por 87 milhões de entidades — empresas, pessoas, contratos, doações, sanções — em um grafo interativo.",
           patterns: "Detecte padrões",
           patternsDesc:
-            "Algoritmos cruzam dados de múltiplas fontes para encontrar padrões em contratos, doações e sanções.",
-          investigations: "Pesquise em profundidade",
+            "8 algoritmos cruzam dados de 13 fontes para encontrar padrões em contratos, doações e sanções.",
+          investigations: "Investigue em profundidade",
           investigationsDesc:
-            "Organize sua pesquisa pessoal com anotações, etiquetas e exportação. Fonte atribuída em cada dado público.",
+            "Monte dossiês com anotações, etiquetas e exportação. Atribuição de fonte em cada dado.",
         },
         howItWorks: {
           sectionLabel: "Como funciona",
           sectionHeading: "Da fonte ao grafo",
           step1: "Coleta",
           step1Desc:
-            "Fontes governamentais atualizadas periodicamente — CNPJ, CEIS, CNEP, BNDES, TSE, IBAMA e mais.",
+            "13 fontes governamentais atualizadas mensalmente — de CNPJ a IBAMA, de TSE a PGFN.",
           step2: "Cruzamento",
           step2Desc:
-            "Resolução de entidades conecta registros entre fontes. Relações mapeadas automaticamente.",
+            "Resolução de entidades conecta registros entre fontes. 53 milhões de relações mapeadas.",
           step3: "Análise",
           step3Desc:
             "Explore conexões, detecte padrões e exporte relatórios com atribuição de fonte.",
@@ -100,7 +100,7 @@ const resources = {
           senado_cpis: "Senado — CPIs",
         },
         footer: {
-          brand: "EGOS Inteligência v1.0",
+          brand: "BR-ACC v1.0",
           license: "AGPL-3.0",
           platform: "Plataforma",
           methodology: "Metodologia",
@@ -109,9 +109,9 @@ const resources = {
       dashboard: {
         welcome: "Painel",
         quickSearch: "Busca rápida",
-        recentInvestigations: "Pesquisas recentes",
+        recentInvestigations: "Investigações recentes",
         continueInvestigation: "Continuar",
-        noRecent: "Nenhuma pesquisa recente.",
+        noRecent: "Nenhuma investigação recente.",
         quickStats: "Estatísticas",
       },
       nav: {
@@ -121,9 +121,6 @@ const resources = {
         patterns: "Padrões",
         baseline: "Comparação",
         investigations: "Investigações",
-        analytics: "Analytics",
-        reports: "Relatórios",
-        activity: "Atividades",
         login: "Entrar",
         logout: "Sair",
         register: "Registrar",
@@ -145,18 +142,18 @@ const resources = {
         registerError: "Erro ao registrar. Tente novamente.",
         invalidCredentials: "E-mail ou senha incorretos.",
         invalidInvite: "Código de convite inválido.",
-        loginTitle: "Acessar EGOS Inteligência",
+        loginTitle: "Acessar BR-ACC",
         registerTitle: "Criar conta",
         loginSubtitle: "Plataforma de inteligência em dados públicos",
       },
       search: {
-        placeholder: "CNPJ ou nome...",
+        placeholder: "CPF, CNPJ ou nome...",
         button: "Buscar",
         noResults: "Nenhum resultado encontrado.",
         filterType: "Filtrar tipo",
         typeAll: "Todos",
         error: "Erro ao buscar. Tente novamente.",
-        emptyHint: "Tente buscar por nome ou CNPJ",
+        emptyHint: "Tente buscar por nome, CPF ou CNPJ",
         recentSearches: "Buscas recentes",
         clearRecent: "Limpar",
         resultCount: "{{count}} resultados",
@@ -414,9 +411,9 @@ const resources = {
         error: "Erro ao executar ação.",
       },
       mobile: {
-        title: "EGOS Inteligência",
-        message: "Bem-vindo ao EGOS Inteligência. Explore dados públicos brasileiros.",
-        hint: "Para análise de grafos avançada, recomendamos tela maior.",
+        title: "BR-ACC",
+        message: "Esta plataforma requer resolução mínima de 1024px para análise de grafos.",
+        hint: "Acesse em um computador para a experiência completa.",
       },
       common: {
         source: "Fonte",
@@ -435,7 +432,7 @@ const resources = {
         retry: "Tentar novamente",
       },
       error: {
-        title: "EGOS Inteligência",
+        title: "BR-ACC",
         message: "Algo deu errado. Recarregue a página.",
         reload: "Recarregar",
       },
@@ -444,7 +441,7 @@ const resources = {
   en: {
     translation: {
       app: {
-        title: "EGOS Inteligência",
+        title: "BR-ACC",
         subtitle: "Brazilian public data intelligence platform",
         disclaimer:
           "Data patterns from public records. Not accusations.",
@@ -453,7 +450,7 @@ const resources = {
         hero: "Follow the public money",
         heroSubtitle:
           "87 million connections between companies, politicians, and contracts. 13 government sources. Open data.",
-        badge: "EGOS Inteligência · Open data",
+        badge: "BR-ACC · Open data",
         cta: "Explore the graph",
         stats: {
           entities: "entities",
@@ -462,7 +459,7 @@ const resources = {
         },
         features: {
           sectionLabel: "Capabilities",
-          sectionHeading: "What EGOS Inteligência reveals",
+          sectionHeading: "What BR-ACC reveals",
           graph: "Map any connection",
           graphDesc:
             "Navigate 87 million entities — companies, people, contracts, donations, sanctions — in an interactive graph.",
@@ -539,7 +536,7 @@ const resources = {
           senado_cpis: "Senate — Parliamentary inquiry committees",
         },
         footer: {
-          brand: "EGOS Inteligência v1.0",
+          brand: "BR-ACC v1.0",
           license: "AGPL-3.0",
           platform: "Platform",
           methodology: "Methodology",
@@ -560,9 +557,6 @@ const resources = {
         patterns: "Patterns",
         baseline: "Baseline",
         investigations: "Investigations",
-        analytics: "Analytics",
-        reports: "Relatórios",
-        activity: "Atividades",
         login: "Login",
         logout: "Logout",
         register: "Register",
@@ -584,18 +578,18 @@ const resources = {
         registerError: "Registration failed. Please try again.",
         invalidCredentials: "Invalid email or password.",
         invalidInvite: "Invalid invite code.",
-        loginTitle: "Access EGOS Inteligência",
+        loginTitle: "Access BR-ACC",
         registerTitle: "Create account",
         loginSubtitle: "Public data intelligence platform",
       },
       search: {
-        placeholder: "CNPJ or name...",
+        placeholder: "CPF, CNPJ, or name...",
         button: "Search",
         noResults: "No results found.",
         filterType: "Filter type",
         typeAll: "All",
         error: "Search failed. Please try again.",
-        emptyHint: "Try searching by name or CNPJ",
+        emptyHint: "Try searching by name, CPF, or CNPJ",
         recentSearches: "Recent searches",
         clearRecent: "Clear",
         resultCount: "{{count}} results",
@@ -853,7 +847,7 @@ const resources = {
         error: "Action failed.",
       },
       mobile: {
-        title: "EGOS Inteligência",
+        title: "BR-ACC",
         message: "This platform requires a minimum resolution of 1024px for graph analysis.",
         hint: "Access from a computer for the full experience.",
       },
@@ -874,7 +868,7 @@ const resources = {
         retry: "Retry",
       },
       error: {
-        title: "EGOS Inteligência",
+        title: "BR-ACC",
         message: "Something went wrong. Please reload the page.",
         reload: "Reload",
       },

@@ -14,30 +14,7 @@ vi.mock("@/api/client", async () => {
   return { ...actual, apiFetch: mockApiFetch };
 });
 
-// Mock sessionStorage
-const sessionStorageMock = (() => {
-  let store: Record<string, string> = {};
-  return {
-    getItem: vi.fn((key: string) => store[key] ?? null),
-    setItem: vi.fn((key: string, value: string) => {
-      store[key] = value;
-    }),
-    removeItem: vi.fn((key: string) => {
-      delete store[key];
-    }),
-    clear: vi.fn(() => {
-      store = {};
-    }),
-  };
-})();
-
-Object.defineProperty(globalThis, "sessionStorage", {
-  value: sessionStorageMock,
-});
-
 import { useAuthStore } from "./auth";
-
-const STORAGE_KEY = "bracc_auth";
 
 function resetStore() {
   useAuthStore.setState({
@@ -45,13 +22,13 @@ function resetStore() {
     user: null,
     loading: false,
     error: null,
+    restored: false,
   });
 }
 
 describe("useAuthStore", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    sessionStorageMock.clear();
     resetStore();
   });
 
@@ -59,7 +36,7 @@ describe("useAuthStore", () => {
     vi.restoreAllMocks();
   });
 
-  it("login success sets token and user, persists to sessionStorage", async () => {
+  it("login success sets token, user, and restored flag", async () => {
     const tokenRes = { access_token: "jwt-123", token_type: "bearer" };
     const userRes = {
       id: "u1",
@@ -78,10 +55,7 @@ describe("useAuthStore", () => {
     expect(state.user).toEqual(userRes);
     expect(state.loading).toBe(false);
     expect(state.error).toBeNull();
-    expect(sessionStorageMock.setItem).toHaveBeenCalledWith(
-      STORAGE_KEY,
-      "jwt-123",
-    );
+    expect(state.restored).toBe(true);
   });
 
   it("login 401 sets auth.invalidCredentials error", async () => {
@@ -94,6 +68,7 @@ describe("useAuthStore", () => {
     expect(state.user).toBeNull();
     expect(state.loading).toBe(false);
     expect(state.error).toBe("auth.invalidCredentials");
+    expect(state.restored).toBe(true);
   });
 
   it("login other error sets auth.loginError", async () => {
@@ -165,7 +140,7 @@ describe("useAuthStore", () => {
     expect(state.error).toBe("auth.registerError");
   });
 
-  it("logout clears token, user, and sessionStorage", () => {
+  it("logout clears token and user, calls POST /logout", () => {
     useAuthStore.setState({
       token: "jwt-123",
       user: {
@@ -175,37 +150,39 @@ describe("useAuthStore", () => {
       },
     });
 
+    mockApiFetch.mockResolvedValueOnce(undefined); // /logout
+
     useAuthStore.getState().logout();
 
     const state = useAuthStore.getState();
     expect(state.token).toBeNull();
     expect(state.user).toBeNull();
     expect(state.error).toBeNull();
-    expect(sessionStorageMock.removeItem).toHaveBeenCalledWith(STORAGE_KEY);
+    expect(state.restored).toBe(true);
+    expect(mockApiFetch).toHaveBeenCalledWith("/api/v1/auth/logout", {
+      method: "POST",
+    });
   });
 
-  it("restore success validates cached token and sets user", async () => {
+  it("restore success sets user and restored flag via cookie session", async () => {
     const userRes = {
       id: "u1",
       email: "test@example.com",
       created_at: "2026-01-01T00:00:00Z",
     };
 
-    useAuthStore.setState({ token: "cached-jwt" });
     mockApiFetch.mockResolvedValueOnce(userRes);
 
     await useAuthStore.getState().restore();
 
     const state = useAuthStore.getState();
     expect(state.user).toEqual(userRes);
-    expect(state.token).toBe("cached-jwt");
-    expect(mockApiFetch).toHaveBeenCalledWith("/api/v1/auth/me", {
-      headers: { Authorization: "Bearer cached-jwt" },
-    });
+    expect(state.token).toBe("cookie-session");
+    expect(state.restored).toBe(true);
+    expect(mockApiFetch).toHaveBeenCalledWith("/api/v1/auth/me");
   });
 
-  it("restore failure clears token and user", async () => {
-    useAuthStore.setState({ token: "expired-jwt" });
+  it("restore failure clears token and user, sets restored", async () => {
     mockApiFetch.mockRejectedValueOnce(new ApiError(401, "Unauthorized"));
 
     await useAuthStore.getState().restore();
@@ -213,7 +190,7 @@ describe("useAuthStore", () => {
     const state = useAuthStore.getState();
     expect(state.token).toBeNull();
     expect(state.user).toBeNull();
-    expect(sessionStorageMock.removeItem).toHaveBeenCalledWith(STORAGE_KEY);
+    expect(state.restored).toBe(true);
   });
 
   it("isAuthenticated returns true when token present, false otherwise", () => {

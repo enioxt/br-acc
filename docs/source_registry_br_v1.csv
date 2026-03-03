@@ -1,5 +1,5 @@
 source_id,name,category,tier,status,implementation_state,load_state,frequency,in_universe_v1,primary_url,pipeline_id,owner_agent,access_mode,notes,public_access_mode,discovery_status,last_seen_url,cadence_expected,cadence_observed,quality_status
-cnpj,Receita Federal CNPJ,identity,P0,loaded,implemented,loaded,monthly,true,https://dadosabertos.rfb.gov.br/CNPJ/,cnpj,Agent A,file,http://dadosabertos.rfb.gov.br,,monitored,,,,healthy
+cnpj,Receita Federal CNPJ,identity,P0,loaded,implemented,loaded,monthly,true,https://dadosabertos.rfb.gov.br/CNPJ/dados_abertos_cnpj/,cnpj,Agent A,file,http://dadosabertos.rfb.gov.br,,monitored,,,,healthy
 tse,TSE elections and donations,electoral,P0,loaded,implemented,loaded,biennial,true,https://dadosabertos.tse.jus.br/,tse,Agent E,file,Core electoral data loaded,,monitored,,,,healthy
 transparencia,Portal da Transparencia contracts,contracts,P0,loaded,implemented,loaded,monthly,true,https://portaldatransparencia.gov.br/download-de-dados,transparencia,Agent C,file,Federal contracts and servants,,monitored,,,,healthy
 sanctions,CEIS CNEP sanctions,sanctions,P0,loaded,implemented,loaded,monthly,true,https://portaldatransparencia.gov.br/sancoes/consulta,sanctions,Agent C,file,Administrative sanctions,,monitored,,,,healthy
