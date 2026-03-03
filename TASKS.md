@@ -1,6 +1,6 @@
 # TASKS.md — EGOS Inteligência (SSOT)
 
-> **Updated:** 2026-03-03 (session 9) | **Stars:** 74 ⭐ | **Forks:** 8 | **Patterns:** 10 | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
+> **Updated:** 2026-03-03 (session 18) | **Stars:** 74 ⭐ | **Forks:** 8 | **Patterns:** 10 | **Nodes:** 9.1M | **Tests:** 1,205+ | **Tasks:** 86/128 ✅ | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
 
 ---
 
@@ -9,20 +9,23 @@
 ### TASK-001: CNPJ ETL — 53.6M empresas ⏳
 - [x] Upload 6.8GB zip para Contabo
 - [x] Extrair dados (26GB descomprimido)
-- [ ] Phase 1: Build estab_lookup (em execução, PID 555786)
-- [ ] Phase 2: Create Company nodes
-- [ ] Phase 3: Create Person/Partner nodes + SOCIO_DE relationships
+- [x] Phase 2: Create Company nodes (8,860,601 loaded)
+- [ ] Phase 1: Build estab_lookup (em execução, PID 1997365, file 7/10 ESTABELE ~70%)
+- [ ] Phase 3: Create Person/Partner nodes + SOCIO_DE relationships (ETA: ~6-8h from session 17 start)
 - [ ] Phase 4: Post-load hooks (entity linking)
-> **Server:** 217.216.95.126 | **Log:** `/opt/bracc/cnpj-etl.log`
+> **Server:** 217.216.95.126 | **Service:** `bracc-etl.service` (systemd, auto-restart) | **RAM:** 13.6GB | **Log:** `/opt/bracc/cnpj-etl.log`
+> **Status (session 17):** Phase 1 rebuilding estab_lookup, reading ESTABELE file Y6 (7/10). Process running 10h+, healthy. Will auto-proceed to Phase 3 (socios + SOCIO_DE relationships).
 
 ### TASK-002: Neo4j Performance Optimization ⏳
 - [x] Criar script `neo4j-memory-upgrade.sh` (16G heap, 22G pagecache)
-- [x] Criar script `post-etl-optimize.sh` (12 indexes + fulltext)
+- [x] Criar script `post-etl-optimize.sh` (13 indexes: 9 B-tree + 2 fulltext + 2 composite)
 - [x] Documentar arquitetura: `docs/analysis/PERFORMANCE_ARCHITECTURE_2026-03.md`
+- [x] Scripts deployed to VPS (`/opt/bracc/scripts/`) — session 17
 - [ ] Aplicar memory upgrade APÓS ETL completar
-- [ ] Criar todos os indexes APÓS ETL completar
+- [ ] Executar `post-etl-optimize.sh` APÓS ETL completar
 - [ ] Verificar query < 5ms para CNPJ lookup
 > **Depende de:** TASK-001
+> **Arquivos:** `infra/scripts/neo4j-memory-upgrade.sh`, `infra/scripts/post-etl-optimize.sh`
 
 ### TASK-003: Search Fix + Hardcoded Data ✅ (02/03/2026)
 - [x] Remover números falsos do i18n.ts (87M, 53M, 8 algoritmos)
@@ -133,21 +136,31 @@
 - [ ] ETL para dados de salários do judiciário
 - [ ] Detecção de supersalários acima do teto
 
-### TASK-017: Lei de Benford (GitHub #6) ⬜
-- [ ] Implementar análise de primeiro dígito em contratos
-- [ ] API endpoint para consulta por órgão
+### TASK-017: Lei de Benford (GitHub #6) ✅ (03/03/2026)
+- [x] Pattern detector `benford_contract_values` implementado em Cypher
+- [x] API endpoint: `GET /api/v1/patterns/{entity_id}/benford_contract_values`
+- [x] MAD threshold configurável via `PATTERN_BENFORD_MAD_THRESHOLD`
+- [x] Mínimo de contratos configurável via `PATTERN_BENFORD_MIN_CONTRACTS`
+> **Arquivos:** `queries/public_pattern_benford_contract_values.cypher`, `config.py`
 
-### TASK-018: HHI — Concentração de Fornecedores (GitHub #7) ⬜
-- [ ] Implementar índice Herfindahl-Hirschman
-- [ ] Detectar monopolização por órgão contratante
+### TASK-018: HHI — Concentração de Fornecedores (GitHub #7) ✅ (03/03/2026)
+- [x] Pattern detector `hhi_contract_concentration` implementado em Cypher
+- [x] API endpoint: `GET /api/v1/patterns/{entity_id}/hhi_contract_concentration`
+- [x] Threshold configurável via `PATTERN_HHI_THRESHOLD` (default 0.25)
+> **Arquivos:** `queries/public_pattern_hhi_contract_concentration.cypher`, `config.py`
 
-### TASK-019: i18n Completo PT-BR (GitHub #1, #2) ⬜
-- [ ] Frontend: locale pt-BR completo
-- [ ] API: mensagens de erro em PT-BR
+### TASK-019: i18n Completo PT-BR (GitHub #1, #2) ✅ (03/03/2026)
+- [x] Frontend: locale pt-BR completo (440+ keys traduzidas)
+- [x] Frontend: locale EN — removed hardcoded numbers, fixed PT-BR leaks in nav
+- [x] API: mensagens de erro em PT-BR (verificado session 17 — testes atualizados)
+> **Arquivos:** `frontend/src/i18n.ts`
 
-### TASK-020: Neutrality Audit CI ⬜
-- [ ] CI que bane palavras como "suspicious", "corrupt", "criminal"
-- [ ] Adaptado do br-acc upstream
+### TASK-020: Neutrality Audit CI ✅ (03/03/2026)
+- [x] CI job `neutrality` em `.github/workflows/ci.yml` — 9 banned words
+- [x] `test_no_banned_words_in_pattern_metadata` em unit tests
+- [x] Exemption via `# neutrality-ok` comment
+- [x] Fixed 1 violation: `journey.ts` "corrupt" → "malformed"
+> **Arquivos:** `.github/workflows/ci.yml`, `api/tests/unit/test_patterns.py`
 
 ### TASK-021: Interoperabilidade Global (GitHub #18) ⬜
 - [ ] FollowTheMoney format
@@ -161,10 +174,10 @@
 - [ ] Meio Ambiente (INPE, CAR, INCRA) — #15
 - [ ] SIAFI + Tesouro Transparente — #16
 
-### TASK-023: Docs para Leigos (GitHub #3, #4) ⏳
-- [ ] Traduzir data-sources.md para PT-BR
+### TASK-023: Docs para Leigos (GitHub #3, #4) ✅ (03/03/2026)
+- [x] Traduzir data-sources.md para PT-BR (session 18)
 - [x] Criar FAQ para leigos em PT-BR (02/03/2026)
-> **Arquivos:** `docs/FAQ_PT-BR.md`
+> **Arquivos:** `docs/FAQ_PT-BR.md`, `docs/fontes-de-dados.md`
 
 ### TASK-024: Rename BR/ACC → EGOS Inteligência ✅ (02/03/2026)
 - [x] i18n.ts — todas as referências
@@ -892,14 +905,13 @@
 
 > Geradas pela auditoria completa do código-fonte. Ref: `docs/TECHNICAL_DOSSIE_2026-03.md`
 
-### TASK-105: Rotacionar 3 API Keys Expostas 🔴 (P0 — URGENTE)
-- [ ] Rotacionar key Portal da Transparência
-- [ ] Rotacionar key DataJud
-- [ ] Rotacionar key Brave Search
-- [ ] Atualizar `.env` na VPS (`/opt/bracc/infra/.env`)
-- [ ] Considerar BFG Repo Cleaner para limpar git history
-> **Risco:** Keys visíveis em `git log -p` para qualquer pessoa com clone do repo
-> **Esforço:** 30min | **Impacto:** Segurança crítica
+### TASK-105: Rotacionar API Keys Expostas ✅ (03/03/2026)
+- [x] Rotacionar key Portal da Transparência (nova key aplicada na VPS)
+- [x] DataJud — API pública, sem necessidade de rotação (https://datajud-wiki.cnj.jus.br/api-publica/acesso)
+- [x] Brave Search — rotacionada pelo usuário (aguardando nova key para atualizar VPS)
+- [x] Atualizar `.env` na VPS (`/opt/bracc/infra/.env`)
+- [ ] Considerar BFG Repo Cleaner para limpar git history (P2)
+> **Arquivos:** `/opt/bracc/infra/.env`
 
 ### TASK-106: Whitelist Cypher Injection em `_tool_cypher` ✅ (03/03/2026)
 - [x] Substituir blacklist (`CREATE, DELETE, MERGE...`) por whitelist
@@ -909,54 +921,63 @@
 > **Evidência:** `api/src/bracc/routers/chat.py:264-281`
 > **Esforço:** 1h | **Impacto:** Fecha maior vetor de ataque
 
-### TASK-107: Migrar Conversas para Redis 🟠 (P0)
-- [ ] Substituir `_conversations` dict por Redis HSET
-- [ ] Key: `conversation:{client_id}`, TTL 30min
-- [ ] Migrar `_usage_counts` e `_usage_day` para Redis INCR com TTL
-- [ ] Testar graceful degradation (Redis down = in-memory fallback)
+### TASK-107: Migrar Conversas para Redis ✅ (03/03/2026)
+- [x] Conversas já tinham Redis persistence via `conversations.py` (30-day TTL, CRUD, ownership)
+- [x] Migrar `_usage_counts` e `_usage_day` para Redis INCR com TTL 24h
+- [x] Graceful degradation (Redis down = in-memory fallback)
+- [x] Key pattern: `egos:usage:{date}:{client_id}`
 > **Evidência:** `api/src/bracc/routers/chat.py:66-73`
 > **Esforço:** 2h | **Impacto:** Conversas sobrevivem restart/deploy
 
-### TASK-108: Dividir chat.py em Módulos 🟠 (P1)
-- [ ] Extrair `chat_tools.py` — 26 tool definitions (TOOLS array)
-- [ ] Extrair `chat_models.py` — Pydantic models (ChatMessage, EntityCard, etc.)
-- [ ] Extrair `chat_prompt.py` — SYSTEM_PROMPT
-- [ ] Extrair `chat_openrouter.py` — `_call_openrouter()` + tool execution loop
-- [ ] Manter `chat.py` como router fino (endpoint + conversation mgmt)
-> **Evidência:** `api/src/bracc/routers/chat.py` (1290 linhas, monólito)
-> **Esforço:** 4h | **Impacto:** Manutenibilidade
+### TASK-108: Split `chat.py` em Módulos ✅ (03/03/2026)
+- [x] Extrair `chat_tools.py` — 26 tool definitions (TOOLS array, 393 lines)
+- [x] Extrair `chat_models.py` — Pydantic models (ChatMessage, EntityCard, etc.)
+- [x] Extrair `chat_prompt.py` — SYSTEM_PROMPT (67 lines)
+- [ ] Extrair `chat_openrouter.py` — `_call_openrouter()` + tool execution loop (P2)
+- [x] `chat.py` reduzido de 1330 → 845 linhas (36% redução)
+> **Arquivos:** `chat_models.py`, `chat_tools.py`, `chat_prompt.py`
 
-### TASK-109: Testes Backend — Integration Tests 🟠 (P1)
-- [ ] Test search endpoint (fulltext, CNPJ, empty query)
-- [ ] Test chat endpoint (tool calling, tier fallback, rate limit)
-- [ ] Test CPF masking middleware (mask, PEP exception)
-- [ ] Test public_guard (CPF blocked, Person hidden, props stripped)
-- [ ] Test patterns endpoint (at least 3 of 10 detectors)
-- [ ] Setup pytest + httpx AsyncClient fixtures
-> **Evidência:** Zero testes em `api/tests/`
-> **Esforço:** 8h | **Impacto:** Qualidade e confiança
+### TASK-109: Testes Backend — Integration Tests ⏳
+- [x] Setup pytest + httpx AsyncClient fixtures (conftest.py with mock Neo4j)
+- [x] 219 unit tests passing (session 17: fixed 3 stale assertions)
+- [x] Test patterns endpoint (list, 503 disabled, 404 invalid, include_probable)
+- [x] Test CPF masking middleware (mask, PEP exception)
+- [x] Test public_guard (CPF blocked, Person hidden, props stripped)
+- [x] Test search endpoint against live VPS (fulltext, CNPJ, empty query, pagination)
+- [x] Test chat endpoint (simple query, empty rejection)
+- [x] Test entity lookup (CNPJ, invalid format, graph traversal)
+- [x] Test patterns against live VPS (list 10, invalid 404)
+- [x] Test health/meta/activity/cache endpoints
+- [x] 955 ETL unit tests passing (0 warnings after Pandas fix)
+- [ ] Integration tests with testcontainers Neo4j
+- [ ] Test chat tool calling + tier fallback + rate limit
+> **Status (session 17-18):** 219 API unit + 18 live integration + 955 ETL = **1,192 tests**
+> **Arquivos:** `api/tests/integration/test_live_api.py`, `api/tests/unit/`, `etl/tests/`
+> **Esforço restante:** 2h | **Impacto:** Qualidade e confiança
 
-### TASK-110: Neo4j Backup Script (Cron) 🟠 (P1)
-- [ ] Script: stop neo4j → neo4j-admin dump → start neo4j (ou volume snapshot)
-- [ ] Cron job diário às 3AM (mínimo downtime)
-- [ ] Reter últimos 7 dumps (rotação)
-- [ ] Alertar se dump falhar (email ou Telegram)
-> **Evidência:** Neo4j Community não suporta hot backup
-> **Esforço:** 2h | **Impacto:** 9M+ entidades sem backup
+### TASK-110: Neo4j Backup Script (Cron) ✅ (03/03/2026)
+- [x] Hot tar backup do volume Docker (sem parar Neo4j) + count snapshot
+- [x] Cron job diário às 3AM (`/opt/bracc/scripts/neo4j-backup.sh`)
+- [x] Reter últimos 5 backups (rotação automática)
+- [x] APOC export habilitado (`apoc.export.file.enabled=true` em apoc.conf)
+- [ ] Alertar se dump falhar via Telegram (P2)
+> **Arquivos:** `/opt/bracc/scripts/neo4j-backup.sh`, `/opt/bracc/backups/`
+> **Nota:** neo4j-admin dump falha em Community Edition. Backup via tar do volume (~1.5GB comprimido de 6.7GB)
 
-### TASK-111: Circuit Breaker para APIs Externas 🟠 (P1)
-- [ ] Implementar retry com backoff exponencial (max 2 retries)
-- [ ] Circuit breaker: após 3 falhas consecutivas, skip API por 5min
-- [ ] Fallback graceful: retornar `{"status": "unavailable", "source": "..."}` em vez de error
-- [ ] Aplicar às 21 tools em `services/transparency_tools.py`
-> **Evidência:** `routers/chat.py:841` — `httpx.AsyncClient(timeout=45.0)` sem retry
-> **Esforço:** 4h | **Impacto:** Confiabilidade
+### TASK-111: Circuit Breaker para APIs Externas ✅ (03/03/2026)
+- [x] `circuit_breaker.py` — per-host circuit breaker (CLOSED→OPEN→HALF_OPEN)
+- [x] Config: 5 failures in 2min window → 60s cooldown
+- [x] `safe_get()` helper in `transparency_tools.py` wraps httpx + circuit breaker
+- [x] `get_status()` method for monitoring all circuits
+- [ ] Migrar todas as 21 tools para usar `safe_get()` (progressivo, P2)
+> **Arquivos:** `services/circuit_breaker.py`, `services/transparency_tools.py`
 
-### TASK-112: Input Sanitization (Prompt Injection) ⬜ (P2)
-- [ ] Regex filter para padrões conhecidos: "ignore instructions", "system prompt", injection patterns
-- [ ] Log suspicious inputs (sem bloquear — soft warning)
-- [ ] Rate limit agressivo para IPs com inputs suspeitos
-> **Esforço:** 4h | **Impacto:** Segurança (defesa em profundidade)
+### TASK-112: Input Sanitization (Prompt Injection) ✅ (03/03/2026)
+- [x] 10 regex patterns: ignore instructions, system prompt reveal, jailbreak, DAN mode, special tokens
+- [x] Soft detection: log suspicious inputs via activity feed (não bloqueia)
+- [x] 13 unit tests cobrindo todos os patterns + queries normais PT/EN
+- [ ] Rate limit agressivo para IPs com inputs suspeitos (P2 futuro)
+> **Arquivos:** `middleware/input_sanitizer.py`, `tests/unit/test_input_sanitizer.py`, `routers/chat.py`
 
 ### TASK-113: BFG Repo Cleaner — Git History ⬜ (P2)
 - [ ] Executar BFG para remover API keys do history completo
@@ -965,18 +986,19 @@
 > **Depende de:** TASK-105 (rotacionar primeiro)
 > **Esforço:** 1h
 
-### TASK-114: DSAR Workflow Automatizado ⬜ (P2)
-- [ ] GitHub issue template para Data Subject Access Request
+### TASK-114: DSAR Workflow Automatizado ⏳ (P2)
+- [x] GitHub issue template `dsar_request.yml` — 6 request types, identity, evidence, attestation (session 18)
 - [ ] Endpoint `/api/v1/dsar` para submissão programática
 - [ ] Workflow: register → verify scope → produce decision log
 - [ ] Prazo LGPD: 15 dias úteis para resposta
-> **Evidência:** LGPD Art. 18 — hoje é via issue manual
-> **Esforço:** 8h
+> **Arquivos:** `.github/ISSUE_TEMPLATE/dsar_request.yml`
+> **Evidência:** LGPD Art. 18 — template criado, API pendente
 
-### TASK-115: CORS Explícito + JWT Startup Validation ⬜ (P2)
-- [ ] Substituir `allow_headers=["*"]` por lista explícita em `main.py`
-- [ ] Adicionar startup check: se `jwt_secret == "change-me-in-production"` → raise error
-> **Esforço:** 30min
+### TASK-115: CORS Explícito + JWT Startup Validation ✅ (03/03/2026)
+- [x] CORS: `allow_headers` explícito (Authorization, Content-Type, Accept, Origin, X-Requested-With)
+- [x] CORS: `allow_methods` explícito (GET, POST, PUT, DELETE, OPTIONS)
+- [x] JWT: `raise RuntimeError` em production se secret fraco/default (dev apenas loga)
+> **Arquivos:** `main.py`
 
 ### TASK-116: Componentizar Landing.tsx ⬜ (P2)
 - [ ] Extrair HeroSearch component
@@ -984,11 +1006,20 @@
 - [ ] Cada componente com seu próprio CSS module
 > **Esforço:** 3h
 
-### TASK-117: Registro de Tratamento LGPD (Art. 37) ⬜ (P2)
-- [ ] Documentar base legal por tipo de dado (público, pessoal, PEP)
-- [ ] Mapear finalidade, período de retenção, medidas de segurança
-- [ ] Publicar em `docs/legal/REGISTRO_TRATAMENTO.md`
-> **Esforço:** 4h | **Obrigatório** pela LGPD para tratamento em larga escala
+### TASK-117: Registro de Tratamento LGPD (Art. 37) ✅ (03/03/2026)
+- [x] 6 categorias documentadas: CNPJ, TSE, Contratos, Sanções, PEP, Interação
+- [x] Base legal, finalidade, retenção, medidas de segurança por categoria
+- [x] Tabela de medidas técnicas e organizacionais
+- [x] Workflow de direitos do titular (Art. 18)
+> **Arquivos:** `docs/legal/REGISTRO_TRATAMENTO.md`
+
+### TASK-118: Observabilidade — Request Tracing + JSON Logs + Security Posture ✅ (03/03/2026)
+- [x] `RequestIDMiddleware` — X-Request-ID header em toda resposta (gera ou ecoa do cliente)
+- [x] `GET /api/v1/meta/security` — endpoint de postura de segurança (sem segredos)
+- [x] `logging_config.py` — JSON structured logs em produção, human-readable em dev
+- [x] 3 novos testes para middleware (gerar, ecoar, unicidade)
+- [x] 235 API unit tests passando (219 + 13 sanitizer + 3 request-id)
+> **Arquivos:** `middleware/request_id.py`, `logging_config.py`, `routers/meta.py`, `main.py`
 
 ---
 

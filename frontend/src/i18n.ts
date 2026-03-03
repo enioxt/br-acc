@@ -452,7 +452,7 @@ const resources = {
       landing: {
         hero: "Follow the public money",
         heroSubtitle:
-          "87 million connections between companies, politicians, and contracts. 13 government sources. Open data.",
+          "Cross-referencing companies, politicians, and public contracts. Multiple government sources. Open data.",
         badge: "EGOS Inteligência · Open data",
         cta: "Explore the graph",
         stats: {
@@ -465,10 +465,10 @@ const resources = {
           sectionHeading: "What EGOS Inteligência reveals",
           graph: "Map any connection",
           graphDesc:
-            "Navigate 87 million entities — companies, people, contracts, donations, sanctions — in an interactive graph.",
+            "Navigate entities — companies, people, contracts, donations, sanctions — in an interactive graph with real data.",
           patterns: "Detect patterns",
           patternsDesc:
-            "8 algorithms cross-reference 13 data sources to find patterns in contracts, donations, and sanctions.",
+            "Algorithms cross-reference multiple data sources to find patterns in contracts, donations, and sanctions.",
           investigations: "Investigate in depth",
           investigationsDesc:
             "Build dossiers with annotations, tags, and exports. Source attribution on every data point.",
@@ -481,7 +481,7 @@ const resources = {
             "13 government sources updated monthly — from CNPJ to IBAMA, from TSE to PGFN.",
           step2: "Cross-reference",
           step2Desc:
-            "Entity resolution connects records across sources. 53 million relationships mapped.",
+            "Entity resolution connects records across sources. Relationships mapped automatically.",
           step3: "Analyze",
           step3Desc:
             "Explore connections, detect patterns, and export reports with source attribution.",
@@ -561,8 +561,8 @@ const resources = {
         baseline: "Baseline",
         investigations: "Research",
         analytics: "Analytics",
-        reports: "Relatórios",
-        activity: "Atividades",
+        reports: "Reports",
+        activity: "Activity",
         login: "Login",
         logout: "Logout",
         register: "Register",

@@ -63,6 +63,7 @@ services:
       BRAVE_API_KEY: ${BRAVE_API_KEY}
       BRACC_SOURCE_REGISTRY_PATH: /app/docs/source_registry_br_v1.csv
       REDIS_URL: redis://redis:6379/0
+      PATTERNS_ENABLED: "true"
     networks:
       - bracc
     healthcheck:
