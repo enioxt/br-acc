@@ -149,9 +149,11 @@
 - [x] Threshold configurável via `PATTERN_HHI_THRESHOLD` (default 0.25)
 > **Arquivos:** `queries/public_pattern_hhi_contract_concentration.cypher`, `config.py`
 
-### TASK-019: i18n Completo PT-BR (GitHub #1, #2) ⏳
-- [ ] Frontend: locale pt-BR completo
+### TASK-019: i18n Completo PT-BR (GitHub #1, #2) ✅ (03/03/2026)
+- [x] Frontend: locale pt-BR completo (440+ keys traduzidas)
+- [x] Frontend: locale EN — removed hardcoded numbers, fixed PT-BR leaks in nav
 - [x] API: mensagens de erro em PT-BR (verificado session 17 — testes atualizados)
+> **Arquivos:** `frontend/src/i18n.ts`
 
 ### TASK-020: Neutrality Audit CI ✅ (03/03/2026)
 - [x] CI job `neutrality` em `.github/workflows/ci.yml` — 9 banned words
