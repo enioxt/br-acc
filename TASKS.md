@@ -1,6 +1,6 @@
 # TASKS.md — EGOS Inteligência (SSOT)
 
-> **Updated:** 2026-03-03 (session 21) | **Stars:** 74 ⭐ | **Forks:** 8 | **Patterns:** 10 | **Nodes:** 141M+ | **Tests:** 1,208+ | **Tasks:** 94/130 ✅ | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
+> **Updated:** 2026-03-03 (session 21) | **Stars:** 74 ⭐ | **Forks:** 8 | **Patterns:** 10 | **Nodes:** 141M+ | **Tests:** 1,208+ | **Tasks:** 96/130 ✅ | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
 
 ---
 
@@ -734,10 +734,13 @@
 - [x] Cross-repo rules referencing egos-lab as canonical orchestration source
 > **Arquivos:** `AGENTS.md`, `.windsurfrules`, `.guarani/`, `.windsurf/workflows/`
 
-### TASK-098: BYOK Settings Page ⬜ (GitHub #35)
-- [ ] Frontend: modal de settings no chat header
-- [ ] Instruções: criar conta OpenRouter, inserir créditos, colar chave
-- [ ] Security: chave só em localStorage, nunca logada no backend
+### TASK-098: BYOK Settings Page ✅ (03/03/2026)
+- [x] Frontend: ByokSettings modal — Key icon in chat header, dark theme, PT-BR
+- [x] Instruções: criar conta OpenRouter, inserir créditos, colar chave (3-step guide)
+- [x] Security: chave só em localStorage, nunca logada no backend
+- [x] API client: sendChatMessage sends x-openrouter-key header when BYOK key present
+- [x] Backend already supports BYOK via x-openrouter-key header (chat.py)
+> **Arquivos:** `frontend/src/components/chat/ByokSettings.tsx`, `frontend/src/components/chat/ChatInterface.tsx`, `frontend/src/api/client.ts`
 > **Issue:** #35 (P2)
 
 ---

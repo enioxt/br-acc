@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { MessageCircle, Send, Sparkles, X, Plus, Trash2, History, ChevronLeft } from "lucide-react";
+import { MessageCircle, Send, Sparkles, X, Plus, Trash2, History, ChevronLeft, Key } from "lucide-react";
+import { ByokSettings } from "./ByokSettings";
+import { hasByokKey } from "@/api/client";
 import { addJourneyEntry } from "@/lib/journey";
 import {
   sendChatMessage,
@@ -55,6 +57,7 @@ export function ChatInterface({ embedded = false }: { embedded?: boolean }) {
   const [isOpen, setIsOpen] = useState(embedded);
   const [isLoading, setIsLoading] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showByok, setShowByok] = useState(false);
   const [conversations, setConversations] = useState<ConversationSummary[]>([]);
   const [activeConvId, setActiveConvId] = useState<string>(() => {
     try { return localStorage.getItem(ACTIVE_CONV_KEY) ?? ""; } catch { return ""; }
@@ -365,6 +368,13 @@ export function ChatInterface({ embedded = false }: { embedded?: boolean }) {
           >
             <History size={16} color={showHistory ? "#00e5c3" : "#5a6b60"} />
           </button>
+          <button
+            onClick={() => setShowByok(true)}
+            title="Configurações — Chave API"
+            style={{ background: "none", border: "none", cursor: "pointer", padding: 4, position: "relative" }}
+          >
+            <Key size={16} color={hasByokKey() ? "#00e5c3" : "#5a6b60"} />
+          </button>
           {!embedded && (
             <button
               onClick={() => setIsOpen(false)}
@@ -620,6 +630,7 @@ export function ChatInterface({ embedded = false }: { embedded?: boolean }) {
           <Send size={18} color="white" />
         </button>
       </div>
+      <ByokSettings isOpen={showByok} onClose={() => setShowByok(false)} />
     </div>
   );
 }

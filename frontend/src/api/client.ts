@@ -399,11 +399,33 @@ export function sendChatMessage(
   conversationId?: string,
 ): Promise<ChatResponse> {
   const clientId = getOrCreateClientId();
+  const headers: Record<string, string> = { "x-client-id": clientId };
+  const byokKey = getByokKey();
+  if (byokKey) {
+    headers["x-openrouter-key"] = byokKey;
+  }
   return apiFetch<ChatResponse>("/api/v1/chat", {
     method: "POST",
     body: JSON.stringify({ message, conversation_id: conversationId ?? "" }),
-    headers: { "x-client-id": clientId },
+    headers,
   });
+}
+
+const BYOK_KEY = "egos_openrouter_key";
+
+export function getByokKey(): string {
+  try { return localStorage.getItem(BYOK_KEY) ?? ""; } catch { return ""; }
+}
+
+export function setByokKey(key: string): void {
+  try {
+    if (key) localStorage.setItem(BYOK_KEY, key);
+    else localStorage.removeItem(BYOK_KEY);
+  } catch { /* ignore */ }
+}
+
+export function hasByokKey(): boolean {
+  return !!getByokKey();
 }
 
 // --- Client Identity (anonymous, localStorage-based) ---
