@@ -1,6 +1,6 @@
 # TASKS.md — EGOS Inteligência (SSOT)
 
-> **Updated:** 2026-03-03 (session 22) | **Stars:** 74 ⭐ | **Forks:** 8 | **Patterns:** 10 | **Nodes:** 9.2M | **Rels:** 34.5K | **Tools:** 27 | **Tasks:** 100/134 ✅ | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
+> **Updated:** 2026-03-04 (session 25-26) | **Stars:** 74 ⭐ | **Forks:** 8 | **Patterns:** 10 | **Nodes:** 9.2M | **Rels:** 34.5K | **Tools:** 27 | **Tasks:** 103/140 ✅ | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
 
 ---
 
@@ -652,10 +652,14 @@
 - [x] Bruin avaliado: framework ETL declarativo — NAO aplicavel AGORA (sem Neo4j), util futuro para DuckDB analytics
 - [x] OSINT-BIBLE (299★), WebRecon (250★), OSINTel-Dashboard (39★) encontrados
 - [x] synapse-lite (Neo4j fraud detection) encontrado — pequeno mas relevante
+- [x] **Transparencia-360** analisado (04/03): Super Reports, anomaly workers, deduplicação — complementar
+- [x] **Brazil Visible** analisado (04/03): 92 APIs catalogadas, health check, receitas cruzamento, 550+ tags
 - [ ] Monitorar repos novos com cron semanal
 - [ ] Manter registro de projetos avaliados (evitar re-avaliar)
-> **Projetos avaliados:** 9 anteriores + LMCache + 3 RokoOfficial + Bruin + 4 novos OSINT (total: 18)
-> **Bruin:** getbruin.com — declarative YAML+SQL+Python pipelines. Suporta Postgres/DuckDB/BigQuery. SEM Neo4j. Futuro: DuckDB analytics layer.
+- [ ] Implementar health check de APIs (inspirado Brazil Visible)
+> **Projetos avaliados:** 9 + LMCache + 3 RokoOfficial + Bruin + 4 OSINT + Transparencia-360 + Brazil Visible (total: 20)
+> **Transparencia-360:** github.com/MatheusMarkies/Transparencia-360 — Spring Boot + Neo4j, 26-step pipeline, Super Reports
+> **Brazil Visible:** github.com/nferdica/brazil-visible — 92+ APIs, health check automático, receitas cruzamento
 
 ### TASK-091: Chat Agent Upgrade — 24 Tools + GPT-4o-mini ✅ (03/03/2026)
 - [x] LLM: Gemini Flash → GPT-4o-mini (melhor multi-tool calling, 4 tools paralelos vs 1)
@@ -1090,6 +1094,52 @@
 - [x] Created issues #49-55 (security, devops, methodology, SSOT, investigation, BFG, Intelink)
 - [x] 30 open issues covering all project areas
 > **Total:** 55 issues (25 closed, 30 open)
+
+### TASK-125: Codex CLI Integration ✅ (04/03/2026)
+- [x] Define 6 roles: Code Review, Test Writer, Doc Updater, Bug Fixer, Async Refactor, Security Audit
+- [x] Add delegation rules to `.windsurfrules` (v2.0.0)
+- [x] Update `/start` workflow with Codex status check (Section 6)
+- [x] Update `/end` workflow with Codex cleanup step (Section 8)
+- [x] Add Section 9 to pre-commit (Codex CLI reminder, 10 sections total)
+- [ ] Login and register GitHub (`codex login`)
+- [ ] Run first delegated task (code review)
+> **Arquivos:** `.windsurfrules`, `start.md`, `end.md`, `pre-commit-v2.sh`
+
+### TASK-126: Análise Transparencia-360 ✅ (04/03/2026)
+- [x] Repo analisado: Spring Boot + Neo4j + Python workers, 26-step pipeline
+- [x] Comparação: 8 fontes vs nossas 108, sem AI chat, com Super Reports automatizados
+- [x] Features valiosas: GhostEmployee/RachadinhaWorker, deduplicação, SpatialAnomaly
+- [x] Nosso diferencial: 4.5x mais fontes, AI chatbot 27 tools, evidence chain
+- [ ] Agradecer no repositório deles (GitHub star/issue)
+> **Ref:** https://github.com/MatheusMarkies/Transparencia-360
+
+### TASK-127: Análise Brazil Visible ✅ (04/03/2026)
+- [x] Repo + site analisados: 92 APIs em 22 categorias, 5 receitas cruzamento
+- [x] Features valiosas: health check automático (6h), 550+ tags, Jupyter notebooks
+- [x] Inspirado pela comunidade br/acc (mesma que nosso fork original)
+- [x] Nosso diferencial: executamos cruzamentos interativamente, eles documentam
+- [ ] Agradecer no repositório deles (GitHub star/issue)
+> **Ref:** https://github.com/nferdica/brazil-visible
+
+### TASK-128: Activity Feed v2 — Redis Persistence ✅ (04/03/2026)
+- [x] Cumulative counters in Redis (survive restarts)
+- [x] Daily breakdown, unique users, model/source tracking
+- [x] Daily activity chart, model usage, top sources in frontend
+> **Arquivos:** `activity.py`, `Activity.tsx`
+
+### TASK-129: AI Model Fallback + Landing Cleanup ✅ (04/03/2026)
+- [x] MODEL_FALLBACK = google/gemini-2.0-flash-exp:free (auto-switch on 402/429)
+- [x] Removed LiveDatabaseStatus + DATA_SOURCES grid (duplicates)
+- [x] Methodology iframe CSP fix (frame-ancestors + X-Frame-Options)
+- [x] Backend-frontend sync check in pre-commit (Section 8)
+> **Arquivos:** `chat.py`, `Caddyfile`, `Landing.tsx`, `pre-commit-v2.sh`
+
+### TASK-132: CV Amplify IT ✅ (04/03/2026)
+- [x] Created world-class HTML CV (ATS-friendly, international standard)
+- [x] Focused on EGOS Inteligência, EGOS Lab, and Carteira Livre
+- [x] Included Police Investigator experience (soft skills, investigative mindset)
+- [x] Ready for PDF export via browser
+> **Arquivo:** `cv-enio-amplifyit.html`
 
 ---
 
