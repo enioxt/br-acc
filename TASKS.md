@@ -1134,6 +1134,36 @@
 - [x] Backend-frontend sync check in pre-commit (Section 8)
 > **Arquivos:** `chat.py`, `Caddyfile`, `Landing.tsx`, `pre-commit-v2.sh`
 
+### TASK-130: Docker Auto-Heal System ✅ (04/03/2026)
+- [x] `scripts/auto-heal.sh` — 4-layer monitoring (container state, healthcheck, URL check, disk space)
+- [x] Deployed to VPS `/opt/bracc/scripts/auto-heal.sh`
+- [x] Cron every 2 minutes (`*/2 * * * *`)
+- [x] Logs to `/opt/bracc/logs/auto-heal.log` (auto-trimmed to 500 lines)
+- [x] Verifies site HTTP 200 after healing
+> **Root cause (session 26):** Containers were in "Created" state after `docker compose up` dependency chain failure.
+> **Prevention:** Script detects Created/Exited/Dead containers and force-starts them.
+
+### TASK-131: Landing Page Redesign — Civic Intelligence Hub ⬜ (P1)
+- [ ] Use Google Stitch (stitch.withgoogle.com) to prototype dark-theme landing page
+- [ ] Align with www.egos.ia.br aesthetic (dark, modern, Palantir/Linear style)
+- [ ] Position as "Hub de Inteligência Cívica Compartilhada"
+- [ ] Inspiração: OCCRP Aleph, Hack23/CIA, Open Politics HQ, Decidim, CitiLink
+- [ ] Hero: AI chatbot + live stats + search bar (keep existing)
+- [ ] Add: "How it compares" section (vs Palantir, vs OCCRP)
+- [ ] Add: Community/contributors section
+- [ ] Mobile-first responsive design
+> **Stitch:** stitch.withgoogle.com — text→UI design + React/Tailwind code
+> **Ref:** OCCRP Aleph (data platform), Decidim (citizen participation), Open Politics HQ (politics intelligence)
+
+### TASK-132: GSD Context Engineering — Adopt for EGOS ⬜ (P2)
+- [ ] Evaluate GSD's spec-driven development (SPEC.md → PLAN.md → execute) for egos-lab agents
+- [ ] Adopt "files as long-term memory" pattern (STATE.md, CONTEXT.md) to reduce LLM context rot
+- [ ] Implement Plan→Check→Revise loop for Cypher query validation
+- [ ] Add Nyquist validation (GSD's spec quality checker) concept to orchestration pipeline
+- [ ] Measure token savings vs current approach
+> **Ref:** gsd-build/get-shit-done (24K★, MIT) — meta-prompting + context engineering for Claude Code
+> **Relevância:** Reduz custo LLM e melhora qualidade de outputs longos
+
 ---
 
 *"Siga o dinheiro público. Dados abertos, código aberto."*
