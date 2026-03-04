@@ -998,7 +998,7 @@
 - [x] Cron job diário às 3AM (`/opt/bracc/scripts/neo4j-backup.sh`)
 - [x] Reter últimos 5 backups (rotação automática)
 - [x] APOC export habilitado (`apoc.export.file.enabled=true` em apoc.conf)
-- [ ] Alertar se dump falhar via Telegram (P2)
+- [x] Alertar se dump falhar via Telegram (v2 deployed 04/03/2026)
 > **Arquivos:** `/opt/bracc/scripts/neo4j-backup.sh`, `/opt/bracc/backups/`
 > **Nota:** neo4j-admin dump falha em Community Edition. Backup via tar do volume (~1.5GB comprimido de 6.7GB)
 
