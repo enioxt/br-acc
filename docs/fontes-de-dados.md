@@ -1,11 +1,11 @@
 # Catálogo de Fontes de Dados — EGOS Inteligência
 
-**38 carregadas | 3 pipelines aguardando dados | 60+ ainda não construídas**
+**36 carregadas | 3 pipelines aguardando dados | 63+ ainda não construídas**
 Última atualização: 2026-03-03
 
 ---
 
-## 1. CARREGADAS (38 fontes)
+## 1. CARREGADAS (36 fontes)
 
 Todas as fontes abaixo possuem pipelines ETL funcionais em `etl/src/bracc_etl/pipelines/` e estão carregadas no Neo4j de produção.
 

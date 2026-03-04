@@ -59,9 +59,9 @@ https://github.com/enioxt/EGOS-Inteligencia
 O EGOS Inteligência é uma plataforma OPEN SOURCE que cruza dados públicos do Brasil (empresas, políticos, contratos, sanções, doações eleitorais) em um GRAFO INTERATIVO. Qualquer cidadão pode pesquisar e descobrir conexões ocultas entre entidades públicas e privadas.
 
 NÚMEROS-CHAVE:
-- 9.1 milhões de nós no grafo (meta: 141M)
+- 9.2 milhões de nós no grafo (meta: 141M+)
 - 26 ferramentas de inteligência (OSINT) integradas ao chatbot AI
-- 79 fontes de dados públicas mapeadas (38 carregadas)
+- 108 fontes de dados públicas mapeadas (36 carregadas)
 - 10 detectores de padrões de corrupção
 - 55+ endpoints de API
 - 14 páginas no frontend
@@ -90,7 +90,7 @@ INFRAESTRUTURA (Docker Compose):
 ┌─────────────┬──────────────────┬───────────┬────────────────────────────────┐
 │ Container   │ Image            │ Port      │ Função                         │
 ├─────────────┼──────────────────┼───────────┼────────────────────────────────┤
-│ bracc-neo4j │ neo4j:5          │ 7474,7687 │ Banco de grafo (141M+ nós)     │
+│ bracc-neo4j │ neo4j:5          │ 7474,7687 │ Banco de grafo (9.2M nós)      │
 │ redis       │ redis:7-alpine   │ 6379      │ Cache (512MB, LRU)             │
 │ api         │ python:3.12-slim │ 8000      │ FastAPI backend                │
 │ frontend    │ node:20-alpine   │ 5173      │ React 18 + Vite                │
@@ -176,9 +176,9 @@ COMPLIANCE & ÉTICA:
 - PRIVACY.md, TERMS.md, SECURITY.md, ABUSE_RESPONSE.md
 
 ETL (46 pipelines):
-- 38 fontes carregadas (CEIS, CNEP, CEPIM, CEAF, PEP, OpenSanctions, TSE, DOU, etc.)
-- 8 em progresso (CNPJ 53.6M empresas é o maior — Receita Federal)
-- 33+ mapeadas mas sem pipeline ainda
+- 36 fontes carregadas (CEIS, CNEP, CEPIM, CEAF, PEP, OpenSanctions, TSE, DOU, etc.)
+- 9 em progresso (CNPJ 53.6M empresas é o maior — Receita Federal)
+- 63+ mapeadas mas sem pipeline ainda
 
 BOTS EXTERNOS:
 - Discord: discord.js, 14 tools OSINT, PM2 managed
@@ -226,7 +226,7 @@ PARTE 2: ANÁLISE TÉCNICA POR ÁREA
 
 🗄 2.6 — Neo4j & Modelo de Grafo
   - Schema (tipos de nós e relacionamentos)
-  - Performance com 141M+ nós
+  - Performance com 9.2M nós (meta: 141M+)
   - Queries Cypher e otimizações
   - Algoritmos GDS planejados
 

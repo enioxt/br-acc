@@ -51,15 +51,15 @@ tr:hover td{background:rgba(59,130,246,.04)}
 <h1>Transparencia, Metodologia e Fontes de Dados</h1>
 <p class="sub">Como a EGOS Inteligencia funciona: usamos exclusivamente dados publicos e abertos para construir o maior grafo de relacoes entre entidades publicas e privadas do Brasil. 100% open source, verificavel e acessivel a qualquer cidadao.</p>
 <div class="tags">
-<span>38 fontes carregadas</span><span>79+ fontes mapeadas</span><span>141M+ nos</span><span>92M+ relacionamentos</span><span>Open Source (MIT)</span><span>$36/mes total</span>
+<span>36 fontes carregadas</span><span>108 fontes mapeadas</span><span>9.2M nos no grafo</span><span>34.5K relacionamentos</span><span>Open Source (AGPL-3.0)</span><span>~$36/mes total</span>
 </div>
 </div>
 
 <div class="sg">
-<div class="sb"><span class="n">141M+</span><span class="l">Nos no Grafo</span></div>
-<div class="sb"><span class="n">92M+</span><span class="l">Relacionamentos</span></div>
-<div class="sb"><span class="n">38</span><span class="l">Fontes Ativas</span></div>
-<div class="sb"><span class="n">79+</span><span class="l">Fontes Mapeadas</span></div>
+<div class="sb"><span class="n">9.2M</span><span class="l">Nos no Grafo</span></div>
+<div class="sb"><span class="n">34.5K</span><span class="l">Relacionamentos</span></div>
+<div class="sb"><span class="n">36</span><span class="l">Fontes Carregadas</span></div>
+<div class="sb"><span class="n">108</span><span class="l">Fontes Mapeadas</span></div>
 <div class="sb"><span class="n">46</span><span class="l">Pipelines ETL</span></div>
 <div class="sb"><span class="n">26</span><span class="l">Tools de IA</span></div>
 <div class="sb"><span class="n">10</span><span class="l">Detectores de Padrao</span></div>
@@ -83,7 +83,7 @@ tr:hover td{background:rgba(59,130,246,.04)}
 <p>Um agente de IA consulta 26 ferramentas em tempo real: busca no grafo Neo4j, APIs publicas (Portal Transparencia, DataJud, Querido Diario, PNCP, Camara, Senado), e busca web. O agente cruza informacoes e gera respostas com cadeia de fontes rastreavel.</p></div>
 
 <div class="box"><h4>Etapa 5: Publicacao &mdash; Aberta e Verificavel</h4>
-<p>Todo codigo e open source (MIT). Relatorios incluem fontes consultadas, custo da analise e limitacoes. <strong style="color:var(--ac)">Nenhuma acusacao &mdash; apenas dados publicos cruzados.</strong></p></div>
+<p>Todo codigo e open source (AGPL-3.0). Relatorios incluem fontes consultadas, custo da analise e limitacoes. <strong style="color:var(--ac)">Nenhuma acusacao &mdash; apenas dados publicos cruzados.</strong></p></div>
 
 <!-- SECTION 2: PRINCIPIOS -->
 <h2 id="prin">2. Principios Eticos</h2>
@@ -92,18 +92,18 @@ tr:hover td{background:rgba(59,130,246,.04)}
 <li><strong>Dados Publicos Apenas:</strong> Nenhuma fonte privada, vazada ou ilegal</li>
 <li><strong>LGPD Compliance:</strong> CPFs mascarados (***.***.***-XX). Registro de Tratamento Art. 37 publicado</li>
 <li><strong>Neutralidade Politica:</strong> Algoritmos aplicados uniformemente. CI audita linguagem tendenciosa</li>
-<li><strong>Open Source (MIT):</strong> Codigo em github.com/enioxt/EGOS-Inteligencia</li>
+<li><strong>Open Source (AGPL-3.0):</strong> Codigo em github.com/enioxt/EGOS-Inteligencia</li>
 <li><strong>Rastreabilidade:</strong> Cada resposta inclui fontes consultadas e custo</li>
-<li><strong>Autofinanciado:</strong> $36/mes, sem patrocinadores, sem grants</li>
+<li><strong>Autofinanciado:</strong> ~$36/mes (VPS $35 + dominio $1), sem patrocinadores, sem grants</li>
 </ul>
 
 <!-- SECTION 3: FONTES ATIVAS -->
-<h2 id="fontes">3. Fontes de Dados Ativas (38 carregadas)</h2>
-<p>Todas tem pipelines ETL funcionais e estao no grafo Neo4j de producao.</p>
+<h2 id="fontes">3. Fontes de Dados Ativas (36 carregadas)</h2>
+<p>Fontes com pipelines ETL funcionais e dados no grafo Neo4j de producao. A coluna "No Grafo" mostra o volume efetivamente carregado; "No Dataset" mostra o volume total disponivel na fonte original.</p>
 
 <h3>Empresas e Sociedade</h3>
 <table><tr><th>Fonte</th><th>Volume</th><th>Descricao</th></tr>
-<tr><td>CNPJ Receita Federal</td><td class="g">53.6M empresas, 1.98M socios</td><td>Todas as empresas do Brasil + quadro societario</td></tr>
+<tr><td>CNPJ Receita Federal</td><td class="g">8.86M empresas no grafo</td><td>De 53.6M no dataset. ETL Phase 2 completo, Phase 3 (socios) em andamento</td></tr>
 <tr><td>Holdings (derivado)</td><td class="g">59K relacoes</td><td>Cadeias de participacao societaria empresa-empresa</td></tr>
 </table>
 
@@ -126,8 +126,8 @@ tr:hover td{background:rgba(59,130,246,.04)}
 
 <h3>Contratos e Orcamento</h3>
 <table><tr><th>Fonte</th><th>Volume</th><th>Descricao</th></tr>
-<tr><td>Portal da Transparencia</td><td class="g">38K contratos, 27.6K emendas</td><td>Contratos e emendas federais</td></tr>
-<tr><td>ComprasNet</td><td class="g">1.08M contratos</td><td>Compras publicas federais</td></tr>
+<tr><td>Portal da Transparencia</td><td class="y">10 contratos no grafo</td><td>Pipeline pronto. Volume no dataset: 38K+ contratos. Carregamento pendente (prioridade P0)</td></tr>
+<tr><td>ComprasNet</td><td class="y">Pipeline pronto, nao carregado</td><td>1.08M contratos no dataset. Carregamento pendente</td></tr>
 <tr><td>TransfereGov</td><td class="g">71K emendas, 67K convenios</td><td>Transferencias federais a municipios</td></tr>
 <tr><td>SIOP</td><td class="g">71.1K emendas</td><td>Execucao de emendas parlamentares</td></tr>
 <tr><td>Renuncias Fiscais</td><td class="g">291.8K incentivos</td><td>R$414B+ em incentivos fiscais concedidos</td></tr>
@@ -243,7 +243,7 @@ tr:hover td{background:rgba(59,130,246,.04)}
 <h2 id="road">7. Roadmap</h2>
 
 <div class="box" style="border-left:3px solid var(--gn)"><h4>Fase 1 &mdash; Fundacao &#10004; CONCLUIDA</h4>
-<p>38 fontes carregadas, 141M+ nos, 92M+ relacionamentos. Frontend publico, 2 bots (Discord + Telegram), API com 26 tools, 10 detectores de padrao. 46 pipelines ETL.</p></div>
+<p>36 fontes carregadas, 9.2M nos, 34.5K relacionamentos. Frontend publico, 2 bots (Discord + Telegram), API com 26 tools, 10 detectores de padrao. 46 pipelines ETL.</p></div>
 
 <div class="box" style="border-left:3px solid var(--yl)"><h4>Fase 2 &mdash; Expansao Politica (em andamento)</h4>
 <p>Integrar dados eleitorais completos (TSE historico), gastos legislativos detalhados, CPIs, DOU completo, Querido Diario. Objetivo: rede Politico -> Doador -> Empresa -> Contrato -> Sancao.</p></div>
@@ -264,7 +264,7 @@ tr:hover td{background:rgba(59,130,246,.04)}
 <h2 id="lim">8. Limitacoes Atuais</h2>
 <p>Transparencia exige honestidade sobre o que <strong>nao</strong> conseguimos fazer (ainda):</p>
 
-<div class="lm"><strong>Cobertura Parcial:</strong> Das 79+ fontes mapeadas, apenas 38 estao carregadas. Fontes criticas como DataJud (80M processos), PNCP completo, e TCEs estaduais ainda nao estao integradas.</div>
+<div class="lm"><strong>Cobertura Parcial:</strong> Das 108 fontes mapeadas, apenas 36 estao carregadas. Fontes criticas como DataJud (80M processos), PNCP completo, e TCEs estaduais ainda nao estao integradas.</div>
 
 <div class="lm"><strong>CNPJ em Carregamento:</strong> O dataset completo de 53.6M empresas da Receita Federal esta sendo carregado (ETL em andamento). Ate a conclusao, consultas de empresas podem retornar resultados incompletos.</div>
 
@@ -310,7 +310,7 @@ tr:hover td{background:rgba(59,130,246,.04)}
 
 <div class="cta">
 <h2 style="margin-bottom:.5rem">Junte-se ao Projeto</h2>
-<p style="color:var(--mu);font-size:.87rem;max-width:500px;margin:0 auto .8rem">79+ fontes de dados publicas. 10 algoritmos de deteccao. 26 ferramentas de IA. Zero custo para o cidadao.</p>
+<p style="color:var(--mu);font-size:.87rem;max-width:500px;margin:0 auto .8rem">108 fontes de dados publicas mapeadas (36 carregadas). 10 algoritmos de deteccao. 26 ferramentas de IA. Zero custo para o cidadao.</p>
 <a href="https://github.com/enioxt/EGOS-Inteligencia">GitHub</a>
 <a href="https://inteligencia.egos.ia.br">Acessar Plataforma</a>
 <a href="https://github.com/enioxt/EGOS-Inteligencia/issues" class="s2">Issues Abertas</a>
@@ -319,7 +319,7 @@ tr:hover td{background:rgba(59,130,246,.04)}
 <div class="ft">
 EGOS Inteligencia &mdash; Dados publicos, codigo aberto, transparencia real.<br>
 Nenhum dado privado. Nenhuma acusacao. Apenas fatos verificaveis.<br>
-github.com/enioxt/EGOS-Inteligencia &bull; MIT License &bull; 2026
+github.com/enioxt/EGOS-Inteligencia &bull; AGPL-3.0 License &bull; 2026
 </div>
 </div>
 </body>

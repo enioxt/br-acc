@@ -9,7 +9,7 @@
 
 | Container | Image | Port | Purpose |
 |-----------|-------|------|---------|
-| **bracc-neo4j** | neo4j:5-community | 7474, 7687 | Graph database (141M+ nodes, 92M+ rels) |
+| **bracc-neo4j** | neo4j:5-community | 7474, 7687 | Graph database (9.2M nodes, 34.5K rels) |
 | **redis** | redis:7-alpine | 6379 | Cache (512MB, allkeys-lru) |
 | **api** | python:3.12-slim | 8000 | FastAPI backend |
 | **frontend** | node:20-alpine | 5173 | React 18 + Vite |
