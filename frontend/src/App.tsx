@@ -22,6 +22,7 @@ const ReportsPage = lazy(() => import("./pages/Reports").then((m) => ({ default:
 const ActivityPage = lazy(() => import("./pages/Activity").then((m) => ({ default: m.Activity })));
 const MethodologyPage = lazy(() => import("./pages/Methodology").then((m) => ({ default: m.Methodology })));
 const EagleEyePage = lazy(() => import("./pages/EagleEye").then((m) => ({ default: m.EagleEye })));
+const ValorRealPage = lazy(() => import("./pages/ValorReal").then((m) => ({ default: m.ValorReal })));
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const token = useAuthStore((s) => s.token);
@@ -87,6 +88,7 @@ export function App() {
         <Route index element={<Dashboard />} />
         <Route path="search" element={<Search />} />
         <Route path="eagle-eye" element={<Suspense fallback={<Spinner />}><EagleEyePage /></Suspense>} />
+        <Route path="valor-real" element={<Suspense fallback={<Spinner />}><ValorRealPage /></Suspense>} />
         <Route path="analysis/:entityId" element={<Suspense fallback={<Spinner />}><EntityAnalysis /></Suspense>} />
         <Route path="graph/:entityId" element={<GraphRedirect />} />
         {IS_PATTERNS_ENABLED && <Route path="patterns" element={<Patterns />} />}
