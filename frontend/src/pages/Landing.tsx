@@ -215,7 +215,7 @@ export function Landing() {
           <span className={styles.trustLabel}>{t("landing.trust.neutral")}</span>
         </div>
         <div className={styles.trustItem}>
-          <span className={styles.trustValue}>{t("landing.trust.auditableValue")}</span>
+          <span className={styles.trustValue}>{stats?.data_sources ?? "—"}</span>
           <span className={styles.trustLabel}>{t("landing.trust.auditable")}</span>
         </div>
       </div>
@@ -223,7 +223,7 @@ export function Landing() {
       <section className={styles.sources}>
         <div ref={sourcesRef} className={`${styles.sourcesInner} ${styles.reveal}`}>
           <span className={styles.sectionLabel}>
-            {t("landing.sources.sectionLabel")}
+            {t("landing.sources.sectionLabel", { count: stats?.data_sources ?? "—" })}
           </span>
           <h2 className={styles.sectionHeading}>
             {t("landing.sources.sectionHeading")}

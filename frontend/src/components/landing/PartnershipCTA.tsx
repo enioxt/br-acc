@@ -1,4 +1,22 @@
+interface InfraCost {
+  monthly_usd: number;
+  details: string;
+}
+
+const INFRA_COST_KEY = "bracc_infra_cost";
+const DEFAULT_COST: InfraCost = { monthly_usd: 36, details: "VPS + domínio" };
+
+function useInfraCost(): InfraCost {
+  try {
+    const raw = typeof window !== "undefined" ? localStorage.getItem(INFRA_COST_KEY) : null;
+    if (raw) return JSON.parse(raw) as InfraCost;
+  } catch { /* fallback */ }
+  return DEFAULT_COST;
+}
+
 export function PartnershipCTA() {
+  const cost = useInfraCost();
+
   return (
     <section style={{
       padding: "clamp(3rem, 6vw, 4.5rem) 0",
@@ -44,7 +62,7 @@ export function PartnershipCTA() {
           marginTop: "1.5rem", fontSize: "0.78rem",
           color: "rgba(148,163,154,0.7)", fontFamily: "var(--font-mono)",
         }}>
-          100% open-source · Infraestrutura: $105/mês autofinanciado · Sem investidores, sem publicidade
+          100% open-source · Infraestrutura: ${cost.monthly_usd}/mês autofinanciado · Sem investidores, sem publicidade
         </p>
       </div>
     </section>
