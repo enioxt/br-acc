@@ -1,20 +1,21 @@
 # TASKS.md — EGOS Inteligência (SSOT)
 
-> **Updated:** 2026-03-03 (session 21) | **Stars:** 74 ⭐ | **Forks:** 8 | **Patterns:** 10 | **Nodes:** 141M+ | **Tests:** 1,208+ | **Tasks:** 96/130 ✅ | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
+> **Updated:** 2026-03-03 (session 22) | **Stars:** 74 ⭐ | **Forks:** 8 | **Patterns:** 10 | **Nodes:** 9.2M | **Rels:** 34.5K | **Tools:** 27 | **Tasks:** 100/134 ✅ | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
 
 ---
 
 ## P0 — Em Andamento (Blockers)
 
-### TASK-001: CNPJ ETL — 53.6M empresas ⏳
+### TASK-001: CNPJ ETL — 53.6M empresas ⏳ 🚨 CRITICAL
 - [x] Upload 6.8GB zip para Contabo
 - [x] Extrair dados (26GB descomprimido)
 - [x] Phase 2: Create Company nodes (8,860,601 loaded)
-- [ ] Phase 1: Build estab_lookup (em execução, PID 1997365, file 7/10 ESTABELE ~70%)
-- [ ] Phase 3: Create Person/Partner nodes + SOCIO_DE relationships (ETA: ~6-8h from session 17 start)
+- [ ] Phase 1: Build estab_lookup (status unknown — check if still running)
+- [ ] **Phase 3: Create Person/Partner nodes + SOCIO_DE relationships** 🚨
 - [ ] Phase 4: Post-load hooks (entity linking)
-> **Server:** 217.216.95.126 | **Service:** `bracc-etl.service` (systemd, auto-restart) | **RAM:** 13.6GB | **Log:** `/opt/bracc/cnpj-etl.log`
-> **Status (session 17):** Phase 1 rebuilding estab_lookup, reading ESTABELE file Y6 (7/10). Process running 10h+, healthy. Will auto-proceed to Phase 3 (socios + SOCIO_DE relationships).
+> **Server:** 217.216.95.126 | **Service:** `bracc-etl.service` (systemd, auto-restart)
+> **🚨 CRITICAL FINDING (session 22):** Neo4j has only **4 SOCIO_DE** relationships (should be ~24.6M from CNPJ QSA). ETL loaded Company nodes but **NOT relationships**. This blocks ALL multi-hop traversal features. Phase 3 must be re-run.
+> **Impact:** Without SOCIO_DE, the find_connection_path tool and pattern detectors cannot discover network connections between entities.
 
 ### TASK-002: Neo4j Performance Optimization ⏳
 - [x] Criar script `neo4j-memory-upgrade.sh` (16G heap, 22G pagecache)
@@ -1052,6 +1053,43 @@
 - [x] 3 novos testes para middleware (gerar, ecoar, unicidade)
 - [x] 235 API unit tests passando (219 + 13 sanitizer + 3 request-id)
 > **Arquivos:** `middleware/request_id.py`, `logging_config.py`, `routers/meta.py`, `main.py`
+
+### TASK-120: Pre-commit v2 + Workflows v2 ✅ (03/03/2026)
+- [x] 8-section pre-commit hook: security, python, frontend, data accuracy, fork sync, PR/issue, TASKS sync, convention
+- [x] Detects stale data (141M/MIT), upstream fork delta, open PRs
+- [x] /start v2: API live check, upstream sync, PR/issue/fork count
+- [x] /end v2: GitHub issue close sync, deployment verify
+- [x] Upstream remote added (World-Open-Graph/br-acc)
+- [x] gh default set to enioxt/EGOS-Inteligencia
+> **Arquivos:** `scripts/pre-commit-v2.sh`, `.windsurf/workflows/start.md`, `.windsurf/workflows/end.md`
+
+### TASK-121: Methodology Page ✅ (03/03/2026) — GitHub #51
+- [x] New /app/methodology route with iframe to existing HTML
+- [x] BookOpen icon in sidebar, i18n keys (PT-BR + EN)
+- [x] Removed from PUBLISHED_REPORTS in Reports.tsx
+> **Arquivos:** `frontend/src/pages/Methodology.tsx`, `App.tsx`, `AppShell.tsx`, `i18n.ts`
+
+### TASK-122: Data Accuracy SSOT ✅ (03/03/2026) — GitHub #52
+- [x] Created platform-stats.json with ALL verified numbers
+- [x] Fixed 14 data errors across 9 files (141M→9.2M, MIT→AGPL, 38→36, etc)
+- [x] Verified 11 metrics against live API (100% match)
+- [x] Pre-commit detects stale numbers
+> **Arquivos:** `frontend/public/updates/platform-stats.json`, 9 files corrected
+
+### TASK-123: Multi-hop Connection Finder (Tool #27) ✅ (03/03/2026)
+- [x] find_connection_path — shortestPath with configurable depth (1-6 hops)
+- [x] Fuzzy entity matching via fulltext index
+- [x] Evidence chain integration
+- [x] Deployed to VPS (docker cp + restart)
+- [ ] **BLOCKED:** Only 4 SOCIO_DE relationships in Neo4j — tool works but graph too sparse
+> **Arquivos:** `api/src/bracc/routers/chat.py`, `api/src/bracc/routers/chat_tools.py`
+> **Depende de:** TASK-001 (CNPJ ETL Phase 3 must re-run to load 24.6M SOCIO_DE)
+
+### TASK-124: GitHub Issues Sync ✅ (03/03/2026)
+- [x] Closed issues #34 (System Map), #35 (BYOK)
+- [x] Created issues #49-55 (security, devops, methodology, SSOT, investigation, BFG, Intelink)
+- [x] 30 open issues covering all project areas
+> **Total:** 55 issues (25 closed, 30 open)
 
 ---
 
