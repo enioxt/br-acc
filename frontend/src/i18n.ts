@@ -471,9 +471,9 @@ const resources = {
           patterns: "Detect patterns",
           patternsDesc:
             "Algorithms cross-reference multiple data sources to find patterns in contracts, donations, and sanctions.",
-          investigations: "Investigate in depth",
+          investigations: "Research in depth",
           investigationsDesc:
-            "Build dossiers with annotations, tags, and exports. Source attribution on every data point.",
+            "Build research dossiers with annotations, tags, and exports. Source attribution on every data point.",
         },
         howItWorks: {
           sectionLabel: "How it works",

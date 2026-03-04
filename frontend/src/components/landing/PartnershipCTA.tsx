@@ -38,7 +38,7 @@ export function PartnershipCTA() {
           lineHeight: 1.6, color: "rgba(232,237,233,0.7)",
         }}>
           Pesquisadores, jornalistas, desenvolvedores, instituições, governos e universidades
-          podem contribuir integrando novas bases de dados, criando investigações e expandindo o sistema.
+          podem contribuir integrando novas bases de dados, criando pesquisas e expandindo o sistema.
           Quanto mais bases conectadas, mais poderoso o cruzamento.
         </p>
         <div style={{ display: "flex", gap: "0.8rem", justifyContent: "center", flexWrap: "wrap" as const }}>

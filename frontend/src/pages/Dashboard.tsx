@@ -98,7 +98,7 @@ export function Dashboard() {
           </div>
           <div className={styles.onboardingCard}>
             <h3>Recursos Públicos</h3>
-            <p>Busque por cidades específicas para investigar contratos municipais e fornecedores locais.</p>
+            <p>Busque por cidades específicas para pesquisar contratos municipais e fornecedores locais.</p>
           </div>
         </div>
       </section>
