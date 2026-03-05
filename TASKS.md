@@ -1188,24 +1188,7 @@
 > **Princípio:** Neo4j na VPS é SSOT. Sem duplicação. Endpoints semânticos, nunca Cypher cru.
 > **Depende de:** TASK-001 (ETL) para dados completos
 
-### TASK-134: Forja — Assistente Operacional Corporativo (Chat-First ERP) ⬜ (P2)
-- [ ] FORJA-001: Definir modelo de dados mínimo (tenant, user, role, conversation, message, tool_call, audit_log)
-- [ ] FORJA-002: Contratos de dados e políticas (schemas canônicos)
-- [ ] FORJA-003: Auth multi-tenant + RLS (Postgres)
-- [ ] FORJA-004: Chat Service base + Tool Runner seguro (baseado em br-acc/chat.py)
-- [ ] FORJA-005: STT (Whisper) + transcrição de áudio
-- [ ] FORJA-006: 10 consultas core (produtos, custos, orçamento, fornecedores, produção)
-- [ ] FORJA-007: Relatório PDF (financeiro ou produção)
-- [ ] FORJA-008: Fluxo de aprovação N-de-M (Temporal/Conductor)
-- [ ] FORJA-009: Email Ingestion Service (Gmail API ou M365)
-- [ ] FORJA-010: Resumo + sugestão de resposta de e-mail via IA
-- [ ] FORJA-011: Notificação WhatsApp (Evolution API)
-- [ ] FORJA-012: Dashboard operacional (Next.js + Tailwind)
-- [ ] FORJA-013: UX acessível para campo (botões 56px+, fonte 18px+, alto contraste)
-> **Spec:** `colaboracao-multi-repos/FORJA_PRODUCT_SPEC.md`
-> **Origem:** `egos-lab/docs/chat.md` + PR #56
-> **Público:** Metalúrgicas, oficinas mecânicas (UX para leigos)
-> **Reuso:** ai-client (egos-lab), Evolution API (carteira-livre), chat.py 26 tools (br-acc)
+### TASK-134: [MOVED] Forja — Moved to private repo (github.com/enioxt/FORJA) ✅ (05/03/2026)
 
 ---
 
