@@ -1168,4 +1168,45 @@
 
 ---
 
+## Novos Produtos (Cross-Repo)
+
+### TASK-133: NexusBridge — Camada de Interoperabilidade Cross-Repo ⬜ (P1)
+- [ ] TASK-NB-001: Criar SERVICE_KEY no .env da VPS + middleware de validação
+- [ ] TASK-NB-002: Criar router `/api/v1/interop/` no br-acc (FastAPI)
+- [ ] TASK-NB-003: Endpoint `GET /interop/entity/{cnpj}` — busca empresa + sócios
+- [ ] TASK-NB-004: Endpoint `GET /interop/network/{cnpj}` — grafo de rede (1 hop)
+- [ ] TASK-NB-005: Endpoint `GET /interop/pep/{cpf_or_name}` — check PEP
+- [ ] TASK-NB-006: Endpoint `GET /interop/sanctions/{cnpj}` — sanções CEIS/CNEP
+- [ ] TASK-NB-007: Endpoint `GET /interop/health` — status do Neo4j + contagens
+- [ ] TASK-NB-008: Criar `bracc-client.ts` no egos-lab (`packages/shared/src/`)
+- [ ] TASK-NB-009: Criar tool `bracc.query-entity` no MCP do egos-lab
+- [ ] TASK-NB-010: Integrar no Telegram bot — consultar VPS quando user perguntar sobre empresa
+- [ ] TASK-NB-011: Client no carteira-livre para KYC enrichment
+- [ ] TASK-NB-012: Audit log de queries interop
+- [ ] TASK-NB-013: Rate limit por SERVICE_KEY
+> **Spec:** `colaboracao-multi-repos/NEXUSBRIDGE_SPEC.md`
+> **Princípio:** Neo4j na VPS é SSOT. Sem duplicação. Endpoints semânticos, nunca Cypher cru.
+> **Depende de:** TASK-001 (ETL) para dados completos
+
+### TASK-134: Forja — Assistente Operacional Corporativo (Chat-First ERP) ⬜ (P2)
+- [ ] FORJA-001: Definir modelo de dados mínimo (tenant, user, role, conversation, message, tool_call, audit_log)
+- [ ] FORJA-002: Contratos de dados e políticas (schemas canônicos)
+- [ ] FORJA-003: Auth multi-tenant + RLS (Postgres)
+- [ ] FORJA-004: Chat Service base + Tool Runner seguro (baseado em br-acc/chat.py)
+- [ ] FORJA-005: STT (Whisper) + transcrição de áudio
+- [ ] FORJA-006: 10 consultas core (produtos, custos, orçamento, fornecedores, produção)
+- [ ] FORJA-007: Relatório PDF (financeiro ou produção)
+- [ ] FORJA-008: Fluxo de aprovação N-de-M (Temporal/Conductor)
+- [ ] FORJA-009: Email Ingestion Service (Gmail API ou M365)
+- [ ] FORJA-010: Resumo + sugestão de resposta de e-mail via IA
+- [ ] FORJA-011: Notificação WhatsApp (Evolution API)
+- [ ] FORJA-012: Dashboard operacional (Next.js + Tailwind)
+- [ ] FORJA-013: UX acessível para campo (botões 56px+, fonte 18px+, alto contraste)
+> **Spec:** `colaboracao-multi-repos/FORJA_PRODUCT_SPEC.md`
+> **Origem:** `egos-lab/docs/chat.md` + PR #56
+> **Público:** Metalúrgicas, oficinas mecânicas (UX para leigos)
+> **Reuso:** ai-client (egos-lab), Evolution API (carteira-livre), chat.py 26 tools (br-acc)
+
+---
+
 *"Siga o dinheiro público. Dados abertos, código aberto."*
