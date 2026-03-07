@@ -1,86 +1,121 @@
 ---
-description: Session finalization with handoff
+description: "Finaliza sessão com handoff completo, disseminação e meta-prompt check"
 ---
 
-# /end — Session Finalization (v2.1)
+# /end — Session Finalization (v5.0)
 
-## 1. Collect Session Work
+> **Sacred Code:** 000.111.369.963.1618
+> **Works in:** ANY EGOS repo
 
-```bash
-git log --oneline --since="8 hours ago"
-```
-
-## 2. Update TASKS.md
-
-- Mark completed tasks as ✅ with date
-- Add file references
-- Update task counter in header
-
-## 3. Commit Pending Changes
+## Phase 1: Collect Session Data // turbo
 
 ```bash
-git add -A
-git status --short
-# Commit with conventional message
-git commit -m "chore: session N handoff — [summary]"
+printf "═══════════════════════════════════════════════════════════\n"
+printf "🔍 SESSION FINALIZATION\n"
+printf "═══════════════════════════════════════════════════════════\n\n"
+
+ROOT="$PWD"; CUR="$ROOT"
+while [ "$CUR" != "/" ] && [ ! -e "$CUR/.git" ]; do CUR="$(dirname "$CUR")"; done
+[ -e "$CUR/.git" ] && ROOT="$CUR"
+
+REPO_NAME=$(basename "$ROOT")
+printf "📂 Repo: %s\n" "$REPO_NAME"
+
+LAST_COMMIT=$(git -C "$ROOT" log --oneline -1 2>/dev/null)
+UNCOMMITTED=$(git -C "$ROOT" status --short 2>/dev/null | wc -l)
+COMMITS_TODAY=$(git -C "$ROOT" log --oneline --since="6 hours ago" 2>/dev/null | wc -l)
+printf "   Last commit: %s\n" "$LAST_COMMIT"
+printf "   Uncommitted: %s files\n" "$UNCOMMITTED"
+printf "   Session commits: %s\n\n" "$COMMITS_TODAY"
+
+printf "📋 Recent commits this session:\n"
+git -C "$ROOT" log --oneline --since="6 hours ago" 2>/dev/null || git -C "$ROOT" log --oneline -5
+printf "\n"
+
+if [ -f "$ROOT/TASKS.md" ]; then
+  LINE_COUNT=$(wc -l < "$ROOT/TASKS.md")
+  printf "📝 TASKS.md: %s lines\n\n" "$LINE_COUNT"
+fi
 ```
 
-## 4. GitHub Sync (NEW in v2.0)
+## Phase 2: Agent Handoff Generation
 
-// turbo
-- Close completed issues: `gh issue list --state open --limit 20` — cross-reference with completed tasks
-// turbo
-- Check for new PRs: `gh pr list --state open --limit 5`
-// turbo  
-- Check upstream: `git fetch upstream --quiet 2>/dev/null && echo "Behind upstream by $(git rev-list HEAD..upstream/main --count) commits"`
+```
+⚠️ AI AGENT: Generate handoff document:
 
-For each completed task that has a matching open issue, close it:
+1. Create: docs/_current_handoffs/handoff_YYYY-MM-DD.md
+2. Include:
+   - What was accomplished (bullet list with file links)
+   - What's in progress (with % completion)
+   - What's blocked (reason + required action)
+   - Next steps (ordered by priority)
+   - Environment state (builds passing? tests green?)
+3. Keep ACTIONABLE — next agent productive in < 2 minutes
+```
+
+## Phase 3: Update TASKS.md
+
+```
+⚠️ AI AGENT: Ensure TASKS.md reflects current state:
+- Mark completed tasks with [x]
+- Mark in-progress with [/]
+- Add any new tasks discovered during session
+- Update version + LAST SESSION line
+```
+
+## Phase 4: Disseminate Knowledge
+
+```
+⚠️ AI AGENT: Before ending, persist knowledge:
+
+1. create_memory() — Session patterns, decisions, gotchas
+2. Check .guarani/prompts/triggers.json — Did any meta-prompt trigger apply?
+3. If architecture decisions were made → document in .guarani/
+4. If new patterns learned → add to docs/knowledge/HARVEST.md
+```
+
+## Phase 5: Codex Cleanup
+
 ```bash
-gh issue close <NUMBER> -c "Completed in session N, commit <HASH>"
+printf "🤖 Codex Check:\n"
+if command -v codex &> /dev/null; then
+  codex cloud list 2>/dev/null | head -10 || printf "   No cloud tasks\n"
+else
+  printf "   Codex not installed\n"
+fi
+printf "\n"
 ```
 
-## 5. Push + VPS Sync
+## Phase 6: Commit If Needed // turbo
 
 ```bash
-git push origin main
-ssh root@217.216.95.126 "cd /opt/bracc && git pull origin main && cd infra && docker compose restart api"
+ROOT="$PWD"; CUR="$ROOT"
+while [ "$CUR" != "/" ] && [ ! -e "$CUR/.git" ]; do CUR="$(dirname "$CUR")"; done
+[ -e "$CUR/.git" ] && ROOT="$CUR"
+
+UNCOMMITTED=$(git -C "$ROOT" status --short 2>/dev/null | wc -l)
+if [ "$UNCOMMITTED" -gt 0 ]; then
+  printf "⚠️  %s uncommitted files — consider committing!\n" "$UNCOMMITTED"
+  git -C "$ROOT" status --short
+fi
 ```
 
-If frontend files changed:
-```bash
-ssh root@217.216.95.126 "cd /opt/bracc/infra && docker compose build frontend && docker compose up -d frontend"
+## Phase 7: Session Summary
+
+```
+⚠️ AI AGENT: Display in chat:
+
+SESSION SUMMARY
+===============
+Repo: [name]
+Commits: [N] this session
+Files changed: [list key files]
+What was done: [2-4 lines]
+Next steps: [P0/P1 priorities]
+Meta-prompts used: [any triggered?]
+Signed by: cascade-agent — [ISO8601]
 ```
 
-## 6. Verify Deployment
+---
 
-// turbo
-- API health: `curl -sL --max-time 10 https://inteligencia.egos.ia.br/api/v1/meta/stats | python3 -c "import sys,json; d=json.load(sys.stdin); print(f'API OK: {d[\"total_nodes\"]:,} nodes')" 2>/dev/null || echo 'API VERIFY FAILED — INVESTIGATE'`
-
-## 7. Handoff Summary
-
-Output to user:
-
-- **Session:** Number and duration
-- **Completed:** List of tasks done
-- **In Progress:** What's still running
-- **Blocked:** What needs user input
-- **GitHub:** Issues closed, PRs reviewed, upstream delta
-- **Next:** Recommended priorities for next session
-
-## 8. Codex Cleanup (MANDATORY)
-
-// turbo
-- Check pending Codex cloud tasks: `codex cloud list 2>/dev/null | head -10 || echo "No Codex tasks"`
-// turbo
-- Check local review capability: `codex review --help >/dev/null 2>&1 && echo "codex review ready" || echo "codex review unavailable"`
-
-Before ending the session:
-- If there are uncommitted changes, run a final second opinion in a **parallel terminal**: `codex review --uncommitted`
-- For cloud tasks, inspect before applying: `codex cloud diff <TASK_ID>`
-- Apply only approved diffs: `codex cloud apply <TASK_ID>`
-- If a cloud task is stale/irrelevant, note it explicitly in the handoff as `Codex task <TASK_ID> abandoned`
-- If cloud execution is needed for the next session, record that current CLI requires `codex cloud exec --env <ENV_ID> ...`
-
-## 9. Persist Knowledge
-
-Use `create_memory` to save important discoveries from this session.
+_v5.0 — Unified from carteira-livre v4.1 + agent v3.1. Added meta-prompt dissemination check._
