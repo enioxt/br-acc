@@ -40,6 +40,11 @@ interface MonitorState {
   knownPRNumbers: number[];
 }
 
+function ensureDirFor(filePath: string): void {
+  const dir = path.dirname(filePath);
+  if (dir) fs.mkdirSync(dir, { recursive: true });
+}
+
 function loadState(): MonitorState {
   try {
     const raw = fs.readFileSync(STATE_PATH, "utf-8");
@@ -54,6 +59,7 @@ function loadState(): MonitorState {
 }
 
 function saveState(state: MonitorState): void {
+  ensureDirFor(STATE_PATH);
   fs.writeFileSync(STATE_PATH, JSON.stringify(state, null, 2), "utf-8");
 }
 
@@ -135,8 +141,9 @@ async function fetchForks(octokit: Octokit): Promise<ForkEntry[]> {
           files_changed = compare.files.map((f) => f.filename).filter(Boolean);
           categories = categorizeFilesSet(files_changed);
         }
-      } catch {
-        // Fork may be empty or same as upstream
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        console.warn(`[bracc-monitor] compare forks ${UPSTREAM_OWNER}/${UPSTREAM_REPO} vs ${fork.full_name}: ${msg}`);
       }
 
       forks.push({
@@ -197,8 +204,9 @@ async function fetchOpenPRs(octokit: Octokit): Promise<PREntry[]> {
           pull_number: pr.number,
         });
         files = filesData.map((f) => f.filename).filter(Boolean);
-      } catch {
-        // ignore
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        console.warn(`[bracc-monitor] pulls.listFiles ${UPSTREAM_OWNER}/${UPSTREAM_REPO} PR #${pr.number}: ${msg}`);
       }
       const categories = categorizeFilesSet(files);
       const labels = (pr.labels ?? []).map((l) => (typeof l === "object" && l.name ? l.name : String(l)));
@@ -307,7 +315,9 @@ async function fetchIssues(octokit: Octokit): Promise<{ upstream: IssueEntry[]; 
       }
       if (list.length < pageSize) break;
       page++;
-    } catch {
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      console.warn(`[bracc-monitor] issues listForRepo ${OUR_REPO_OWNER}/${OUR_REPO} page ${page}: ${msg}`);
       break;
     }
   }
@@ -372,7 +382,9 @@ async function fetchRoadmapSuggestions(
   let tasksContent: string;
   try {
     tasksContent = fs.readFileSync(tasksPath, "utf-8");
-  } catch {
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.warn(`[bracc-monitor] read TASKS.md ${tasksPath}: ${msg}`);
     return [];
   }
   const tasks = parseTASKS(tasksContent);
@@ -557,6 +569,7 @@ async function main(): Promise<void> {
     roadmap_suggestions,
   };
 
+  ensureDirFor(REPORT_PATH);
   fs.writeFileSync(REPORT_PATH, JSON.stringify(report, null, 2), "utf-8");
   console.log("Report written to", REPORT_PATH);
 
