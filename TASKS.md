@@ -910,12 +910,12 @@
 > **Evidência:** `api/src/bracc/routers/chat.py:264-281`
 > **Esforço:** 1h | **Impacto:** Fecha maior vetor de ataque
 
-### TASK-107: Migrar Conversas para Redis ✅ (03/03/2026)
+### TASK-107: Migrar Conversas para Redis ⏳ (parcial)
 - [x] Conversas já tinham Redis persistence via `conversations.py` (30-day TTL, CRUD, ownership)
-- [x] Migrar `_usage_counts` e `_usage_day` para Redis INCR com TTL 24h
-- [x] Graceful degradation (Redis down = in-memory fallback)
-- [x] Key pattern: `egos:usage:{date}:{client_id}`
-> **Evidência:** `api/src/bracc/routers/chat.py:66-73`
+- [ ] Migrar `_usage_counts` e `_usage_day` para Redis INCR com TTL 24h
+- [ ] Graceful degradation (Redis down = in-memory fallback)
+- [ ] Key pattern: `egos:usage:{date}:{client_id}`
+> **Evidência:** Redis em `conversations.py`; `_usage_counts`/`_usage_day` ainda em memória em `api/src/bracc/routers/chat.py` (migração pendente).
 > **Esforço:** 2h | **Impacto:** Conversas sobrevivem restart/deploy
 
 ### TASK-108: Dividir chat.py em Módulos 🟠 (P1)
