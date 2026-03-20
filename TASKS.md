@@ -1,8 +1,17 @@
 # TASKS.md — EGOS Inteligência (SSOT)
 
-> **Updated:** 2026-03-06 | **Patterns:** 10 | **Nodes:** 77.0M | **Rels:** 25.1M | **Tools:** 26 | **Tasks:** 103/141 ✅ | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
+> **Updated:** 2026-03-18 | **Patterns:** 10 | **Nodes:** 77.0M | **Rels:** 25.1M | **Tools:** 27 | **Tasks:** 103/141 ✅ | **GitHub Issues:** https://github.com/enioxt/EGOS-Inteligencia/issues
 
 ---
+
+## Strategic Reset — Product Focus (2026-03-18)
+
+- [ ] TASK-136: Reposition `EGOS-Inteligencia` as the strongest reference implementation for `EGOS Guard Brasil`, not as the entire business thesis
+- [ ] TASK-137: Expose guardrail primitives from this repo as reusable proof surfaces — LGPD/public guard, masking, evidence-aware chat, public-safe investigation flows
+- [ ] TASK-138: Prove one lighthouse use case with hard evidence and neutral language — a public-safe assistant for investigations/due diligence under Brazilian constraints
+- [ ] TASK-140: Adopt the kernel `docs/SSOT_REGISTRY.md` in `br-acc` — map local SSOTs (`AGENTS`, `TASKS`, local maps, legal docs) to the cross-repo contract and document what remains public-safe local truth
+
+> **Directive:** New work in `br-acc` should either strengthen the reference implementation, improve truthfulness of public claims, or help package the flagship guardrails product.
 
 ## P0 — Em Andamento (Blockers)
 

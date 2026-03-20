@@ -14,6 +14,7 @@
 | **Path** | /home/enio/br-acc |
 | **VPS** | 217.216.95.126 (Contabo, /opt/bracc) |
 | **Repo** | github.com/enioxt/EGOS-Inteligencia |
+| **Kernel SSOT Registry** | `/home/enio/egos/docs/SSOT_REGISTRY.md` |
 | **Deploy** | Docker Compose no VPS (API + Frontend + Neo4j + Redis) |
 | **URL** | inteligencia.egos.ia.br |
 | **Framework** | EGOS (egos-lab) — regras compartilhadas |
