@@ -14,6 +14,7 @@ import { Patterns } from "./pages/Patterns";
 import { Register } from "./pages/Register";
 import { Search } from "./pages/Search";
 import { SharedInvestigation } from "./pages/SharedInvestigation";
+import { SharedInvestigations } from "./pages/SharedInvestigations";
 import { useAuthStore } from "./stores/auth";
 
 const EntityAnalysis = lazy(() => import("./pages/EntityAnalysis").then((m) => ({ default: m.EntityAnalysis })));
@@ -71,6 +72,7 @@ export function App() {
         <Route index element={<Landing />} />
         {!IS_PUBLIC_MODE && <Route path="login" element={<Login />} />}
         {!IS_PUBLIC_MODE && <Route path="register" element={<Register />} />}
+        <Route path="shared" element={<SharedInvestigations />} />
       </Route>
 
       {/* Public — shared investigation (no auth, no shell) */}

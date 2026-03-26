@@ -2,7 +2,14 @@ import uuid
 
 from neo4j import AsyncSession, Record
 
-from bracc.models.investigation import Annotation, InvestigationResponse, Tag
+from bracc.models.investigation import (
+    Annotation,
+    InvestigationExportBundle,
+    InvestigationImportResponse,
+    InvestigationResponse,
+    SharedInvestigationResponse,
+    Tag,
+)
 from bracc.services.neo4j_service import execute_query, execute_query_single
 
 
@@ -295,3 +302,147 @@ async def get_by_share_token(
     if record is None:
         return None
     return _record_to_investigation(record)
+
+
+async def list_shared_investigations(
+    session: AsyncSession,
+    page: int,
+    size: int,
+) -> tuple[list[InvestigationResponse], int]:
+    skip = (page - 1) * size
+    records = await execute_query(
+        session,
+        "investigation_shared_list",
+        {"skip": skip, "limit": size},
+    )
+    if not records:
+        return [], 0
+    total = int(records[0]["total"])
+    investigations = [_record_to_investigation(r) for r in records]
+    return investigations, total
+
+
+async def list_annotations_by_share_token(
+    session: AsyncSession,
+    token: str,
+) -> list[Annotation]:
+    records = await execute_query(session, "annotation_list_by_token", {"token": token})
+    return [_record_to_annotation(record) for record in records]
+
+
+async def list_tags_by_share_token(
+    session: AsyncSession,
+    token: str,
+) -> list[Tag]:
+    records = await execute_query(session, "tag_list_by_token", {"token": token})
+    return [_record_to_tag(record) for record in records]
+
+
+async def get_shared_investigation(
+    session: AsyncSession,
+    token: str,
+) -> SharedInvestigationResponse | None:
+    investigation = await get_by_share_token(session, token)
+    if investigation is None:
+        return None
+
+    annotations = await list_annotations_by_share_token(session, token)
+    tags = await list_tags_by_share_token(session, token)
+    return SharedInvestigationResponse(
+        **investigation.model_dump(),
+        annotations=annotations,
+        tags=tags,
+    )
+
+
+async def import_investigation_bundle(
+    session: AsyncSession,
+    bundle: InvestigationExportBundle,
+    user_id: str,
+    title: str | None = None,
+) -> InvestigationImportResponse:
+    created = await create_investigation(
+        session,
+        title or bundle.investigation.title,
+        bundle.investigation.description,
+        user_id,
+    )
+
+    imported_entities = 0
+    skipped_entity_ids: list[str] = []
+    seen_entity_ids: set[str] = set()
+
+    for entity_id in bundle.investigation.entity_ids:
+        normalized = entity_id.strip()
+        if not normalized or normalized in seen_entity_ids:
+            continue
+        seen_entity_ids.add(normalized)
+        if await add_entity_to_investigation(session, created.id, normalized, user_id):
+            imported_entities += 1
+        else:
+            skipped_entity_ids.append(normalized)
+
+    imported_annotations = 0
+    for annotation in bundle.annotations:
+        if not annotation.text.strip():
+            continue
+        await create_annotation(
+            session,
+            created.id,
+            annotation.entity_id.strip(),
+            annotation.text,
+            user_id,
+        )
+        imported_annotations += 1
+
+    imported_tags = 0
+    seen_tags: set[tuple[str, str]] = set()
+    for tag in bundle.tags:
+        name = tag.name.strip()
+        color = tag.color.strip() or "#E07A2F"
+        tag_key = (name.lower(), color.lower())
+        if not name or tag_key in seen_tags:
+            continue
+        seen_tags.add(tag_key)
+        await create_tag(session, created.id, name, color, user_id)
+        imported_tags += 1
+
+    investigation = await get_investigation(session, created.id, user_id)
+    if investigation is None:
+        msg = "Imported investigation could not be loaded"
+        raise RuntimeError(msg)
+
+    return InvestigationImportResponse(
+        investigation=investigation,
+        imported_entities=imported_entities,
+        skipped_entity_ids=skipped_entity_ids,
+        imported_annotations=imported_annotations,
+        imported_tags=imported_tags,
+    )
+
+
+async def fork_shared_investigation(
+    session: AsyncSession,
+    token: str,
+    user_id: str,
+    title: str | None = None,
+) -> InvestigationImportResponse | None:
+    shared_investigation = await get_shared_investigation(session, token)
+    if shared_investigation is None:
+        return None
+
+    default_title = title or f"{shared_investigation.title} (copy)"
+    bundle = InvestigationExportBundle(
+        investigation=InvestigationResponse(
+            id=shared_investigation.id,
+            title=shared_investigation.title,
+            description=shared_investigation.description,
+            created_at=shared_investigation.created_at,
+            updated_at=shared_investigation.updated_at,
+            entity_ids=shared_investigation.entity_ids,
+            share_token=shared_investigation.share_token,
+        ),
+        annotations=shared_investigation.annotations,
+        tags=shared_investigation.tags,
+    )
+    return await import_investigation_bundle(session, bundle, user_id, title=default_title)

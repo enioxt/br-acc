@@ -1,3 +1,4 @@
+import json
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -11,6 +12,7 @@ INVESTIGATION_CYPHER_FILES = [
     "investigation_create",
     "investigation_get",
     "investigation_list",
+    "investigation_shared_list",
     "investigation_update",
     "investigation_delete",
     "investigation_add_entity",
@@ -19,9 +21,11 @@ INVESTIGATION_CYPHER_FILES = [
     "investigation_by_token",
     "annotation_create",
     "annotation_list",
+    "annotation_list_by_token",
     "annotation_delete",
     "tag_create",
     "tag_list",
+    "tag_list_by_token",
     "tag_delete",
     "tag_add_to_entity",
 ]
@@ -97,6 +101,13 @@ def _setup_session_with_user_and_data(
         return _fake_result([data_record])
 
     mock_session.run = AsyncMock(side_effect=_run_side_effect)
+    driver.session.return_value.__aenter__ = AsyncMock(return_value=mock_session)
+    return mock_session
+
+
+def _setup_session_with_user_only(driver: MagicMock) -> AsyncMock:
+    mock_session = AsyncMock()
+    mock_session.run = AsyncMock(return_value=_fake_result([_user_record()]))
     driver.session.return_value.__aenter__ = AsyncMock(return_value=mock_session)
     return mock_session
 
@@ -339,6 +350,202 @@ async def test_share_investigation(
     assert response.status_code == 200
     data = response.json()
     assert "share_token" in data
+
+
+@pytest.mark.anyio
+async def test_import_investigation_bundle(
+    client: AsyncClient, auth_headers: dict[str, str]
+) -> None:
+    from bracc.main import app
+
+    _setup_session_with_user_only(app.state.neo4j_driver)
+
+    import_result = {
+        "investigation": {
+            "id": "imported-inv",
+            "title": "Investigacao importada",
+            "description": "desc",
+            "created_at": "2026-01-01T00:00:00Z",
+            "updated_at": "2026-01-01T00:00:00Z",
+            "entity_ids": ["123"],
+            "share_token": None,
+        },
+        "imported_entities": 1,
+        "skipped_entity_ids": [],
+        "imported_annotations": 1,
+        "imported_tags": 1,
+    }
+
+    payload = {
+        "investigation": {
+            "id": "old-id",
+            "title": "Investigacao importada",
+            "description": "desc",
+            "created_at": "2026-01-01T00:00:00Z",
+            "updated_at": "2026-01-01T00:00:00Z",
+            "entity_ids": ["123"],
+            "share_token": "share-token",
+        },
+        "annotations": [
+            {
+                "id": "ann-1",
+                "entity_id": "123",
+                "investigation_id": "old-id",
+                "text": "nota",
+                "created_at": "2026-01-01T00:00:00Z",
+            }
+        ],
+        "tags": [
+            {
+                "id": "tag-1",
+                "investigation_id": "old-id",
+                "name": "prioridade",
+                "color": "#E07A2F",
+            }
+        ],
+    }
+
+    with patch(
+        "bracc.routers.investigation.svc.import_investigation_bundle",
+        new=AsyncMock(return_value=import_result),
+    ) as import_mock:
+        response = await client.post(
+            "/api/v1/investigations/import",
+            files={"file": ("investigation.json", json.dumps(payload), "application/json")},
+            headers=auth_headers,
+        )
+
+    assert response.status_code == 201
+    assert response.json()["investigation"]["id"] == "imported-inv"
+    import_mock.assert_awaited_once()
+
+
+@pytest.mark.anyio
+async def test_import_investigation_rejects_non_json(
+    client: AsyncClient, auth_headers: dict[str, str]
+) -> None:
+    from bracc.main import app
+
+    _setup_session_with_user_only(app.state.neo4j_driver)
+
+    response = await client.post(
+        "/api/v1/investigations/import",
+        files={"file": ("investigation.pdf", b"%PDF-1.4", "application/pdf")},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 415
+
+
+@pytest.mark.anyio
+async def test_list_shared_investigations_public(
+    client: AsyncClient,
+) -> None:
+    shared_response = {
+        "investigations": [
+            {
+                "id": "shared-inv",
+                "title": "Publica",
+                "description": "desc",
+                "created_at": "2026-01-01T00:00:00Z",
+                "updated_at": "2026-01-02T00:00:00Z",
+                "entity_ids": ["123"],
+                "share_token": "token-1",
+            }
+        ],
+        "total": 1,
+    }
+
+    with patch(
+        "bracc.routers.investigation.svc.list_shared_investigations",
+        new=AsyncMock(return_value=(shared_response["investigations"], 1)),
+    ):
+        response = await client.get("/api/v1/shared")
+
+    assert response.status_code == 200
+    assert response.json() == shared_response
+
+
+@pytest.mark.anyio
+async def test_get_shared_investigation_includes_findings(
+    client: AsyncClient,
+) -> None:
+    shared_response = {
+        "id": "shared-inv",
+        "title": "Publica",
+        "description": "desc",
+        "created_at": "2026-01-01T00:00:00Z",
+        "updated_at": "2026-01-02T00:00:00Z",
+        "entity_ids": ["123"],
+        "share_token": "token-1",
+        "annotations": [
+            {
+                "id": "ann-1",
+                "entity_id": "123",
+                "investigation_id": "shared-inv",
+                "text": "nota publica",
+                "created_at": "2026-01-01T00:00:00Z",
+            }
+        ],
+        "tags": [
+            {
+                "id": "tag-1",
+                "investigation_id": "shared-inv",
+                "name": "urgente",
+                "color": "#E07A2F",
+            }
+        ],
+    }
+
+    with patch(
+        "bracc.routers.investigation.svc.get_shared_investigation",
+        new=AsyncMock(return_value=shared_response),
+    ):
+        response = await client.get("/api/v1/shared/token-1")
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["annotations"][0]["text"] == "nota publica"
+    assert data["tags"][0]["name"] == "urgente"
+
+
+@pytest.mark.anyio
+async def test_fork_shared_investigation(
+    client: AsyncClient, auth_headers: dict[str, str]
+) -> None:
+    from bracc.main import app
+
+    _setup_session_with_user_only(app.state.neo4j_driver)
+
+    fork_response = {
+        "investigation": {
+            "id": "forked-inv",
+            "title": "Publica (copy)",
+            "description": "desc",
+            "created_at": "2026-01-01T00:00:00Z",
+            "updated_at": "2026-01-01T00:00:00Z",
+            "entity_ids": ["123"],
+            "share_token": None,
+        },
+        "imported_entities": 1,
+        "skipped_entity_ids": [],
+        "imported_annotations": 1,
+        "imported_tags": 1,
+    }
+
+    with patch(
+        "bracc.routers.investigation.svc.fork_shared_investigation",
+        new=AsyncMock(return_value=fork_response),
+    ) as fork_mock:
+        response = await client.post(
+            "/api/v1/shared/token-1/fork",
+            json={"title": "Publica (copy)"},
+            headers=auth_headers,
+        )
+
+    assert response.status_code == 201
+    assert response.json()["investigation"]["id"] == "forked-inv"
+    fork_mock.assert_awaited_once()
 
 
 @pytest.mark.anyio

@@ -8,6 +8,7 @@ Tools:
 - search_pep_city: Politically exposed persons by city
 """
 
+import asyncio
 import logging
 import os
 import re
@@ -57,87 +58,172 @@ _HEADERS = {
 _PT_BASE = "https://api.portaldatransparencia.gov.br/api-de-dados"
 # TransfereGov API
 _TG_BASE = "https://api.transferegov.gestao.gov.br"
+_BRAVE_RETRY_DELAYS = (0.5, 1.0)
+_PNCP_MODALIDADE_CODES = tuple(str(code) for code in range(1, 15))
 
 
-async def tool_web_search(query: str, max_results: int = 8) -> list[dict[str, str]]:
-    """Web search: Brave Search API primary, DuckDuckGo fallback."""
-    results: list[dict[str, str]] = []
-    brave_key = os.environ.get("BRAVE_API_KEY", "")
+def _clean_html_fragment(fragment: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", fragment)).strip()
 
-    # Try Brave Search first
-    if brave_key:
-        try:
-            async with httpx.AsyncClient(timeout=15.0) as client:
+
+async def _search_brave(
+    query: str,
+    max_results: int,
+    brave_key: str,
+) -> tuple[list[dict[str, str]], str | None]:
+    if not brave_key:
+        return [], "Brave Search indisponivel (sem API key configurada)"
+
+    last_reason = "Brave Search nao retornou resultados"
+    async with httpx.AsyncClient(timeout=15.0) as client:
+        for attempt in range(1, len(_BRAVE_RETRY_DELAYS) + 2):
+            try:
                 resp = await client.get(
                     "https://api.search.brave.com/res/v1/web/search",
                     params={"q": query, "count": max_results, "search_lang": "pt-br"},
                     headers={"Accept": "application/json", "X-Subscription-Token": brave_key},
                 )
-                if resp.status_code == 200:
-                    data = resp.json()
-                    for r in data.get("web", {}).get("results", [])[:max_results]:
-                        results.append({
-                            "title": r.get("title", ""),
-                            "url": r.get("url", ""),
-                            "snippet": r.get("description", "")[:300],
-                        })
-                    if results:
-                        return results
-        except Exception as e:
-            logger.warning("Brave search failed, falling back to DDG: %s", e)
+            except Exception as exc:
+                last_reason = f"Brave Search falhou: {exc}"
+                if attempt <= len(_BRAVE_RETRY_DELAYS):
+                    delay = _BRAVE_RETRY_DELAYS[attempt - 1]
+                    logger.warning(
+                        "Brave search attempt %d failed: %s; retrying in %.1fs",
+                        attempt,
+                        exc,
+                        delay,
+                    )
+                    await asyncio.sleep(delay)
+                    continue
+                logger.warning("Brave search failed, falling back to DDG: %s", exc)
+                break
 
-    # Fallback: DuckDuckGo HTML (multiple regex patterns for resilience)
+            if resp.status_code == 200:
+                results: list[dict[str, str]] = []
+                data = resp.json()
+                for item in data.get("web", {}).get("results", [])[:max_results]:
+                    results.append({
+                        "title": item.get("title", ""),
+                        "url": item.get("url", ""),
+                        "snippet": item.get("description", "")[:300],
+                    })
+                if results:
+                    return results, None
+                last_reason = "Brave Search nao retornou resultados"
+                break
+
+            last_reason = f"Brave Search HTTP {resp.status_code}"
+            if resp.status_code in {429, 500, 502, 503, 504} and attempt <= len(_BRAVE_RETRY_DELAYS):
+                delay = _BRAVE_RETRY_DELAYS[attempt - 1]
+                logger.warning(
+                    "Brave search attempt %d returned HTTP %s; retrying in %.1fs",
+                    attempt,
+                    resp.status_code,
+                    delay,
+                )
+                await asyncio.sleep(delay)
+                continue
+
+            logger.warning(
+                "Brave search failed, falling back to DDG: HTTP %s",
+                resp.status_code,
+            )
+            break
+
+    return [], last_reason
+
+
+async def _search_duckduckgo(
+    query: str,
+    max_results: int,
+) -> tuple[list[dict[str, str]], str | None]:
     url = f"https://html.duckduckgo.com/html/?q={quote_plus(query)}"
     try:
         async with httpx.AsyncClient(timeout=15.0, follow_redirects=True) as client:
             resp = await client.get(url, headers=_HEADERS)
-            html = resp.text
+        if resp.status_code != 200:
+            reason = f"DuckDuckGo HTTP {resp.status_code}"
+            logger.warning("DDG search failed: %s", reason)
+            return [], reason
+        html = resp.text
+    except Exception as exc:
+        logger.warning("DDG search also failed: %s", exc)
+        return [], f"DuckDuckGo falhou: {exc}"
 
-        # Pattern 1: Classic DDG HTML (class="result__a" + class="result__snippet")
+    snippets = re.findall(
+        r'<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>(.+?)</a>.*?'
+        r'<a[^>]+class="result__snippet"[^>]*>(.+?)</a>',
+        html,
+        re.DOTALL,
+    )
+    if not snippets:
         snippets = re.findall(
-            r'<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>(.+?)</a>.*?'
-            r'<a[^>]+class="result__snippet"[^>]*>(.+?)</a>',
-            html, re.DOTALL,
+            r'<a[^>]+class="[^"]*result[_-]?link[^"]*"[^>]+href="([^"]+)"[^>]*>(.+?)</a>.*?'
+            r'<[^>]+class="[^"]*result[_-]?snippet[^"]*"[^>]*>(.+?)</[^>]+>',
+            html,
+            re.DOTALL,
         )
-        # Pattern 2: Alternative DDG layout (result-link + result-snippet)
-        if not snippets:
-            snippets = re.findall(
-                r'<a[^>]+class="[^"]*result[_-]?link[^"]*"[^>]+href="([^"]+)"[^>]*>(.+?)</a>.*?'
-                r'<[^>]+class="[^"]*result[_-]?snippet[^"]*"[^>]*>(.+?)</[^>]+>',
-                html, re.DOTALL,
-            )
-        # Pattern 3: Generic link + text extraction from result divs
-        if not snippets:
-            blocks = re.findall(
-                r'<div[^>]+class="[^"]*result[^"]*"[^>]*>(.+?)</div>\s*</div>',
-                html, re.DOTALL,
-            )
-            for block in blocks[:max_results]:
-                link_m = re.search(r'href="(https?://[^"]+)"', block)
-                title_m = re.search(r'>([^<]{10,})<', block)
-                if link_m and title_m:
-                    snippets.append((link_m.group(1), title_m.group(1), block[:300]))
+    if not snippets:
+        blocks = re.findall(
+            r'<div[^>]+class="[^"]*result[^"]*"[^>]*>(.+?)</div>\s*</div>',
+            html,
+            re.DOTALL,
+        )
+        for block in blocks[:max_results]:
+            link_match = re.search(r'href="(https?://[^"]+)"', block)
+            title_match = re.search(r">([^<]{10,})<", block)
+            if link_match and title_match:
+                snippets.append((link_match.group(1), title_match.group(1), block[:300]))
 
-        from urllib.parse import unquote
-        for href, title, snippet in snippets[:max_results]:
-            actual_url = href
-            if "uddg=" in href:
-                m = re.search(r"uddg=([^&]+)", href)
-                if m:
-                    actual_url = unquote(m.group(1))
-            results.append({
-                "title": re.sub(r"<[^>]+>", "", title).strip()[:200],
-                "url": actual_url,
-                "snippet": re.sub(r"<[^>]+>", "", snippet).strip()[:300],
-            })
-    except Exception as e:
-        logger.warning("DDG search also failed: %s", e)
+    from urllib.parse import unquote
 
-    # Fallback 3: If both Brave and DDG failed, return empty with message
-    if not results:
-        results.append({"title": f"Busca web indisponível para: {query[:80]}", "url": "", "snippet": "Brave API e DuckDuckGo falharam. Tente novamente em alguns minutos."})
+    results: list[dict[str, str]] = []
+    for href, title, snippet in snippets[:max_results]:
+        actual_url = href
+        if "uddg=" in href:
+            match = re.search(r"uddg=([^&]+)", href)
+            if match:
+                actual_url = unquote(match.group(1))
+        results.append({
+            "title": _clean_html_fragment(title)[:200],
+            "url": actual_url,
+            "snippet": _clean_html_fragment(snippet)[:300],
+        })
 
-    return results
+    if results:
+        return results, None
+    return [], "DuckDuckGo nao retornou resultados parseaveis"
+
+
+def _extract_pncp_items(payload: Any) -> list[dict[str, Any]]:
+    if isinstance(payload, list):
+        return [item for item in payload if isinstance(item, dict)]
+    if isinstance(payload, dict):
+        for key in ("data", "content", "items", "resultado"):
+            value = payload.get(key)
+            if isinstance(value, list):
+                return [item for item in value if isinstance(item, dict)]
+    return []
+
+
+async def tool_web_search(query: str, max_results: int = 8) -> list[dict[str, str]]:
+    """Web search: Brave Search API primary, DuckDuckGo fallback."""
+    brave_key = os.environ.get("BRAVE_API_KEY", "")
+    brave_results, brave_reason = await _search_brave(query, max_results, brave_key)
+    if brave_results:
+        return brave_results
+
+    ddg_results, ddg_reason = await _search_duckduckgo(query, max_results)
+    if ddg_results:
+        return ddg_results
+
+    note = ". ".join(part for part in (brave_reason, ddg_reason) if part)
+    return [{
+        "title": f"Busca web indisponivel para: {query[:80]}",
+        "url": "",
+        "snippet": "Brave Search e DuckDuckGo falharam. Tente novamente em alguns minutos.",
+        "note": note,
+    }]
 
 
 async def tool_search_emendas(municipio: str, uf: str = "", ano: int = 2024) -> dict[str, Any]:
@@ -1168,46 +1254,85 @@ async def tool_pncp_licitacoes(cnpj_orgao: str = "", uf: str = "", data_inicio: 
     ]
 
     try:
+        seen_controls: set[str] = set()
         async with httpx.AsyncClient(timeout=20.0, follow_redirects=True) as client:
             for base_url in _PNCP_URLS:
-                params: dict[str, str] = {
-                    "dataInicial": f"{date_ini[:4]}-{date_ini[4:6]}-{date_ini[6:8]}",
-                    "dataFinal": f"{date_end[:4]}-{date_end[4:6]}-{date_end[6:8]}",
-                    "pagina": "1",
-                    "tamanhoPagina": "10",
-                }
-                if cnpj_orgao:
-                    cnpj_clean = cnpj_orgao.replace(".", "").replace("/", "").replace("-", "")
-                    params["cnpj"] = cnpj_clean
-                if uf:
-                    params["uf"] = uf.upper()
+                for modalidade in _PNCP_MODALIDADE_CODES:
+                    params: dict[str, str] = {
+                        "dataInicial": date_ini,
+                        "dataFinal": date_end,
+                        "codigoModalidadeContratacao": modalidade,
+                        "pagina": "1",
+                        "tamanhoPagina": "10",
+                    }
+                    if cnpj_orgao:
+                        cnpj_clean = cnpj_orgao.replace(".", "").replace("/", "").replace("-", "")
+                        params["cnpj"] = cnpj_clean
+                    if uf:
+                        params["uf"] = uf.upper()
 
-                try:
-                    resp = await client.get(base_url, params=params, headers={"Accept": "application/json"})
-                    if resp.status_code == 200:
-                        data = resp.json()
-                        items = data if isinstance(data, list) else data.get("data", data.get("content", data.get("items", [])))
-                        if isinstance(items, list):
-                            for item in items[:10]:
+                    try:
+                        resp = await client.get(
+                            base_url,
+                            params=params,
+                            headers={"Accept": "application/json"},
+                        )
+                        if resp.status_code == 200:
+                            items = _extract_pncp_items(resp.json())
+                            for item in items:
+                                numero_controle = str(item.get("numeroControlePNCP", item.get("id", "")))
+                                if numero_controle and numero_controle in seen_controls:
+                                    continue
+                                if numero_controle:
+                                    seen_controls.add(numero_controle)
                                 orgao_ent = item.get("orgaoEntidade", {})
+                                orgao = item.get("nomeOrgao", "")
+                                if not orgao and isinstance(orgao_ent, dict):
+                                    orgao = str(
+                                        orgao_ent.get("razaoSocial", orgao_ent.get("razaosocial", ""))
+                                    )
                                 results.append({
-                                    "orgao": item.get("nomeOrgao", orgao_ent.get("razaoSocial", "") if isinstance(orgao_ent, dict) else ""),
+                                    "orgao": orgao,
                                     "objeto": str(item.get("objetoCompra", item.get("descricao", "")))[:200],
-                                    "modalidade": item.get("modalidadeLicitacao", item.get("modalidadeNome", "")),
-                                    "valor_estimado": item.get("valorEstimado", item.get("valorTotalEstimado", "")),
-                                    "uf": item.get("uf", uf),
-                                    "data_publicacao": item.get("dataPublicacao", ""),
-                                    "situacao": item.get("situacaoCompra", item.get("situacaoCompraNome", "")),
+                                    "modalidade": item.get(
+                                        "modalidadeNome",
+                                        item.get("modalidadeLicitacao", ""),
+                                    ),
+                                    "valor_estimado": item.get(
+                                        "valorEstimado",
+                                        item.get("valorTotalEstimado", ""),
+                                    ),
+                                    "uf": item.get("uf", item.get("ufSigla", uf.upper())),
+                                    "data_publicacao": item.get("dataPublicacaoPncp", item.get("dataPublicacao", "")),
+                                    "situacao": item.get(
+                                        "situacaoCompraNome",
+                                        item.get("situacaoCompra", ""),
+                                    ),
                                 })
-                        if results:
-                            break
-                    elif resp.status_code == 400:
-                        logger.info("PNCP %s returned 400, trying next endpoint", base_url)
+                                if len(results) >= 10:
+                                    break
+                            if results:
+                                break
+                        elif resp.status_code == 204:
+                            continue
+                        elif resp.status_code == 400:
+                            logger.info(
+                                "PNCP %s returned 400 for modalidade %s, trying next combination",
+                                base_url,
+                                modalidade,
+                            )
+                            continue
+                        else:
+                            logger.warning(
+                                "PNCP HTTP %s from %s: %s",
+                                resp.status_code,
+                                base_url,
+                                resp.text[:200],
+                            )
+                    except Exception:
                         continue
-                    else:
-                        logger.warning("PNCP HTTP %s from %s: %s", resp.status_code, base_url, resp.text[:200])
-                except Exception:
-                    continue
+                if results:
+                    break
     except Exception as e:
         logger.warning("PNCP search failed: %s", e)
 
