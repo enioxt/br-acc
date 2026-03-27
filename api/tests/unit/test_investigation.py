@@ -4,6 +4,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from httpx import AsyncClient
 
+from bracc.services import investigation_service
 from bracc.services.neo4j_service import CypherLoader
 
 FAKE_PDF = b"%PDF-1.4 fake pdf content for testing"
@@ -12,6 +13,7 @@ INVESTIGATION_CYPHER_FILES = [
     "investigation_create",
     "investigation_get",
     "investigation_list",
+    "investigation_shared_count",
     "investigation_shared_list",
     "investigation_update",
     "investigation_delete",
@@ -110,6 +112,39 @@ def _setup_session_with_user_only(driver: MagicMock) -> AsyncMock:
     mock_session.run = AsyncMock(return_value=_fake_result([_user_record()]))
     driver.session.return_value.__aenter__ = AsyncMock(return_value=mock_session)
     return mock_session
+
+
+@pytest.mark.anyio
+async def test_list_shared_investigations_preserves_total_on_empty_page() -> None:
+    session = AsyncMock()
+    total_record = _mock_record({"total": 3})
+
+    with (
+        patch.object(
+            investigation_service,
+            "execute_query_single",
+            new=AsyncMock(return_value=total_record),
+        ) as count_mock,
+        patch.object(
+            investigation_service,
+            "execute_query",
+            new=AsyncMock(return_value=[]),
+        ) as list_mock,
+    ):
+        investigations, total = await investigation_service.list_shared_investigations(
+            session,
+            page=2,
+            size=10,
+        )
+
+    assert investigations == []
+    assert total == 3
+    count_mock.assert_awaited_once_with(session, "investigation_shared_count")
+    list_mock.assert_awaited_once_with(
+        session,
+        "investigation_shared_list",
+        {"skip": 10, "limit": 10},
+    )
 
 
 @pytest.mark.anyio

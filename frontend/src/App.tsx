@@ -72,6 +72,10 @@ export function App() {
         <Route index element={<Landing />} />
         {!IS_PUBLIC_MODE && <Route path="login" element={<Login />} />}
         {!IS_PUBLIC_MODE && <Route path="register" element={<Register />} />}
+      </Route>
+
+      {/* Public — shared gallery must stay reachable even for authenticated users */}
+      <Route element={<PublicShell />}>
         <Route path="shared" element={<SharedInvestigations />} />
       </Route>
 

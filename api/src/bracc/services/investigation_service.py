@@ -310,14 +310,15 @@ async def list_shared_investigations(
     size: int,
 ) -> tuple[list[InvestigationResponse], int]:
     skip = (page - 1) * size
+    total_record = await execute_query_single(session, "investigation_shared_count")
+    total = int(total_record["total"]) if total_record is not None else 0
     records = await execute_query(
         session,
         "investigation_shared_list",
         {"skip": skip, "limit": size},
     )
     if not records:
-        return [], 0
-    total = int(records[0]["total"])
+        return [], total
     investigations = [_record_to_investigation(r) for r in records]
     return investigations, total
 
