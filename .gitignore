@@ -96,7 +96,6 @@ data/tse/
 .mcp.json
 
 # Internal assistant instructions (must never be published)
-CLAUDE.md
 AGENTS.md
 AGENTS*.md
 docs/ECOSYSTEM_DIAGNOSTIC_2026-03.md
