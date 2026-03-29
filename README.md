@@ -5,7 +5,7 @@
 Idioma: **Português (Brasil)** | [English](#english)
 
 [![Licença: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![API Status](https://img.shields.io/badge/API-ONLINE-brightgreen)](http://217.216.95.126/health)
+[![API Status](https://img.shields.io/badge/API-ONLINE-brightgreen)](http://204.168.217.125/health)
 [![Discord Bot](https://img.shields.io/badge/Discord-EGOS%20Intelig%C3%AAncia-7289da)](https://discord.gg/egos)
 [![Telegram Bot](https://img.shields.io/badge/Telegram-@EGOSin__bot-26A5E4)](https://t.me/EGOSin_bot)
 
@@ -29,7 +29,7 @@ O EGOS Inteligência diverge significativamente do upstream:
 | **Bots AI** | Nenhum | Discord + Telegram (14 ferramentas OSINT) |
 | **Investigações** | Não | Upload, fork, compartilhamento público |
 | **Relatórios** | Não | 11 relatórios publicados (ex: Patense R$217M BNDES) |
-| **Infraestrutura** | Local/demo | Contabo VPS (12 vCPU, 48GB RAM) + Redis |
+| **Infraestrutura** | Local/demo | Hetzner VPS (12 vCPU, 24GB RAM) + Redis |
 | **LGPD** | Parcial | CPF bloqueado em todo o sistema, masking middleware |
 | **Fontes planejadas** | 13 | 79 fontes no roadmap |
 | **Algoritmos** | Básico | PageRank, Benford, HHI, Community Detection (roadmap) |
@@ -111,10 +111,10 @@ Quem são os maiores supersalários do TJSP?
 
 ```bash
 # Estatísticas gerais
-curl http://217.216.95.126/api/v1/public/meta
+curl http://204.168.217.125/api/v1/public/meta
 
 # Grafo de vínculos de uma empresa
-curl http://217.216.95.126/api/v1/public/graph/company/11222333000181
+curl http://204.168.217.125/api/v1/public/graph/company/11222333000181
 ```
 
 | Método | Rota | O Que Faz |
@@ -199,7 +199,7 @@ bash scripts/seed-dev.sh  # Carrega ~1000 entidades demo
 | **Frontend** | React 19 + Vite (mobile-first) |
 | **ETL** | Python com pandas (45 pipelines) |
 | **Bots** | Discord.js + Telegraf + AI Router (OpenRouter) |
-| **Infra** | Docker Compose + Caddy + Contabo VPS |
+| **Infra** | Docker Compose + Caddy + Hetzner VPS |
 
 ---
 
@@ -252,7 +252,7 @@ Veja [ROADMAP.md](ROADMAP.md) para o plano completo. Destaques:
 
 | Serviço | O Quê | Custo (USD/mês) |
 |---|---|---|
-| **Contabo VPS** | 12 vCPU, 48GB RAM, 500GB SSD — Neo4j, Redis, API, bots, frontend | $35 |
+| **Hetzner VPS** | 12 vCPU, 24GB RAM, 500GB SSD — Neo4j, Redis, API, bots, frontend | $35 |
 | **Vercel** | egos.ia.br, inteligencia.egos.ia.br | Free |
 | **Supabase** | PostgreSQL (conversas, relatórios, custos) | Free |
 | **OpenRouter** | Gemini 2.0 Flash para IA dos bots | Free |
@@ -291,7 +291,7 @@ EGOS Inteligência is an open-source platform for cross-referencing Brazilian pu
 
 | Service | Status | URL |
 |---|---|---|
-| **Public API** | ✅ Online | http://217.216.95.126/health |
+| **Public API** | ✅ Online | http://204.168.217.125/health |
 | **Frontend** | ✅ Online | [inteligencia.egos.ia.br](https://inteligencia.egos.ia.br) |
 | **Discord Bot** | ✅ Online (14 OSINT tools) | `@EGOS Intelligence` |
 | **Telegram Bot** | ✅ Online (14 OSINT tools) | [@EGOSin_bot](https://t.me/EGOSin_bot) |

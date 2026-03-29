@@ -16,7 +16,7 @@
 | **caddy** | caddy:2 | 80, 443 | Reverse proxy + SSL |
 
 **Network:** `bracc` (bridge)
-**VPS:** 217.216.95.126 (Contabo, 12 vCPU, 48GB RAM, 500GB SSD)
+**VPS:** 204.168.217.125 (Hetzner, 12 vCPU, 24GB RAM, 500GB SSD)
 **Domain:** inteligencia.egos.ia.br
 **Reality check (2026-03-06):** 5/5 containers healthy, but `bracc-etl.service` inactive and `/api/v1/meta/etl-progress` stale em 90% após falha de pós-load do CNPJ.
 

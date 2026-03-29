@@ -12,7 +12,7 @@
 | **Projeto** | EGOS Inteligência (BR/ACC) |
 | **Descrição** | Plataforma open-source de inteligência sobre dados públicos brasileiros |
 | **Path** | /home/enio/br-acc |
-| **VPS** | 217.216.95.126 (Contabo, /opt/bracc) |
+| **VPS** | 204.168.217.125 (Hetzner, /opt/bracc) |
 | **Repo** | github.com/enioxt/EGOS-Inteligencia |
 | **Kernel SSOT Registry** | `/home/enio/egos/docs/SSOT_REGISTRY.md` |
 | **Deploy** | Docker Compose no VPS (API + Frontend + Neo4j + Redis) |
@@ -42,7 +42,7 @@ br-acc/
 | **Frontend** | React 18, Vite, TypeScript, CSS Modules |
 | **Database** | Neo4j 5.x (graph), Redis (cache) |
 | **AI** | OpenRouter (Gemini Flash / GPT-4o-mini) |
-| **Deploy** | Docker Compose on Contabo VPS |
+| **Deploy** | Docker Compose on Hetzner VPS |
 | **ETL** | Python ETL + tmux/manual orchestration + monitor script |
 
 ## Commands
@@ -57,7 +57,7 @@ cd api && uv run pytest -x --tb=short     # 235+ tests
 cd frontend && npm test                     # Frontend tests
 
 # VPS Operations
-ssh root@217.216.95.126
+ssh root@204.168.217.125
 cd /opt/bracc/infra && docker compose restart api
 cd /opt/bracc/infra && docker compose build frontend && docker compose up -d frontend
 docker compose logs -f api --tail 50

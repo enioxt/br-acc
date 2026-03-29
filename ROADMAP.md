@@ -27,7 +27,7 @@
 | **Pipelines ETL prontos** | 46 |
 | **Bots** | 2 bots online via PM2 (`egos-discord`, `egos-telegram`) |
 | **Bot IA** | Gemini 2.0 Flash (free) → fallback pago, memória persistente |
-| **Servidor** | Contabo Cloud VPS 40 SSD — 12 vCPU, 48GB RAM, 500GB SSD ($35/mo) |
+| **Servidor** | Hetzner VPS — 12 vCPU, 24GB RAM, 500GB SSD ($35/mo) |
 | **Custo total** | $36/mês (100% autofinanciado, sem grants) |
 | **Frontend** | inteligencia.egos.ia.br — público, sem login, stats em tempo real |
 | **Investigações** | Patense v2 publicado (R$217M BNDES, 4 empresas, 563 ops) |
@@ -382,7 +382,7 @@ cp etl/src/bracc_etl/pipelines/_template.py etl/src/bracc_etl/pipelines/nova_fon
 
 ### Para Jornalistas
 
-1. Use a API pública: `http://217.216.95.126/api/v1/public/`
+1. Use a API pública: `http://204.168.217.125/api/v1/public/`
 2. Consulte via Discord bot (DM para privacidade)
 3. Os dados são 100% públicos — cite as fontes originais
 4. Abra issues para pedir novos tipos de consulta
@@ -632,7 +632,7 @@ O projeto [Intelink](https://intelink.ia.br) (EGOS) já implementou capacidades 
 ### Infraestrutura Atual
 
 ```
-Contabo VPS: 12 vCPU, 48GB RAM, 500GB SSD ($35/mo)
+Hetzner VPS: 12 vCPU, 24GB RAM, 500GB SSD ($35/mo)
 ├── Neo4j 5 Community (heap 16G, pagecache 22G) — APÓS ETL
 ├── Redis 7 Alpine (512MB LRU cache) — PRONTO
 ├── FastAPI (Python) — API backend
@@ -659,7 +659,7 @@ Contabo VPS: 12 vCPU, 48GB RAM, 500GB SSD ($35/mo)
 
 - **Código:** [github.com/enioxt/br-acc](https://github.com/enioxt/br-acc) (fork do World-Open-Graph/br-acc)
 - **Upstream:** World-Open-Graph/br-acc (monitorando)
-- **API ao vivo:** http://217.216.95.126/api/v1/public/
+- **API ao vivo:** http://204.168.217.125/api/v1/public/
 - **Frontend:** [inteligencia.egos.ia.br](https://inteligencia.egos.ia.br) (público, sem login)
 - **Bot Discord:** EGOS Intelligence#2881 (DMs abertas, 13 tools)
 - **Bot Telegram:** [@EGOSin_bot](https://t.me/EGOSin_bot) (13 tools)

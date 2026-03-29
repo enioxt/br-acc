@@ -2,7 +2,7 @@
 
 > **Última atualização:** 2026-03-02
 > **Status do grafo:** 180k+ nós | 10+ datasets carregados
-> **Servidor:** 217.216.95.126 (Contabo VPS)
+> **Servidor:** 204.168.217.125 (Hetzner VPS)
 
 ---
 
