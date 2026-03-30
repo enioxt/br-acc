@@ -1,4 +1,4 @@
-# Dossiê Técnico — EGOS Inteligência (br-acc)
+# Dossiê Técnico — EGOS Inteligência (egos-inteligencia)
 
 **Data:** 2026-03-06 | **Auditor:** Cascade (Staff+ Platform Engineer)
 **Repo:** github.com/enioxt/EGOS-Inteligencia | **Licença:** AGPL-3.0
@@ -16,7 +16,7 @@
 7. **Segurança:** Caddy com CSP/HSTS/Permissions-Policy, Neo4j/Redis bound to localhost, iptables persisted, Fail2ban SSH, rate limiting per-IP/JWT.
 8. **Padrões de risco:** 10 pattern detectors (Benford, HHI, split contracts, sancionada+contrato, emenda autodirecionada, concentração de fornecedor, etc.) com queries Cypher.
 9. **Governança:** ETHICS.md, LGPD.md, PRIVACY.md, TERMS.md, DISCLAIMER.md, ABUSE_RESPONSE.md, SECURITY.md — framework compliance robusto para projeto open-source.
-10. **Estado:** Produção online com 5/5 containers saudáveis (`api`, `frontend`, `neo4j`, `redis`, `caddy`), mas o controle operacional do ETL está inconsistente: `bracc-etl.service` está inactive, o processo real terminou com erro de pós-load e o endpoint público `/api/v1/meta/etl-progress` ficou stale em 90%.
+10. **Estado:** Produção online com 5/5 containers saudáveis (`api`, `frontend`, `neo4j`, `redis`, `caddy`), mas o controle operacional do ETL está inconsistente: `egos-inteligencia-etl.service` está inactive, o processo real terminou com erro de pós-load e o endpoint público `/api/v1/meta/etl-progress` ficou stale em 90%.
 11. **Fraqueza principal:** Há drift entre grafo real, monitor e endpoint público. O carregamento do CNPJ avançou até 17,454,980 `Partner` e 25,091,492 `SOCIO_DE`, mas `linking_hooks.py` falha por parâmetro `run_id` ausente e o monitor continua reportando “running” com CPU zero.
 12. **Risco principal:** A telemetria incorreta mascara falha de ETL e pode induzir decisões erradas de produto, priorização e comunicação pública. O risco de segurança com `cypher_query` continua relevante, mas o bloqueio operacional atual é o ETL/monitor.
 
@@ -25,9 +25,9 @@
 ## Reality Check — 2026-03-06
 
 - **Containers:** `docker compose ps` no VPS mostrou 5/5 serviços saudáveis (`api`, `frontend`, `neo4j`, `redis`, `caddy`).
-- **ETL service:** `systemctl is-active bracc-etl.service` retornou `inactive`.
-- **ETL state file:** `/opt/bracc/logs/etl-monitor-state.json` registrou 17,454,980 `Partner`, 59,573,749 `Company`, 7,074 `Person` e 25,091,492 `SOCIO_DE`.
-- **Falha real:** `/opt/bracc/cnpj-etl.log` termina com `Neo.ClientError.Statement.ParameterMissing: Expected parameter(s): run_id` em `linking_hooks.py`, seguido de `ETL exited with code 0`.
+- **ETL service:** `systemctl is-active egos-inteligencia-etl.service` retornou `inactive`.
+- **ETL state file:** `/opt/egos_inteligencia/logs/etl-monitor-state.json` registrou 17,454,980 `Partner`, 59,573,749 `Company`, 7,074 `Person` e 25,091,492 `SOCIO_DE`.
+- **Falha real:** `/opt/egos_inteligencia/cnpj-etl.log` termina com `Neo.ClientError.Statement.ParameterMissing: Expected parameter(s): run_id` em `linking_hooks.py`, seguido de `ETL exited with code 0`.
 - **Telemetria pública:** `/api/v1/meta/etl-progress` ainda expõe `running=false`, `percent=90` e `last_update=2026-03-06 00:06:36`, ou seja, não representa mais o estado do grafo.
 
 ---
@@ -36,15 +36,15 @@
 
 | Camada | Pasta/Arquivo | Responsabilidade | Entrypoint | Deps principais |
 |--------|--------------|------------------|------------|-----------------|
-| **API** | `api/src/bracc/` | FastAPI backend, 16 routers | `main.py` | FastAPI, neo4j-driver, httpx, slowapi, redis |
-| **ETL** | `etl/src/bracc_etl/` | 46 pipelines de ingestão | `runner.py` (Click CLI) | neo4j-driver, httpx, click, pandas |
+| **API** | `api/src/egos_inteligencia/` | FastAPI backend, 16 routers | `main.py` | FastAPI, neo4j-driver, httpx, slowapi, redis |
+| **ETL** | `etl/src/egos_inteligencia_etl/` | 46 pipelines de ingestão | `runner.py` (Click CLI) | neo4j-driver, httpx, click, pandas |
 | **Frontend** | `frontend/src/` | React SPA, 18 pages | `main.tsx` → `App.tsx` | React 19, Vite, Sigma.js (grafo), i18n |
 | **Infra** | `infra/` | Docker Compose, Caddy, Neo4j init | `docker-compose.yml` | Neo4j 5 Community, Redis 7, Caddy 2 |
-| **Queries** | `api/src/bracc/queries/` | 47 arquivos .cypher | Carregados por `CypherLoader` | — |
-| **Middleware** | `api/src/bracc/middleware/` | CPF masking, rate limit, security headers | Registrados em `main.py` | starlette, slowapi |
-| **Services** | `api/src/bracc/services/` | Neo4j, cache, auth, patterns, scoring, transparency tools | Injetados via FastAPI Depends | — |
-| **Models** | `api/src/bracc/models/` | Pydantic schemas | — | pydantic |
-| **Transforms** | `etl/src/bracc_etl/transforms/` | Normalização: nomes, datas, docs, dedup | Importados pelos pipelines | — |
+| **Queries** | `api/src/egos_inteligencia/queries/` | 47 arquivos .cypher | Carregados por `CypherLoader` | — |
+| **Middleware** | `api/src/egos_inteligencia/middleware/` | CPF masking, rate limit, security headers | Registrados em `main.py` | starlette, slowapi |
+| **Services** | `api/src/egos_inteligencia/services/` | Neo4j, cache, auth, patterns, scoring, transparency tools | Injetados via FastAPI Depends | — |
+| **Models** | `api/src/egos_inteligencia/models/` | Pydantic schemas | — | pydantic |
+| **Transforms** | `etl/src/egos_inteligencia_etl/transforms/` | Normalização: nomes, datas, docs, dedup | Importados pelos pipelines | — |
 | **Scripts** | `scripts/` | Cypher linking, downloads, audits, compliance checks | Shell/Python standalone | — |
 | **Governance** | Root `.md` files | ETHICS, LGPD, PRIVACY, TERMS, SECURITY, ABUSE | — | — |
 | **Docs** | `docs/` | Data sources, legal, release, reports, analysis | — | — |
@@ -114,18 +114,18 @@
 | 16 | Investigation notebooks | `routers/investigation.py` + shared tokens | ✅ Prod |
 | 17 | Graph explorer (Sigma.js) | `frontend/src/pages/GraphExplorer.tsx` | ✅ Prod |
 | 18 | Journey tracking | `frontend/src/lib/journey.ts` (localStorage) | ✅ Prod |
-| 19 | 46 ETL pipelines registrados | `etl/src/bracc_etl/runner.py:54-100` | 1 running |
+| 19 | 46 ETL pipelines registrados | `etl/src/egos_inteligencia_etl/runner.py:54-100` | 1 running |
 | 20 | Security headers completos | `infra/Caddyfile` + `middleware/security_headers.py` | ✅ Prod |
 | 21 | Cypher read-only sandbox | `routers/chat.py:264-281` (keyword blacklist) | ✅ Parcial |
-| 22 | IngestionRun tracking | `etl/src/bracc_etl/base.py:73-107` (run_id, status, error) | ✅ Prod |
-| 23 | Entity resolution framework | `etl/src/bracc_etl/entity_resolution/` | Scaffolded |
+| 22 | IngestionRun tracking | `etl/src/egos_inteligencia_etl/base.py:73-107` (run_id, status, error) | ✅ Prod |
+| 23 | Entity resolution framework | `etl/src/egos_inteligencia_etl/entity_resolution/` | Scaffolded |
 
 ---
 
 ## E) Pontos Fortes (Top 10)
 
 ### 1. ETL Framework com IngestionRun Tracking
-**Evidência:** `etl/src/bracc_etl/base.py:73-107`
+**Evidência:** `etl/src/egos_inteligencia_etl/base.py:73-107`
 A base class `Pipeline` cria nós `:IngestionRun` no Neo4j com status (`running`/`loaded`/`quality_fail`), timestamps, error messages, row counts. Isso dá rastreabilidade operacional completa.
 
 ### 2. LGPD como Middleware (não opt-in)
@@ -182,7 +182,7 @@ _conversations: dict[str, list[dict[str, str]]] = defaultdict(list)
 Dict em memória perde tudo no restart/deploy. Redis está disponível no stack mas não é usado para conversas.
 
 ### 3. Telemetria de ETL divergente — ALTO
-**Evidência:** `scripts/etl-monitor.sh`, `/opt/bracc/logs/etl-monitor-state.json`, `/api/v1/meta/etl-progress`, `/opt/bracc/cnpj-etl.log`
+**Evidência:** `scripts/etl-monitor.sh`, `/opt/egos_inteligencia/logs/etl-monitor-state.json`, `/api/v1/meta/etl-progress`, `/opt/egos_inteligencia/cnpj-etl.log`
 O sistema mostra três verdades diferentes ao mesmo tempo: o monitor grava “ETL running”, o endpoint público marca `running=false` com 90%, e o log real termina com erro `Expected parameter(s): run_id`. Isso compromete o diagnóstico operacional e a comunicação pública.
 
 ### 4. Cypher Injection Parcial — ALTO
@@ -209,11 +209,11 @@ Página complexa com hero, search, features, how-it-works, sources, footer — t
 21 APIs externas sem fallback entre elas. Se Portal da Transparência está fora, a query simplesmente falha. Sem retry, sem circuit breaker, sem degradação.
 
 ### 9. ETL Sem Paralelismo — BAIXO
-**Evidência:** `etl/src/bracc_etl/runner.py:128-179`
+**Evidência:** `etl/src/egos_inteligencia_etl/runner.py:128-179`
 Runner executa um pipeline por vez sequencialmente. CNPJ (60GB) roda sozinho. Múltiplas fontes poderiam rodar em paralelo.
 
 ### 10. CORS Permissivo — BAIXO
-**Evidência:** `api/src/bracc/main.py:68-72` — `allow_headers=["*"]`
+**Evidência:** `api/src/egos_inteligencia/main.py:68-72` — `allow_headers=["*"]`
 Headers wildcard em produção. Deveria listar headers explícitos.
 
 ---
@@ -315,10 +315,10 @@ O criador do repo compartilhou no Discord um debate sobre Python vs Go para scal
 
 | Métrica | Valor | Fonte |
 |---------|-------|-------|
-| Linhas de código (Python API) | ~8K | `api/src/bracc/` |
-| Linhas de código (Python ETL) | ~12K | `etl/src/bracc_etl/` |
+| Linhas de código (Python API) | ~8K | `api/src/egos_inteligencia/` |
+| Linhas de código (Python ETL) | ~12K | `etl/src/egos_inteligencia_etl/` |
 | Linhas de código (TypeScript/React) | ~15K | `frontend/src/` |
-| Queries Cypher | 47 arquivos | `api/src/bracc/queries/` |
+| Queries Cypher | 47 arquivos | `api/src/egos_inteligencia/queries/` |
 | ETL pipelines registrados | 46 | `runner.py` imports |
 | Chat tools | 26 | `chat.py` TOOLS array |
 | Neo4j constraints | 24 | `schema_init.cypher` |

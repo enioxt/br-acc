@@ -1,4 +1,4 @@
-# BRACC Data Source Catalog
+# EGOS_INTELIGENCIA Data Source Catalog
 
 **38 loaded | 3 pipelines pending data | 60+ not yet built**
 Last updated: 2026-02-26
@@ -7,7 +7,7 @@ Last updated: 2026-02-26
 
 ## 1. LOADED (38 sources)
 
-All sources below have working ETL pipelines in `etl/src/bracc_etl/pipelines/` and are loaded into production Neo4j.
+All sources below have working ETL pipelines in `etl/src/egos_inteligencia_etl/pipelines/` and are loaded into production Neo4j.
 
 | # | Source | Pipeline | Nodes Created | Rels Created | Notes |
 |---|--------|----------|---------------|--------------|-------|

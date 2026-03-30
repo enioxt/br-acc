@@ -84,7 +84,7 @@
 - [ ] Add Timeline + Architecture Graph
 - [ ] Estimated: 6-8 hours
 
-### PHASE 4: egos-lab, br-acc, smartbuscas (P2)
+### PHASE 4: egos-lab, egos-inteligencia, smartbuscas (P2)
 - [ ] Apply pattern discovered in Forja
 - [ ] Replicate components + API routes
 - [ ] Estimated: 2-3 hours per system
@@ -142,7 +142,7 @@ Both commits passed:
 **Then disseminate to other repos:**
 - 852: Expand existing telemetry
 - Carteira Libre: Apply pattern
-- egos-lab, br-acc: Scaffold + component
+- egos-lab, egos-inteligencia: Scaffold + component
 
 ---
 

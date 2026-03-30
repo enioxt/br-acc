@@ -35,7 +35,7 @@ uv run pytest -x --tb=short   # Test
 import os
 from typing import Any
 from fastapi import APIRouter
-from src.bracc.services.cache import get_cached
+from src.egos_inteligencia.services.cache import get_cached
 ```
 
 ### Commits: `type(scope): description`

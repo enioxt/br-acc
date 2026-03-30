@@ -143,7 +143,7 @@ The pattern detection engine (`PATTERNS_ENABLED=true`) has 10 risk detectors liv
 
 | Container | Image | Status | Purpose |
 |-----------|-------|--------|---------|
-| `bracc-neo4j` | neo4j:5-community | ✅ Healthy | Graph database (9.1M nodes) |
+| `egos-inteligencia-neo4j` | neo4j:5-community | ✅ Healthy | Graph database (9.1M nodes) |
 | `infra-redis-1` | redis:7-alpine | ✅ Healthy | Cache + conversations + rate limiting |
 | `infra-api-1` | Custom Python | ✅ Healthy | FastAPI backend (42 routes) |
 | `infra-frontend-1` | Custom Vite | ✅ Healthy | React SPA |
@@ -157,7 +157,7 @@ The pattern detection engine (`PATTERNS_ENABLED=true`) has 10 risk detectors liv
 | **Method** | Hot tar of Neo4j Docker volume |
 | **Compression** | 6.7 GB → 1.5 GB (gzip) |
 | **Retention** | Last 5 backups |
-| **Script** | `/opt/bracc/scripts/neo4j-backup.sh` |
+| **Script** | `/opt/egos_inteligencia/scripts/neo4j-backup.sh` |
 
 ### Resilience
 
@@ -209,7 +209,7 @@ Live-tested scan returned **102 alerts** across 10 cities in 7 days. Pattern typ
 
 ## 7. Intelink Migration Status
 
-| Feature | Intelink | br-acc (EGOS) | Status |
+| Feature | Intelink | egos-inteligencia (EGOS) | Status |
 |---------|----------|--------------|--------|
 | Chat AI Agent | ✅ | ✅ | **Adopted** (superior: 26 tools vs 14) |
 | Graph Explorer | ✅ | ✅ | **Adopted** |
@@ -229,7 +229,7 @@ Live-tested scan returned **102 alerts** across 10 cities in 7 days. Pattern typ
 | Report Generator | ✅ | ❌ | P2 |
 | Multi-workspace | ✅ | ❌ | P3 |
 
-**Verdict:** 10/17 features adopted. No migration blocker — br-acc already surpasses Intelink in backend capabilities (26 tools vs 14, 9.1M nodes, circuit breaker, gazette monitor).
+**Verdict:** 10/17 features adopted. No migration blocker — egos-inteligencia already surpasses Intelink in backend capabilities (26 tools vs 14, 9.1M nodes, circuit breaker, gazette monitor).
 
 ---
 

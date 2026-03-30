@@ -17,11 +17,11 @@ Site: [inteligencia.egos.ia.br](https://inteligencia.egos.ia.br) | Ecossistema: 
 
 ## Origem e Diferenças
 
-Este projeto é um **fork** do [World-Open-Graph/br-acc](https://github.com/World-Open-Graph/br-acc), uma infraestrutura open-source para dados públicos brasileiros em grafo.
+Este projeto é um **fork** do [World-Open-Graph/egos-inteligencia](https://github.com/World-Open-Graph/egos-inteligencia), uma infraestrutura open-source para dados públicos brasileiros em grafo.
 
 O EGOS Inteligência diverge significativamente do upstream:
 
-| Aspecto | Upstream (br-acc) | EGOS Inteligência |
+| Aspecto | Upstream (egos-inteligencia) | EGOS Inteligência |
 |---|---|---|
 | **Idioma** | Inglês | Português-BR nativo |
 | **Interface** | Desktop-only, requer login | Mobile-first, público, chatbot AI |
@@ -35,7 +35,7 @@ O EGOS Inteligência diverge significativamente do upstream:
 | **Algoritmos** | Básico | PageRank, Benford, HHI, Community Detection (roadmap) |
 | **Ecossistema** | Standalone | Integrado ao [EGOS Framework](https://egos.ia.br) (24 agentes AI) |
 
-Mantemos rastreamento do upstream e contribuímos PRs quando aplicável. Um job automatizado ([BR-ACC Monitor](scripts/README-bracc-monitor.md)) roda 2x ao dia (GitHub Actions) para listar forks, PRs e issues do upstream, categorizar mudanças e sugerir alinhamento do TASKS.md com PRs mergeados; notificações opcionais no Discord/Telegram.
+Mantemos rastreamento do upstream e contribuímos PRs quando aplicável. Um job automatizado ([BR-ACC Monitor](scripts/README-egos_inteligencia-monitor.md)) roda 2x ao dia (GitHub Actions) para listar forks, PRs e issues do upstream, categorizar mudanças e sugerir alinhamento do TASKS.md com PRs mergeados; notificações opcionais no Discord/Telegram.
 
 ---
 
@@ -244,7 +244,7 @@ Veja [ROADMAP.md](ROADMAP.md) para o plano completo. Destaques:
 | **Intermediário** | Pipelines ETL para novas fontes | Sim (Python) |
 | **Avançado** | Algoritmos de anomalia, queries Cypher | Sim (Python + Neo4j) |
 
-**Issues abertas:** [github.com/enioxt/br-acc/issues](https://github.com/enioxt/br-acc/issues) — várias marcadas como `good first issue` e `help wanted`
+**Issues abertas:** [github.com/enioxt/egos-inteligencia/issues](https://github.com/enioxt/egos-inteligencia/issues) — várias marcadas como `good first issue` e `help wanted`
 
 ---
 
@@ -285,7 +285,7 @@ Veja [ROADMAP.md](ROADMAP.md) para o plano completo. Destaques:
 
 EGOS Inteligência is an open-source platform for cross-referencing Brazilian public data, built on a graph database connecting companies, politicians, contracts, sanctions, and electoral donations.
 
-**Forked from** [World-Open-Graph/br-acc](https://github.com/World-Open-Graph/br-acc) with significant divergence: mobile-first UI, AI chatbot, LGPD-compliant CPF blocking, 14 OSINT tools via Discord/Telegram bots, 79 planned data sources, and integration with the [EGOS Framework](https://egos.ia.br) (24 AI agents). An automated [BR-ACC Monitor](scripts/README-bracc-monitor.md) runs twice daily (GitHub Actions) to track upstream forks, PRs, issues, and roadmap suggestions.
+**Forked from** [World-Open-Graph/egos-inteligencia](https://github.com/World-Open-Graph/egos-inteligencia) with significant divergence: mobile-first UI, AI chatbot, LGPD-compliant CPF blocking, 14 OSINT tools via Discord/Telegram bots, 79 planned data sources, and integration with the [EGOS Framework](https://egos.ia.br) (24 AI agents). An automated [BR-ACC Monitor](scripts/README-egos_inteligencia-monitor.md) runs twice daily (GitHub Actions) to track upstream forks, PRs, issues, and roadmap suggestions.
 
 ## Live Infrastructure
 
@@ -299,7 +299,7 @@ EGOS Inteligência is an open-source platform for cross-referencing Brazilian pu
 ## Quick Start
 
 ```bash
-git clone https://github.com/enioxt/br-acc.git && cd br-acc
+git clone https://github.com/enioxt/egos-inteligencia.git && cd egos-inteligencia
 cp .env.example infra/.env  # Edit: NEO4J_PASSWORD + API keys (see docs)
 cd infra && docker compose up -d
 # See full setup guide: docs/SYSTEM_CAPABILITIES_2026-03.md
@@ -336,7 +336,7 @@ CPF (Brazilian personal tax ID) is **never** searchable, displayable, or exporta
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) · [ROADMAP.md](ROADMAP.md) · [Issues](https://github.com/enioxt/br-acc/issues)
+See [CONTRIBUTING.md](CONTRIBUTING.md) · [ROADMAP.md](ROADMAP.md) · [Issues](https://github.com/enioxt/egos-inteligencia/issues)
 
 ## License
 

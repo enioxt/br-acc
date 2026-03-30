@@ -11,8 +11,8 @@
 |------|-------|
 | **Projeto** | EGOS Inteligência (BR/ACC) |
 | **Descrição** | Plataforma open-source de inteligência sobre dados públicos brasileiros |
-| **Path** | /home/enio/br-acc |
-| **VPS** | 204.168.217.125 (Hetzner, /opt/bracc) |
+| **Path** | /home/enio/egos-inteligencia |
+| **VPS** | 204.168.217.125 (Hetzner, /opt/egos_inteligencia) |
 | **Repo** | github.com/enioxt/EGOS-Inteligencia |
 | **Kernel SSOT Registry** | `/home/enio/egos/docs/SSOT_REGISTRY.md` |
 | **Deploy** | Docker Compose no VPS (API + Frontend + Neo4j + Redis) |
@@ -22,9 +22,9 @@
 ## Architecture
 
 ```
-br-acc/
+egos-inteligencia/
 ├── api/             # FastAPI backend (Python 3.12, uvicorn)
-│   └── src/bracc/   # Core: routers, services, config
+│   └── src/egos_inteligencia/   # Core: routers, services, config
 ├── etl/             # 46 ETL pipelines (Python, Neo4j ingestion)
 ├── frontend/        # React 18 + Vite + TypeScript
 ├── infra/           # Docker Compose, nginx, scripts VPS
@@ -49,7 +49,7 @@ br-acc/
 
 ```bash
 # Development
-cd api && uv run uvicorn src.bracc.main:app --reload --port 8000
+cd api && uv run uvicorn src.egos_inteligencia.main:app --reload --port 8000
 cd frontend && npm run dev
 
 # Testing
@@ -58,8 +58,8 @@ cd frontend && npm test                     # Frontend tests
 
 # VPS Operations
 ssh root@204.168.217.125
-cd /opt/bracc/infra && docker compose restart api
-cd /opt/bracc/infra && docker compose build frontend && docker compose up -d frontend
+cd /opt/egos_inteligencia/infra && docker compose restart api
+cd /opt/egos_inteligencia/infra && docker compose build frontend && docker compose up -d frontend
 docker compose logs -f api --tail 50
 
 # Quick checks
@@ -83,7 +83,7 @@ git push origin main                        # Then VPS: git pull + docker compos
 ## Frozen Zones
 
 > **DO NOT EDIT** without explicit user request:
-> - **Auth/JWT:** `api/src/bracc/auth.py`, JWT secret config
+> - **Auth/JWT:** `api/src/egos_inteligencia/auth.py`, JWT secret config
 > - **Docker Compose:** `infra/docker-compose.yml` (production topology)
 > - **ETL in progress:** Any ETL pipeline currently running (TASK-001)
 > - **Neo4j schema:** Node labels and relationship types in production
@@ -101,7 +101,7 @@ git push origin main                        # Then VPS: git pull + docker compos
 | ETL Pipelines | 46 |
 | Production Containers | 5/5 healthy |
 | ETL Reality Check | Phase 3 interrompida em 17,454,980 / 24.6M Partner (~70%) |
-| ETL Control Plane | `bracc-etl.service` inactive; `/api/v1/meta/etl-progress` stale em 90% |
+| ETL Control Plane | `egos-inteligencia-etl.service` inactive; `/api/v1/meta/etl-progress` stale em 90% |
 | Monthly Cost | ~$36 |
 
 ## Sibling Projects

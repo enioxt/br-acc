@@ -33,7 +33,7 @@ Para evitar redundância extrema em 141M nós, a próxima fase deve materializar
 
 ## Entregas desta PR
 
-- Base técnica adicionada no ETL para cálculo determinístico de hash e montagem de campos de auditoria (`bracc_etl.provenance`).
+- Base técnica adicionada no ETL para cálculo determinístico de hash e montagem de campos de auditoria (`egos_inteligencia_etl.provenance`).
 - Método utilitário no `Pipeline` base para padronizar uso em pipelines novos e antigos.
 - Testes unitários de estabilidade do hash e dos campos de auditoria.
 

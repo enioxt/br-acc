@@ -13,17 +13,17 @@
 sudo apt install aria2
 
 # Download básico com resume (para/volta automaticamente)
-aria2c -c -x4 -d ~/Downloads/bracc-data "URL_DO_ARQUIVO"
+aria2c -c -x4 -d ~/Downloads/egos_inteligencia-data "URL_DO_ARQUIVO"
 
 # Se o PC desligar, rode o MESMO comando — ele retoma de onde parou!
 # O -c (--continue) é a mágica.
 
 # Download múltiplos arquivos de uma lista
-aria2c -c -x4 -i lista_urls.txt -d ~/Downloads/bracc-data
+aria2c -c -x4 -i lista_urls.txt -d ~/Downloads/egos_inteligencia-data
 
 # Rodar aria2 como daemon (para extensão Chrome interceptar downloads)
 aria2c --enable-rpc --rpc-listen-port=6800 --rpc-allow-origin-all \
-  --daemon=true --dir=~/Downloads/bracc-data --continue=true \
+  --daemon=true --dir=~/Downloads/egos_inteligencia-data --continue=true \
   --max-connection-per-server=4
 ```
 
@@ -160,10 +160,10 @@ curl -X POST "https://api-publica.datajud.cnj.jus.br/api_publica_tjsp/_search" \
 ### Download em massa
 ```bash
 # Um tribunal específico
-bash scripts/download-datajud.sh tjsp /opt/bracc/data/datajud
+bash scripts/download-datajud.sh tjsp /opt/egos_inteligencia/data/datajud
 
 # TODOS os tribunais (demorado — ~80M registros)
-bash scripts/download-datajud.sh all /opt/bracc/data/datajud
+bash scripts/download-datajud.sh all /opt/egos_inteligencia/data/datajud
 
 # Listar tribunais disponíveis
 bash scripts/download-datajud.sh list
@@ -225,4 +225,4 @@ bash scripts/download-all-datasets.sh sanctions
 
 ---
 
-*Documento mantido pelo EGOS Intelligence — github.com/enioxt/br-acc*
+*Documento mantido pelo EGOS Intelligence — github.com/enioxt/egos-inteligencia*

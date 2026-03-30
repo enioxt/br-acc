@@ -31,7 +31,7 @@
 | **Custo total** | $36/mês (100% autofinanciado, sem grants) |
 | **Frontend** | inteligencia.egos.ia.br — público, sem login, stats em tempo real |
 | **Investigações** | Patense v2 publicado (R$217M BNDES, 4 empresas, 563 ops) |
-| **Control plane ETL** | `bracc-etl.service` inactive; `/api/v1/meta/etl-progress` stale em 90% |
+| **Control plane ETL** | `egos-inteligencia-etl.service` inactive; `/api/v1/meta/etl-progress` stale em 90% |
 | **Performance** | 5/5 containers saudáveis; scripts prontos: Neo4j 16G heap + 22G pagecache + 12 indexes |
 | **Framework** | Construído com EGOS (egos.ia.br) + MCP-first governance |
 
@@ -357,8 +357,8 @@ O verdadeiro valor está no **cruzamento entre bases**. Cada linha abaixo é um 
 
 ```bash
 # Clone o repositório
-git clone https://github.com/World-Open-Graph/br-acc.git
-cd br-acc
+git clone https://github.com/World-Open-Graph/egos-inteligencia.git
+cd egos-inteligencia
 
 # Setup do ambiente ETL
 cd etl
@@ -367,17 +367,17 @@ pip install -e ".[dev]"
 
 # Rode um pipeline existente
 python scripts/download_sanctions.py
-python -c "from bracc_etl.pipelines.sanctions import SanctionsPipeline; ..."
+python -c "from egos_inteligencia_etl.pipelines.sanctions import SanctionsPipeline; ..."
 
 # Crie um novo pipeline
-cp etl/src/bracc_etl/pipelines/_template.py etl/src/bracc_etl/pipelines/nova_fonte.py
+cp etl/src/egos_inteligencia_etl/pipelines/_template.py etl/src/egos_inteligencia_etl/pipelines/nova_fonte.py
 ```
 
 ### Para Cidadãos (Não-Técnicos)
 
 1. **Baixe dados manualmente** — Muitas fontes do governo precisam de download via navegador (captcha). Você pode ajudar baixando e compartilhando!
 2. **Teste o bot no Discord** — Mande uma DM para `@EGOS Intelligence` e teste consultas
-3. **Reporte bugs** — Abra issues em [github.com/enioxt/br-acc/issues](https://github.com/enioxt/br-acc/issues)
+3. **Reporte bugs** — Abra issues em [github.com/enioxt/egos-inteligencia/issues](https://github.com/enioxt/egos-inteligencia/issues)
 4. **Sugira cruzamentos** — Que perguntas você quer que o grafo responda?
 
 ### Para Jornalistas
@@ -543,7 +543,7 @@ O projeto [Intelink](https://intelink.ia.br) (EGOS) já implementou capacidades 
 
 ---
 
-## Fork Divergence Plan: br-acc → EGOS Inteligência
+## Fork Divergence Plan: egos-inteligencia → EGOS Inteligência
 
 > **Status:** Divergência em andamento. Rename planejado para quando atingir >80% de código próprio.
 
@@ -564,10 +564,10 @@ O projeto [Intelink](https://intelink.ia.br) (EGOS) já implementou capacidades 
 
 ### Plano de Rename
 
-1. **Agora:** Manter `enioxt/br-acc` no GitHub (rastrear upstream)
+1. **Agora:** Manter `enioxt/egos-inteligencia` no GitHub (rastrear upstream)
 2. **Agora:** Branding público como "Intelink" no README e website
 3. **Mês 2:** Quando frontend divergir >80%, criar repo `enioxt/intelink`
-4. **Mês 2:** Redirect `bracc.egos.ia.br` → `inteligencia.egos.ia.br`
+4. **Mês 2:** Redirect `egos_inteligencia.egos.ia.br` → `inteligencia.egos.ia.br`
 5. **Contínuo:** Monitorar forks do upstream para cherry-pick de melhorias
 
 ### O que monitorar no upstream
@@ -625,9 +625,9 @@ O projeto [Intelink](https://intelink.ia.br) (EGOS) já implementou capacidades 
 | Empresa | Técnica | Nosso Equivalente | Issue |
 |---|---|---|---|
 | **LinkedIn** | RAM-first + index every queried property | pagecache=22G + 12 indexes | TASK-002 |
-| **Palantir Gotham** | Bounded traversals (max 3 hops) + anomaly scores pré-computados | GDS PageRank + bounded queries | [#22](https://github.com/enioxt/br-acc/issues/22) |
-| **Facebook TAO** | Cache-aside pattern — Redis na frente do banco | Redis 512MB + cache-aside nas API routes | [#19](https://github.com/enioxt/br-acc/issues/19) |
-| **Google Knowledge Graph** | Lucene fulltext + entity linking | Neo4j fulltext indexes + entity resolution (Phase 7.5) | [#17](https://github.com/enioxt/br-acc/issues/17) |
+| **Palantir Gotham** | Bounded traversals (max 3 hops) + anomaly scores pré-computados | GDS PageRank + bounded queries | [#22](https://github.com/enioxt/egos-inteligencia/issues/22) |
+| **Facebook TAO** | Cache-aside pattern — Redis na frente do banco | Redis 512MB + cache-aside nas API routes | [#19](https://github.com/enioxt/egos-inteligencia/issues/19) |
+| **Google Knowledge Graph** | Lucene fulltext + entity linking | Neo4j fulltext indexes + entity resolution (Phase 7.5) | [#17](https://github.com/enioxt/egos-inteligencia/issues/17) |
 
 ### Infraestrutura Atual
 
@@ -657,8 +657,8 @@ Hetzner VPS: 12 vCPU, 24GB RAM, 500GB SSD ($35/mo)
 
 ## Links
 
-- **Código:** [github.com/enioxt/br-acc](https://github.com/enioxt/br-acc) (fork do World-Open-Graph/br-acc)
-- **Upstream:** World-Open-Graph/br-acc (monitorando)
+- **Código:** [github.com/enioxt/egos-inteligencia](https://github.com/enioxt/egos-inteligencia) (fork do World-Open-Graph/egos-inteligencia)
+- **Upstream:** World-Open-Graph/egos-inteligencia (monitorando)
 - **API ao vivo:** http://204.168.217.125/api/v1/public/
 - **Frontend:** [inteligencia.egos.ia.br](https://inteligencia.egos.ia.br) (público, sem login)
 - **Bot Discord:** EGOS Intelligence#2881 (DMs abertas, 13 tools)

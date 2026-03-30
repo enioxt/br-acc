@@ -1,6 +1,6 @@
 # BR-ACC Upstream Monitor (TASK-013)
 
-Script que roda **2x ao dia** e monitora o upstream **World-Open-Graph/br-acc**: forks, PRs abertos, issues e sugestões de alinhamento do `TASKS.md` com PRs mergeados. Gera um relatório JSON e opcionalmente envia notificações para Discord e Telegram.
+Script que roda **2x ao dia** e monitora o upstream **World-Open-Graph/egos-inteligencia**: forks, PRs abertos, issues e sugestões de alinhamento do `TASKS.md` com PRs mergeados. Gera um relatório JSON e opcionalmente envia notificações para Discord e Telegram.
 
 ## O que o script faz
 
@@ -23,15 +23,15 @@ export GITHUB_TOKEN=ghp_...
 npm run monitor
 ```
 
-O relatório é escrito em `scripts/bracc-monitor-report.json`. O estado (forks/PRs já conhecidos) fica em `scripts/.bracc-monitor-state.json` para a próxima execução.
+O relatório é escrito em `scripts/egos_inteligencia-monitor-report.json`. O estado (forks/PRs já conhecidos) fica em `scripts/.egos_inteligencia-monitor-state.json` para a próxima execução.
 
 ## Variáveis de ambiente
 
 | Variável | Obrigatória | Descrição |
 |----------|-------------|-----------|
 | `GITHUB_TOKEN` ou `GH_TOKEN` | Sim | Token da GitHub API com **mínimos privilégios de leitura**. Para PAT clássico, use `public_repo` (não `repo` completo). Para PAT fine‑grained, conceda apenas `metadata:read`, `pull_requests:read`, `issues:read` (ou escopos de leitura equivalentes). Para o `GITHUB_TOKEN` padrão do Actions, `contents:read` ou permissões de leitura no repositório são suficientes; sempre que possível, use apenas endpoints públicos e leia‑only. |
-| `REPORT_PATH` | Não | Caminho do relatório JSON (padrão: `scripts/bracc-monitor-report.json`). |
-| `STATE_PATH` | Não | Caminho do arquivo de estado (padrão: `scripts/.bracc-monitor-state.json`). |
+| `REPORT_PATH` | Não | Caminho do relatório JSON (padrão: `scripts/egos_inteligencia-monitor-report.json`). |
+| `STATE_PATH` | Não | Caminho do arquivo de estado (padrão: `scripts/.egos_inteligencia-monitor-state.json`). |
 | `DISCORD_WEBHOOK_URL` | Não | URL do webhook do Discord para notificações. |
 | `TELEGRAM_BOT_TOKEN` | Não | Token do bot do Telegram (usado com `TELEGRAM_CHAT_ID`). |
 | `TELEGRAM_CHAT_ID` | Não | ID do chat/canal para onde enviar as mensagens. |
@@ -40,12 +40,12 @@ Ver também `.env.example` na raiz do repositório.
 
 ## Rodar no GitHub Actions
 
-O workflow **BR-ACC Monitor** (`.github/workflows/bracc-monitor.yml`) está configurado para:
+O workflow **BR-ACC Monitor** (`.github/workflows/egos_inteligencia-monitor.yml`) está configurado para:
 
 - **Agendamento:** 2x ao dia às **09:00 UTC** e **21:00 UTC** (06:00 e 18:00 em UTC-3).
 - **Manual:** Aba **Actions** → workflow "BR-ACC Monitor" → "Run workflow".
 
-O estado é persistido entre execuções via cache do Actions. O relatório é publicado como artefato (**bracc-monitor-report**) com retenção de 14 dias.
+O estado é persistido entre execuções via cache do Actions. O relatório é publicado como artefato (**egos_inteligencia-monitor-report**) com retenção de 14 dias.
 
 Para receber notificações no Discord/Telegram, configure os secrets do repositório:
 
@@ -55,20 +55,20 @@ Para receber notificações no Discord/Telegram, configure os secrets do reposit
 
 ## Rodar no servidor (Contabo / cron)
 
-Para rodar em um servidor com cron (por exemplo, Contabo), use Node 20+ e carregue as variáveis de ambiente (por exemplo, a partir de um `.env` em `/opt/bracc` ou no crontab):
+Para rodar em um servidor com cron (por exemplo, Contabo), use Node 20+ e carregue as variáveis de ambiente (por exemplo, a partir de um `.env` em `/opt/egos_inteligencia` ou no crontab):
 
 ```bash
 # Exemplo crontab (06:00 e 18:00 UTC-3)
-0 6,18 * * * cd /opt/bracc/scripts && . ../.env 2>/dev/null && npm run monitor >> /var/log/bracc-monitor.log 2>&1
+0 6,18 * * * cd /opt/egos_inteligencia/scripts && . ../.env 2>/dev/null && npm run monitor >> /var/log/egos_inteligencia-monitor.log 2>&1
 ```
 
-Defina `STATE_PATH` para um caminho persistente (por exemplo, `/opt/bracc/scripts/.bracc-monitor-state.json`) para que o script reconheça forks e PRs já vistos entre execuções.
+Defina `STATE_PATH` para um caminho persistente (por exemplo, `/opt/egos_inteligencia/scripts/.egos_inteligencia-monitor-state.json`) para que o script reconheça forks e PRs já vistos entre execuções.
 
 ## On-demand via bot
 
-A issue original menciona execução sob demanda por comando do bot. O código do bot (Discord/Telegram) fica fora deste repositório. Para disparar o monitor por comando (ex.: `/monitor-bracc`), o bot pode chamar a API do GitHub para acionar o workflow:
+A issue original menciona execução sob demanda por comando do bot. O código do bot (Discord/Telegram) fica fora deste repositório. Para disparar o monitor por comando (ex.: `/monitor-egos_inteligencia`), o bot pode chamar a API do GitHub para acionar o workflow:
 
-- Endpoint: `POST /repos/{owner}/{repo}/actions/workflows/bracc-monitor.yml/dispatches`
+- Endpoint: `POST /repos/{owner}/{repo}/actions/workflows/egos_inteligencia-monitor.yml/dispatches`
 - Token com permissão `actions: write`.
 
 Não é necessária alteração no script; basta o bot usar o `workflow_dispatch` do Actions.

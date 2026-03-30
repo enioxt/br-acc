@@ -9,16 +9,16 @@
 
 | Container | Image | Port | Purpose |
 |-----------|-------|------|---------|
-| **bracc-neo4j** | neo4j:5-community | 7474, 7687 | Graph database (77.0M entities, 25.1M `SOCIO_DE`) |
+| **egos-inteligencia-neo4j** | neo4j:5-community | 7474, 7687 | Graph database (77.0M entities, 25.1M `SOCIO_DE`) |
 | **redis** | redis:7-alpine | 6379 | Cache (512MB, allkeys-lru) |
 | **api** | python:3.12-slim | 8000 | FastAPI backend |
 | **frontend** | node:20-alpine | 5173 | React 18 + Vite |
 | **caddy** | caddy:2 | 80, 443 | Reverse proxy + SSL |
 
-**Network:** `bracc` (bridge)
+**Network:** `egos_inteligencia` (bridge)
 **VPS:** 204.168.217.125 (Hetzner, 12 vCPU, 24GB RAM, 500GB SSD)
 **Domain:** inteligencia.egos.ia.br
-**Reality check (2026-03-06):** 5/5 containers healthy, but `bracc-etl.service` inactive and `/api/v1/meta/etl-progress` stale em 90% após falha de pós-load do CNPJ.
+**Reality check (2026-03-06):** 5/5 containers healthy, but `egos-inteligencia-etl.service` inactive and `/api/v1/meta/etl-progress` stale em 90% após falha de pós-load do CNPJ.
 
 ---
 

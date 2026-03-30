@@ -8,7 +8,7 @@
 
 ## Pattern #1: Supabase RLS + JSONB for Extensibility
 
-**Discovery:** Carteira Livre + br-acc
+**Discovery:** Carteira Livre + egos-inteligencia
 **Use:** All authentication + multi-tenant systems
 
 When: You need row-level security + flexible metadata
@@ -74,7 +74,7 @@ Example: X.com OAuth keys, OpenRouter API keys
 
 ## Pattern #7: Git Hooks for Pre-commit Validation
 
-**Discovery:** Pre-push hooks (br-acc, egos, egos-lab)
+**Discovery:** Pre-push hooks (egos-inteligencia, egos, egos-lab)
 **Use:** Block bad code before it reaches main
 
 When: Want guaranteed quality on main
@@ -148,7 +148,7 @@ API Routes:
 1. ✅ PHASE 1: Foundation (Supabase + Components)
 2. ⏳ PHASE 2: Forja implementation (page + API routes)
 3. ⏳ PHASE 3: 852 + Carteira Libre refinement
-4. ⏳ PHASE 4: egos-lab, br-acc dissemination
+4. ⏳ PHASE 4: egos-lab, egos-inteligencia dissemination
 5. ⏳ PHASE 5: Global `/disseminate`
 
 **Value:** Transparent operations ("não seremos uma caixa preta")

@@ -1,15 +1,15 @@
 # BR/ACC Open Graph — Dados Públicos do Brasil em Grafo
 
-[![BRACC Header](../brand/bracc-header.jpg)](../brand/bracc-header.jpg)
+[![EGOS_INTELIGENCIA Header](../brand/egos_inteligencia-header.jpg)](../brand/egos_inteligencia-header.jpg)
 
 Idioma: [English](../../README.md) | **Português (Brasil)**
 
-[![CI](https://github.com/World-Open-Graph/br-acc/actions/workflows/ci.yml/badge.svg)](https://github.com/World-Open-Graph/br-acc/actions/workflows/ci.yml)
+[![CI](https://github.com/World-Open-Graph/egos-inteligencia/actions/workflows/ci.yml/badge.svg)](https://github.com/World-Open-Graph/egos-inteligencia/actions/workflows/ci.yml)
 [![Licença: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 > **Em uma frase:** O BR/ACC conecta dados públicos do Brasil (empresas, políticos, contratos, sanções, doações eleitorais) em um grafo que mostra quem se relaciona com quem.
 
-Site: [bracc.org](https://bracc.org) | Iniciativa: [World Open Graph](https://worldopengraph.com)
+Site: [egos_inteligencia.org](https://egos_inteligencia.org) | Iniciativa: [World Open Graph](https://worldopengraph.com)
 
 ---
 
@@ -78,8 +78,8 @@ Basta perguntar: *"Quais os vínculos da empresa CNPJ 00.000.000/0001-00?"*
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/World-Open-Graph/br-acc.git
-cd br-acc
+git clone https://github.com/World-Open-Graph/egos-inteligencia.git
+cd egos-inteligencia
 
 # 2. Configure
 cp .env.example .env

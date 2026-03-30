@@ -209,4 +209,4 @@ As empresas do grupo **não estão no grafo** porque dependem dos dados CNPJ/QSA
 ---
 
 *Gerado por EGOS Intelligence em 2026-03-02. Dados públicos, sinais estatísticos — não é prova jurídica.*
-*Código fonte: [github.com/enioxt/br-acc](https://github.com/enioxt/br-acc)*
+*Código fonte: [github.com/enioxt/egos-inteligencia](https://github.com/enioxt/egos-inteligencia)*

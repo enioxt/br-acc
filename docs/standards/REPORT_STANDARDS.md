@@ -68,7 +68,7 @@ Cada dado no relatório deve indicar:
 | **Hash** | SHA-256 da linha bruta (quando disponível) | `a1b2c3...` |
 | **Status** | `verified` / `legacy` / `unverified` | `verified` |
 
-> O módulo `bracc_etl/provenance.py` implementa hashing determinístico
+> O módulo `egos_inteligencia_etl/provenance.py` implementa hashing determinístico
 > para garantir não-repúdio dos dados brutos processados pelo ETL.
 
 ---

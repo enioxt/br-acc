@@ -1,4 +1,4 @@
-# ETL Deep Assessment — br-acc/BRACC Pipeline Review
+# ETL Deep Assessment — egos-inteligencia/EGOS_INTELIGENCIA Pipeline Review
 
 > **Date:** 2026-03-08
 > **Author:** Cascade + Enio
@@ -202,7 +202,7 @@ df = df.join(lookup_df, on="basico", how="left")
 
 ---
 
-## 5. Verdict: Keep br-acc or Build from Scratch?
+## 5. Verdict: Keep egos-inteligencia or Build from Scratch?
 
 ### **VERDICT: Keep and upgrade. Do NOT rebuild from scratch.**
 

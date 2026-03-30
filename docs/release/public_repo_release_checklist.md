@@ -1,4 +1,4 @@
-# Public Repo Release Checklist — `World-Open-Graph/br-acc`
+# Public Repo Release Checklist — `World-Open-Graph/egos-inteligencia`
 
 ## 1) Pre-release gate
 
@@ -19,10 +19,10 @@ Expected: all `PASS`.
 ## 3) Snapshot hygiene (optional verification)
 
 ```bash
-bash scripts/prepare_public_snapshot.sh . /tmp/br-acc-public
-python /tmp/br-acc-public/scripts/check_public_privacy.py --repo-root /tmp/br-acc-public
-python /tmp/br-acc-public/scripts/check_compliance_pack.py --repo-root /tmp/br-acc-public
-python /tmp/br-acc-public/scripts/check_open_core_boundary.py --repo-root /tmp/br-acc-public
+bash scripts/prepare_public_snapshot.sh . /tmp/egos-inteligencia-public
+python /tmp/egos-inteligencia-public/scripts/check_public_privacy.py --repo-root /tmp/egos-inteligencia-public
+python /tmp/egos-inteligencia-public/scripts/check_compliance_pack.py --repo-root /tmp/egos-inteligencia-public
+python /tmp/egos-inteligencia-public/scripts/check_open_core_boundary.py --repo-root /tmp/egos-inteligencia-public
 ```
 
 Expected in snapshot:

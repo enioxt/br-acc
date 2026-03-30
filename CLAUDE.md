@@ -1,4 +1,4 @@
-# CLAUDE.md — EGOS Inteligência (br-acc)
+# CLAUDE.md — EGOS Inteligência (egos-inteligencia)
 
 > Lido automaticamente pelo Claude Code CLI ao executar `claude` neste diretório.
 
@@ -10,16 +10,16 @@ Repositório público: `github.com/enioxt/EGOS-Inteligencia`
 
 ## Bloqueio Crítico Atual
 
-**ETL CNPJ preso a 90%** — O serviço `bracc-etl.service` está inativo. A Fase 3 carregou massa crítica, mas o pós-load falhou com `Neo.ClientError.Statement.ParameterMissing: Expected parameter(s): run_id`. Fix local já aplicado em `etl/src/bracc_etl/linking_hooks.py` e `runner.py` — **falta redeploy/reexecução no VPS**.
+**ETL CNPJ preso a 90%** — O serviço `egos-inteligencia-etl.service` está inativo. A Fase 3 carregou massa crítica, mas o pós-load falhou com `Neo.ClientError.Statement.ParameterMissing: Expected parameter(s): run_id`. Fix local já aplicado em `etl/src/egos_inteligencia_etl/linking_hooks.py` e `runner.py` — **falta redeploy/reexecução no VPS**.
 
 ## Arquitetura
 
 ```text
-br-acc/
+egos-inteligencia/
 ├── api/             # FastAPI backend (Python 3.12, uvicorn)
-│   └── src/bracc/   # routers (search, meta, entity), services (cache.py), config
+│   └── src/egos_inteligencia/   # routers (search, meta, entity), services (cache.py), config
 ├── etl/             # 46 pipelines ETL (Python, ingestão Neo4j)
-│   └── src/bracc_etl/
+│   └── src/egos_inteligencia_etl/
 │       ├── linking_hooks.py   # FIX APLICADO (run_id bug)
 │       └── runner.py          # FIX APLICADO (run_id bug)
 ├── frontend/        # React 18 + Vite + TypeScript
@@ -51,12 +51,12 @@ br-acc/
 pip install -e etl/           # Instalar ETL em modo dev
 pytest etl/tests/             # Rodar testes do ETL
 
-# VPS (217.216.95.126, /opt/bracc)
+# VPS (217.216.95.126, /opt/egos_inteligencia)
 ssh root@217.216.95.126
-cd /opt/bracc
+cd /opt/egos_inteligencia
 docker compose ps             # Estado dos 5 containers
 docker compose logs api -f    # Logs da API
-systemctl status bracc-etl    # Status do ETL service (deve estar ativo)
+systemctl status egos-inteligencia-etl    # Status do ETL service (deve estar ativo)
 
 # ETL (executar no VPS após fix de run_id)
 # Ver README do ETL para comando exato de retomada da Fase 3
@@ -79,10 +79,10 @@ curl https://inteligencia.egos.ia.br/api/v1/meta/cache-stats
 
 | Item | Valor |
 |------|-------|
-| **VPS Atual** | Contabo — 217.216.95.126 (`/opt/bracc`) |
+| **VPS Atual** | Contabo — 217.216.95.126 (`/opt/egos_inteligencia`) |
 | **Migração planejada** | Hetzner |
 | **Docker stack** | 5/5 containers saudáveis |
-| **ETL service** | `bracc-etl.service` — INATIVO (bloqueado) |
+| **ETL service** | `egos-inteligencia-etl.service` — INATIVO (bloqueado) |
 | **Grafo atual** | 77,035,803 entidades, 25,091,492 `SOCIO_DE` |
 
 ## Estado do ETL (2026-03-18)

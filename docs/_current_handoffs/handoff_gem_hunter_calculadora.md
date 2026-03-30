@@ -1,6 +1,6 @@
 # 🔄 HANDOFF — Porting Calculadora PJ & Gem Hunter v2
 
-**Repo:** br-acc (EGOS Inteligência)
+**Repo:** egos-inteligencia (EGOS Inteligência)
 **Date:** 2026-03-04T12:08:00Z
 **Agent:** Antigravity (Google DeepMind)
 **Commits:** 3 (Eagle Eye, Calculadora PJ, Gem Hunter v2)
@@ -31,7 +31,7 @@ agents/gem_hunter/gem_hunter_tags.json
 
 ## 🏁 Quick Start
 ```bash
-cd br-acc
+cd egos-inteligencia
 GITHUB_TOKEN="..." OPENROUTER_API_KEY="..." python3 agents/gem_hunter/gem_hunter.py
 ```
 

@@ -40,15 +40,15 @@ With 22GB pagecache, ALL of Neo4j's store files fit in RAM. Every CNPJ lookup be
 
 **Apply with:**
 ```bash
-bash /opt/bracc/neo4j-memory-upgrade.sh
-cd /opt/bracc/infra && docker compose -f docker-compose.prod.yml up -d neo4j
+bash /opt/egos_inteligencia/neo4j-memory-upgrade.sh
+cd /opt/egos_inteligencia/infra && docker compose -f docker-compose.prod.yml up -d neo4j
 ```
 
 ---
 
 ## Layer 1: Indexes (Must Create After ETL)
 
-Run: `bash /opt/bracc/post-etl-optimize.sh`
+Run: `bash /opt/egos_inteligencia/post-etl-optimize.sh`
 
 ### B-Tree Indexes (exact lookup, O(log n)):
 ```cypher
@@ -107,7 +107,7 @@ Request → API → Redis lookup
 - Investigation targets (Patense, etc.): 80%+ after first query
 - Random long-tail: 10-20%
 
-### Implementation (add to `api/src/bracc/cache.py`):
+### Implementation (add to `api/src/egos_inteligencia/cache.py`):
 ```python
 import redis
 from functools import wraps
@@ -137,7 +137,7 @@ redis:
   restart: unless-stopped
   command: redis-server --maxmemory 4gb --maxmemory-policy allkeys-lru
   networks:
-    - bracc
+    - egos_inteligencia
 ```
 
 ---
@@ -285,9 +285,9 @@ We can implement all 5 with what we have.
 ## Immediate Action Plan (After ETL Completes)
 
 ```
-1. bash /opt/bracc/neo4j-memory-upgrade.sh   # Update .env
-2. cd /opt/bracc/infra && docker compose -f docker-compose.prod.yml up -d neo4j  # Restart with 16G heap
-3. bash /opt/bracc/post-etl-optimize.sh       # Create all indexes
+1. bash /opt/egos_inteligencia/neo4j-memory-upgrade.sh   # Update .env
+2. cd /opt/egos_inteligencia/infra && docker compose -f docker-compose.prod.yml up -d neo4j  # Restart with 16G heap
+3. bash /opt/egos_inteligencia/post-etl-optimize.sh       # Create all indexes
 4. curl http://217.216.95.126/api/v1/public/meta  # Verify 55M+ nodes
 5. curl "http://217.216.95.126/api/v1/public/graph/company/62232140000139"  # Test Patense CNPJ
 6. Add Redis to docker-compose.prod.yml        # Phase 7.1

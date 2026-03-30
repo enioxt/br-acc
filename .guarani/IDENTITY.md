@@ -34,7 +34,7 @@ Build and evolve a transparent, open-source intelligence platform that crosses p
 
 ## Key References
 
-- **API:** `api/src/bracc/` (FastAPI, 10 routers, 26 chat tools)
+- **API:** `api/src/egos_inteligencia/` (FastAPI, 10 routers, 26 chat tools)
 - **ETL:** `etl/` (46 pipelines, Python)
 - **Frontend:** `frontend/` (React 18 + Vite)
 - **Infra:** `infra/` (Docker Compose, nginx)

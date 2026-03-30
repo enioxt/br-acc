@@ -25,7 +25,7 @@
 - ✅ **Carteira Livre:** 36 páginas admin + telemetry.ts (padrão ouro)
 - ❌ **egos:** Kernel (sem UI)
 - ❌ **egos-lab:** Sem HARVEST.md documentado
-- ❌ **br-acc:** Sem HARVEST.md documentado
+- ❌ **egos-inteligencia:** Sem HARVEST.md documentado
 - ❌ **smartbuscas:** Auditando
 - ❌ **intelink:** Verificar existência
 
@@ -212,7 +212,7 @@ export const TimelineStatusBadge: React.FC<{
 
 ### FASE 5: Disseminação (P2) — 4h
 
-- [ ] **DISSEMINATE-001:** egos-lab, br-acc, smartbuscas, intelink
+- [ ] **DISSEMINATE-001:** egos-lab, egos-inteligencia, smartbuscas, intelink
   - Aplicar padrão descoberto em Forja/852/Carteira
   - Estimativa: 2h per system
 

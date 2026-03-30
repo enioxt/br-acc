@@ -9,9 +9,9 @@
 - [ ] TASK-136: Reposition `EGOS-Inteligencia` as the strongest reference implementation for `EGOS Guard Brasil`, not as the entire business thesis
 - [ ] TASK-137: Expose guardrail primitives from this repo as reusable proof surfaces — LGPD/public guard, masking, evidence-aware chat, public-safe investigation flows
 - [ ] TASK-138: Prove one lighthouse use case with hard evidence and neutral language — a public-safe assistant for investigations/due diligence under Brazilian constraints
-- [ ] TASK-140: Adopt the kernel `docs/SSOT_REGISTRY.md` in `br-acc` — map local SSOTs (`AGENTS`, `TASKS`, local maps, legal docs) to the cross-repo contract and document what remains public-safe local truth
+- [ ] TASK-140: Adopt the kernel `docs/SSOT_REGISTRY.md` in `egos-inteligencia` — map local SSOTs (`AGENTS`, `TASKS`, local maps, legal docs) to the cross-repo contract and document what remains public-safe local truth
 
-> **Directive:** New work in `br-acc` should either strengthen the reference implementation, improve truthfulness of public claims, or help package the flagship guardrails product.
+> **Directive:** New work in `egos-inteligencia` should either strengthen the reference implementation, improve truthfulness of public claims, or help package the flagship guardrails product.
 
 ## P0 — Em Andamento (Blockers)
 
@@ -23,18 +23,18 @@
 - [ ] **Phase 3: Create Person/Partner nodes + SOCIO_DE relationships** 🚨
 - [ ] Phase 4: Post-load hooks (entity linking)
 - [x] Fix local do pós-load `run_id` → `linking_hooks.py`/`runner.py` + teste de regressão (06/03/2026)
-> **Server:** 217.216.95.126 | **Service target:** `bracc-etl.service` (reality check 2026-03-06: inactive)
+> **Server:** 217.216.95.126 | **Service target:** `egos-inteligencia-etl.service` (reality check 2026-03-06: inactive)
 > **Reality check 2026-03-06:** Docker stack está saudável (5/5 containers), mas o ETL não está rodando pelo systemd. O último comando ativo ficou preso em `tmux` e o log final mostra erro em `linking_hooks.py`: `Neo.ClientError.Statement.ParameterMissing: Expected parameter(s): run_id`.
 > **Estado real do grafo:** 59,573,749 `Company` + 17,454,980 `Partner` + 7,074 `Person` = **77,035,803 entidades** e **25,091,492 `SOCIO_DE`**.
 > **Control-plane drift:** `etl-monitor.sh` segue registrando “ETL running” com `CPU 0.0%` e delta zero, enquanto `/api/v1/meta/etl-progress` retorna `running=false`, `percent=90` e `last_update=2026-03-06 00:06:36`.
 > **Impact:** A Fase 3 carregou massa crítica de sócios/relacionamentos, mas o pós-load falhou, a telemetria pública está stale e a Fase 4 permanece bloqueada.
-> **Local fix já aplicado (06/03/2026):** `etl/src/bracc_etl/linking_hooks.py`, `etl/src/bracc_etl/runner.py`, `etl/tests/test_linking_hooks.py` — faltam redeploy/reexecução controlada no VPS.
+> **Local fix já aplicado (06/03/2026):** `etl/src/egos_inteligencia_etl/linking_hooks.py`, `etl/src/egos_inteligencia_etl/runner.py`, `etl/tests/test_linking_hooks.py` — faltam redeploy/reexecução controlada no VPS.
 
 ### TASK-002: Neo4j Performance Optimization ⏳
 - [x] Criar script `neo4j-memory-upgrade.sh` (16G heap, 22G pagecache)
 - [x] Criar script `post-etl-optimize.sh` (13 indexes: 9 B-tree + 2 fulltext + 2 composite)
 - [x] Documentar arquitetura: `docs/analysis/PERFORMANCE_ARCHITECTURE_2026-03.md`
-- [x] Scripts deployed to VPS (`/opt/bracc/scripts/`) — session 17
+- [x] Scripts deployed to VPS (`/opt/egos_inteligencia/scripts/`) — session 17
 - [ ] Aplicar memory upgrade APÓS ETL completar
 - [ ] Executar `post-etl-optimize.sh` APÓS ETL completar
 - [ ] Verificar query < 5ms para CNPJ lookup
@@ -46,20 +46,20 @@
 - [x] Adicionar wildcard + fuzzy search na API (`_build_search_query()`)
 - [x] Deploy API + frontend reconstruídos
 - [x] Verificar busca funcionando ("silva" → 1073 resultados)
-> **Arquivos:** `api/src/bracc/routers/search.py`, `frontend/src/i18n.ts`
+> **Arquivos:** `api/src/egos_inteligencia/routers/search.py`, `frontend/src/i18n.ts`
 
 ---
 
 ## P1 — Sprint Atual
 
 ### TASK-004: Redis Cache-Aside (GitHub #19) ✅ (02/03/2026)
-- [x] Redis rodando no docker-compose (bracc network)
-- [x] `api/src/bracc/services/cache.py` — async cache with graceful degradation
+- [x] Redis rodando no docker-compose (egos_inteligencia network)
+- [x] `api/src/egos_inteligencia/services/cache.py` — async cache with graceful degradation
 - [x] Search endpoint cached (TTL 2min), entity (5min), stats (1min), connections (3min)
 - [x] `/api/v1/meta/cache-stats` — hit rate, misses, errors, TTL config
 - [x] `/api/v1/meta/cache` DELETE — flush all cache keys
 - [x] Deployed and verified: 50% hit rate on repeated queries
-> **Arquivos:** `api/src/bracc/services/cache.py`, `api/src/bracc/routers/search.py`, `api/src/bracc/routers/meta.py`
+> **Arquivos:** `api/src/egos_inteligencia/services/cache.py`, `api/src/egos_inteligencia/routers/search.py`, `api/src/egos_inteligencia/routers/meta.py`
 
 ### TASK-005: GDS Algorithms (GitHub #20) ⬜
 - [ ] Instalar plugin GDS no Neo4j
@@ -113,12 +113,12 @@
 > **Motivo:** O repositório 852 possui o chatbot mais avançado de todo o workspace. Torná-lo o benchmark oficial.
 
 ### TASK-072: Reality Check — VPS, ETL e Métricas do Sistema ⬜
-- [ ] Verificar estado real do `bracc-etl.service` e processos relacionados no VPS
+- [ ] Verificar estado real do `egos-inteligencia-etl.service` e processos relacionados no VPS
 - [ ] Atualizar porcentagem real do ETL e gargalo atual (Phase 1/3/4) com evidência
 - [ ] Atualizar métricas canônicas de nós, relacionamentos, fontes, tools e capacidade em `AGENTS.md`, `TASKS.md` e relatório técnico
 - [ ] Validar se widgets/endpoints públicos de progresso refletem o estado real do sistema
 - [ ] Consolidar relatório técnico 2026-03 com capacidade, limites e próximos bloqueios
-> **Evidência já coletada (2026-03-06):** `bracc-etl.service` inactive; stack 5/5 healthy; `etl-monitor-state.json` = 17,454,980 Partner / 59,573,749 Company / 25,091,492 `SOCIO_DE`; `cnpj-etl.log` encerra com erro `Expected parameter(s): run_id`; endpoint `/api/v1/meta/etl-progress` stale em 90%.
+> **Evidência já coletada (2026-03-06):** `egos-inteligencia-etl.service` inactive; stack 5/5 healthy; `etl-monitor-state.json` = 17,454,980 Partner / 59,573,749 Company / 25,091,492 `SOCIO_DE`; `cnpj-etl.log` encerra com erro `Expected parameter(s): run_id`; endpoint `/api/v1/meta/etl-progress` stale em 90%.
 > **Progresso local nesta sessão:** fix mínimo do `run_id` implementado e validado com `ruff` + `pytest` (`40 passed`).
 
 ### TASK-073: Relatório Técnico 2026-03 — EGOS Inteligência ⬜
@@ -171,11 +171,11 @@
 > **Referência:** `egos-lab/scripts/scan_ideas.ts`, `docs/plans/EGOS_LOST_GEMS.md`
 
 ### TASK-013: Fork Monitor (GitHub #9) ✅ (03/03/2026)
-- [x] Script 2x/dia checa forks de World-Open-Graph/br-acc
+- [x] Script 2x/dia checa forks de World-Open-Graph/egos-inteligencia
 - [x] Detectar novos PRs, issues, contribuições
 - [x] Alertar no Telegram/Discord (webhook + Bot API opcionais)
 - [x] Comparar features entre forks (categorização por arquivos; roadmap sync como sugestões no JSON)
-> **Arquivos:** `scripts/bracc-monitor.ts`, `.github/workflows/bracc-monitor.yml`, [scripts/README-bracc-monitor.md](scripts/README-bracc-monitor.md)
+> **Arquivos:** `scripts/egos_inteligencia-monitor.ts`, `.github/workflows/egos_inteligencia-monitor.yml`, [scripts/README-egos_inteligencia-monitor.md](scripts/README-egos_inteligencia-monitor.md)
 
 ### TASK-014: Website Redesign (GitHub #21) ⬜
 - [ ] CMD+K global search (portar do Intelink)
@@ -257,7 +257,7 @@
 - [x] Backend: `public_guard.py` — CPF lookup SEMPRE bloqueado (não só public mode)
 - [x] Backend: `sanitize_public_properties` — SEMPRE filtra CPF (não só public mode)
 - [x] Backend: CPF masking middleware mantido como safety net
-> **Arquivos:** `frontend/src/i18n.ts`, `frontend/src/components/entity/EntityDetail.tsx`, `api/src/bracc/services/public_guard.py`
+> **Arquivos:** `frontend/src/i18n.ts`, `frontend/src/components/entity/EntityDetail.tsx`, `api/src/egos_inteligencia/services/public_guard.py`
 
 ### TASK-026: Mobile-First — Remover bloqueio de tela <1024px ✅ (02/03/2026)
 - [x] Remover `isMobileBlocked` do AppShell.tsx
@@ -275,7 +275,7 @@
 - [x] 3 tools: search_entities, get_graph_stats, get_entity_connections
 - [x] Sugestões contextuais dinâmicas
 - [x] Phase 3: rich results — entity cards clicáveis + evidence chain + cost display ✅ (03/03/2026)
-> **Arquivos:** `api/src/bracc/routers/chat.py`, `frontend/src/components/chat/ChatInterface.tsx`
+> **Arquivos:** `api/src/egos_inteligencia/routers/chat.py`, `frontend/src/components/chat/ChatInterface.tsx`
 
 ### TASK-028: Investigações — Export Formats ✅ (03/03/2026)
 - [x] Formatos de exportação: MD, JSON, HTML, PDF (4 formatos)
@@ -318,7 +318,7 @@
 
 ### TASK-032: DNS inteligencia.egos.ia.br ✅ (02/03/2026)
 - [x] DNS A record criado pelo usuário
-- [x] Caddyfile atualizado (inteligencia.egos.ia.br + bracc 301 redirect)
+- [x] Caddyfile atualizado (inteligencia.egos.ia.br + egos_inteligencia 301 redirect)
 - [x] SSL Let's Encrypt obtido automaticamente
 - [x] Caddy reiniciado, serviço ativo
 - [x] URLs atualizadas no codebase (TASKS, ROADMAP, plans)
@@ -398,7 +398,7 @@
 - [x] ETLProgress widget: barra de progresso ao vivo, auto-refresh 30s
 - [x] Endpoint /api/v1/meta/etl-progress: fase, arquivo, %, running status
 - [x] ETL usa mtime do log (container-compatible) em vez de pgrep
-> **Arquivos:** `frontend/src/components/landing/UpdatesTimeline.tsx`, `frontend/public/updates/timeline.json`, `frontend/src/components/landing/ETLProgress.tsx`, `api/src/bracc/routers/meta.py`
+> **Arquivos:** `frontend/src/components/landing/UpdatesTimeline.tsx`, `frontend/public/updates/timeline.json`, `frontend/src/components/landing/ETLProgress.tsx`, `api/src/egos_inteligencia/routers/meta.py`
 
 ### TASK-045: Bot Error Handling — DM Only ✅ (02/03/2026)
 - [x] Telegram: erros so enviados em chat privado (ctx.chat.type === 'private')
@@ -459,7 +459,7 @@
 - [x] Suggestions: recuperações judiciais, supersalários, fornecedores, investigações
 - [x] 18 tools total (3 grafo + 8 livres + 6 Portal Transparência + 1 DataJud)
 - [x] Brave Search API integrado como primário ($5/mês), DDG fallback ✅ (02/03/2026)
-> **Arquivos:** `api/src/bracc/services/transparency_tools.py`, `api/src/bracc/routers/chat.py`
+> **Arquivos:** `api/src/egos_inteligencia/services/transparency_tools.py`, `api/src/egos_inteligencia/routers/chat.py`
 > **APIs:** Brave Search (primário) + DDG (fallback), TransfereGov, Câmara, Querido Diário + Portal Transparência, DataJud
 
 ### TASK-049: Avaliação Unikraft + ESAA ✅ (02/03/2026)
@@ -476,7 +476,7 @@
 - [x] Microsoft Clarity ativado (project ID: vpkwrlf847) — session recordings, heatmaps
 - [x] Analytics dashboard page: `/app/analytics` (page views, UV, hourly, 7-day chart) ✅ (02/03/2026)
 - [ ] Sentry para error tracking (ou self-hosted alternative)
-> **Arquivos:** `api/src/bracc/routers/analytics.py`, `frontend/src/App.tsx`, `frontend/index.html`, `frontend/src/pages/Analytics.tsx`
+> **Arquivos:** `api/src/egos_inteligencia/routers/analytics.py`, `frontend/src/App.tsx`, `frontend/index.html`, `frontend/src/pages/Analytics.tsx`
 
 ### TASK-051: Avaliação De Olho em Você + Mission Control ✅ (02/03/2026)
 - [x] De Olho em Você (deolhoemvoce.com.br): monitora emendas Pix, CEAP, votações
@@ -504,7 +504,7 @@
 - [x] DataJud (CNJ): chave `cDZH...` integrada — todos os 27+ tribunais
 - [x] Recuperação Judicial: 1.180 processos TJMG confirmados
 - [x] Elasticsearch queries: match_phrase para classes processuais
-> **Arquivos:** `api/src/bracc/services/transparency_tools.py`
+> **Arquivos:** `api/src/egos_inteligencia/services/transparency_tools.py`
 > **Verificado:** CEIS, contratos, DataJud TJMG (Recuperação Judicial) — todos funcionando
 
 ### TASK-054: Avaliação OpenPlanter ✅ (02/03/2026)
@@ -564,7 +564,7 @@
 - [x] `GET /api/v1/monitor/sanctions/recent` — últimas sanções CEIS+CNEP
 - [x] `GET /api/v1/monitor/report/{municipio}` — relatório automático por município
 - [x] Testado: 20 sanções recentes retornadas, Patos de Minas report funcional
-> **Arquivos:** `api/src/bracc/routers/monitor.py`
+> **Arquivos:** `api/src/egos_inteligencia/routers/monitor.py`
 
 ### TASK-062: Sincronização GitHub Issues ↔ Tasks ✅ (02/03/2026)
 - [x] Issue #25 (Portal Transparência): CLOSED — integrado
@@ -596,7 +596,7 @@
 - [x] Bug: Portal Transparência CEIS ignora parâmetro `cnpjSancionado`
 - [x] Fix: filtro client-side por CNPJ/nome após receber resultados
 - [x] Testado: sanções agora filtradas corretamente por empresa
-> **Arquivo:** `api/src/bracc/services/transparency_tools.py`
+> **Arquivo:** `api/src/egos_inteligencia/services/transparency_tools.py`
 
 ### TASK-066: Evidence Chain — Data Provenance per Query ✅ (02/03/2026)
 - [x] Backend: EvidenceItem model (tool, source, query, result_count, timestamp, api_url)
@@ -605,7 +605,7 @@
 - [x] Frontend: display colapsável "Fontes (N) | Custo: $X.XXXX" abaixo de cada resposta
 - [x] Testado: SUPERAR LTDA → 2 evidence items (Neo4j + Brave Search)
 > **Conceito Mycelium aplicado:** Cada dado tem trail auditável — de onde veio, quando, quantos resultados.
-> **Arquivos:** `api/src/bracc/routers/chat.py`, `frontend/src/components/chat/ChatInterface.tsx`, `frontend/src/api/client.ts`
+> **Arquivos:** `api/src/egos_inteligencia/routers/chat.py`, `frontend/src/components/chat/ChatInterface.tsx`, `frontend/src/api/client.ts`
 
 ### TASK-067: Cost Tracking per Query ✅ (02/03/2026)
 - [x] Gemini Flash pricing: $0.075/1M input, $0.30/1M output tokens
@@ -642,7 +642,7 @@
 - [x] Sidebar: Clock icon + nav.activity i18n
 - [x] Testado: chat query → evento logado → visível no feed
 > **Conceito Mycelium:** Cada ação do sistema é um evento auditável — transparência total.
-> **Arquivos:** `api/src/bracc/routers/activity.py`, `frontend/src/pages/Activity.tsx`
+> **Arquivos:** `api/src/egos_inteligencia/routers/activity.py`, `frontend/src/pages/Activity.tsx`
 
 ### TASK-071: Eagle Eye Gazette Monitor ✅ (02/03/2026)
 - [x] Backend: `gazette_monitor.py` com `/api/v1/monitor/gazettes/scan` + `/patterns`
@@ -652,7 +652,7 @@
 - [x] Testado: 23 alertas em Botucatu em 7 dias
 - [x] Bridge Eagle Eye (egos-lab) ↔ EGOS Intel (produção)
 > **Próximo:** Cron automático + dashboard de alertas + mais cidades
-> **Arquivo:** `api/src/bracc/routers/gazette_monitor.py`
+> **Arquivo:** `api/src/egos_inteligencia/routers/gazette_monitor.py`
 
 ### TASK-072: GitGuardian Fix + Security Hardening ✅ (02/03/2026)
 - [x] Incidente: Brave API key vazou em `apps/openclaw/config.json.bak.1` (EGOSv5 repo)
@@ -702,7 +702,7 @@
 ### TASK-077: Website Header/Navbar ✅ (03/03/2026)
 - [x] PublicShell: adicionado nav com links Pesquisar, Relatórios, Estatísticas, GitHub
 - [x] CTA: "Abrir Plataforma" (era "Open Explorer")
-- [x] GitHub URLs atualizadas de br-acc para EGOS-Inteligencia
+- [x] GitHub URLs atualizadas de egos-inteligencia para EGOS-Inteligencia
 - [x] Responsivo: nav escondido em mobile (<768px)
 - [x] Frontend rebuilt e deployed no Contabo
 > **Arquivos:** `PublicShell.tsx`, `PublicShell.module.css`, `Landing.tsx`
@@ -766,7 +766,7 @@
 - [x] DDG fallback: 3 regex patterns for resilience + graceful empty fallback
 - [x] PNCP: try 3 endpoint URLs (API changed), handle 400 gracefully, date normalization
 > **Issues:** #32 (P1), #33 (P2)
-> **Arquivos:** `api/src/bracc/services/transparency_tools.py`
+> **Arquivos:** `api/src/egos_inteligencia/services/transparency_tools.py`
 
 ### TASK-097: System Map — API/Routes/Pages Inventory ✅ (03/03/2026)
 - [x] Documentar 55+ endpoints em 13 routers
@@ -785,7 +785,7 @@
 - [x] 26 AI tools, 10 pattern detectors, roadmap, limitations, call to participate
 - [x] Pattern detection engine enabled (config: patterns_enabled=True)
 - [x] Report added to Reports page as first item
-> **Arquivos:** `frontend/public/reports/transparencia-metodologia.html`, `frontend/src/pages/Reports.tsx`, `api/src/bracc/config.py`
+> **Arquivos:** `frontend/public/reports/transparencia-metodologia.html`, `frontend/src/pages/Reports.tsx`, `api/src/egos_inteligencia/config.py`
 - [ ] OSINT: 24 tools com rate limits
 - [ ] Observability: structured logging, request tracing
 > **Issue:** #34 (P2)
@@ -960,8 +960,8 @@
 > **PR:** https://github.com/enioxt/EGOS-Inteligencia/pull/39
 
 ### TASK-104: Review ETL Provenance Code (split de PR #39) ⬜ (P2 — Análise Técnica)
-- [ ] `etl/src/bracc_etl/provenance.py` — SHA-256 hash de linhas brutas, source fingerprint
-- [ ] `etl/src/bracc_etl/base.py` — método `build_audit_fields()` no Pipeline base
+- [ ] `etl/src/egos_inteligencia_etl/provenance.py` — SHA-256 hash de linhas brutas, source fingerprint
+- [ ] `etl/src/egos_inteligencia_etl/base.py` — método `build_audit_fields()` no Pipeline base
 - [ ] `etl/tests/test_provenance.py` — testes de estabilidade de hash
 - [ ] **Valor:** Não-repúdio dos dados (de onde veio, quando, hash da linha original)
 - [ ] **Risco:** Precisa validar que não quebra ETL em produção (10.5G memória, 9M+ nós)
@@ -1009,16 +1009,16 @@
 - [x] Rotacionar key Portal da Transparência (nova key aplicada na VPS)
 - [x] DataJud — API pública, sem necessidade de rotação (https://datajud-wiki.cnj.jus.br/api-publica/acesso)
 - [x] Brave Search — rotacionada pelo usuário (aguardando nova key para atualizar VPS)
-- [x] Atualizar `.env` na VPS (`/opt/bracc/infra/.env`)
+- [x] Atualizar `.env` na VPS (`/opt/egos_inteligencia/infra/.env`)
 - [ ] Considerar BFG Repo Cleaner para limpar git history (P2)
-> **Arquivos:** `/opt/bracc/infra/.env`
+> **Arquivos:** `/opt/egos_inteligencia/infra/.env`
 
 ### TASK-106: Whitelist Cypher Injection em `_tool_cypher` ✅ (03/03/2026)
 - [x] Substituir blacklist (`CREATE, DELETE, MERGE...`) por whitelist
 - [x] Permitir APENAS: `MATCH`, `RETURN`, `WITH`, `UNWIND`, `ORDER`, `LIMIT`, `WHERE`, `OPTIONAL`, `AS`, `DISTINCT`, `COUNT`, `SUM`, `AVG`, `COLLECT`
 - [x] Bloquear: `CALL`, `LOAD CSV`, `FOREACH`, `CREATE`, `DELETE`, `MERGE`, `SET`, `REMOVE`, `DROP`, `DETACH`
 - [ ] Adicionar teste de regressão (P2)
-> **Evidência:** `api/src/bracc/routers/chat.py:264-281`
+> **Evidência:** `api/src/egos_inteligencia/routers/chat.py:264-281`
 > **Esforço:** 1h | **Impacto:** Fecha maior vetor de ataque
 
 ### TASK-107: Migrar Conversas para Redis ⏳ (parcial)
@@ -1026,7 +1026,7 @@
 - [ ] Migrar `_usage_counts` e `_usage_day` para Redis INCR com TTL 24h
 - [ ] Graceful degradation (Redis down = in-memory fallback)
 - [ ] Key pattern: `egos:usage:{date}:{client_id}`
-> **Evidência:** Redis em `conversations.py`; `_usage_counts`/`_usage_day` ainda em memória em `api/src/bracc/routers/chat.py` (migração pendente).
+> **Evidência:** Redis em `conversations.py`; `_usage_counts`/`_usage_day` ainda em memória em `api/src/egos_inteligencia/routers/chat.py` (migração pendente).
 > **Esforço:** 2h | **Impacto:** Conversas sobrevivem restart/deploy
 
 ### TASK-108: Split `chat.py` em Módulos ✅ (03/03/2026)
@@ -1057,11 +1057,11 @@
 
 ### TASK-110: Neo4j Backup Script (Cron) ✅ (03/03/2026)
 - [x] Hot tar backup do volume Docker (sem parar Neo4j) + count snapshot
-- [x] Cron job diário às 3AM (`/opt/bracc/scripts/neo4j-backup.sh`)
+- [x] Cron job diário às 3AM (`/opt/egos_inteligencia/scripts/neo4j-backup.sh`)
 - [x] Reter últimos 5 backups (rotação automática)
 - [x] APOC export habilitado (`apoc.export.file.enabled=true` em apoc.conf)
 - [x] Alertar se dump falhar via Telegram (v2 deployed 04/03/2026)
-> **Arquivos:** `/opt/bracc/scripts/neo4j-backup.sh`, `/opt/bracc/backups/`
+> **Arquivos:** `/opt/egos_inteligencia/scripts/neo4j-backup.sh`, `/opt/egos_inteligencia/backups/`
 > **Nota:** neo4j-admin dump falha em Community Edition. Backup via tar do volume (~1.5GB comprimido de 6.7GB)
 
 ### TASK-111: Circuit Breaker para APIs Externas ✅ (03/03/2026)
@@ -1127,7 +1127,7 @@
 - [x] Detects stale data (141M/MIT), upstream fork delta, open PRs
 - [x] /start v2: API live check, upstream sync, PR/issue/fork count
 - [x] /end v2: GitHub issue close sync, deployment verify
-- [x] Upstream remote added (World-Open-Graph/br-acc)
+- [x] Upstream remote added (World-Open-Graph/egos-inteligencia)
 - [x] gh default set to enioxt/EGOS-Inteligencia
 > **Arquivos:** `scripts/pre-commit-v2.sh`, `.windsurf/workflows/start.md`, `.windsurf/workflows/end.md`
 
@@ -1150,7 +1150,7 @@
 - [x] Evidence chain integration
 - [x] Deployed to VPS (docker cp + restart)
 - [ ] **BLOCKED:** Only 4 SOCIO_DE relationships in Neo4j — tool works but graph too sparse
-> **Arquivos:** `api/src/bracc/routers/chat.py`, `api/src/bracc/routers/chat_tools.py`
+> **Arquivos:** `api/src/egos_inteligencia/routers/chat.py`, `api/src/egos_inteligencia/routers/chat_tools.py`
 > **Depende de:** TASK-001 (CNPJ ETL Phase 3 must re-run to load 24.6M SOCIO_DE)
 
 ### TASK-124: GitHub Issues Sync ✅ (03/03/2026)
@@ -1200,9 +1200,9 @@
 
 ### TASK-130: Docker Auto-Heal System ✅ (04/03/2026)
 - [x] `scripts/auto-heal.sh` — 4-layer monitoring (container state, healthcheck, URL check, disk space)
-- [x] Deployed to VPS `/opt/bracc/scripts/auto-heal.sh`
+- [x] Deployed to VPS `/opt/egos_inteligencia/scripts/auto-heal.sh`
 - [x] Cron every 2 minutes (`*/2 * * * *`)
-- [x] Logs to `/opt/bracc/logs/auto-heal.log` (auto-trimmed to 500 lines)
+- [x] Logs to `/opt/egos_inteligencia/logs/auto-heal.log` (auto-trimmed to 500 lines)
 - [x] Verifies site HTTP 200 after healing
 > **Root cause (session 26):** Containers were in "Created" state after `docker compose up` dependency chain failure.
 > **Prevention:** Script detects Created/Exited/Dead containers and force-starts them.
@@ -1234,14 +1234,14 @@
 
 ### TASK-133: NexusBridge — Camada de Interoperabilidade Cross-Repo ⬜ (P1)
 - [ ] TASK-NB-001: Criar SERVICE_KEY no .env da VPS + middleware de validação
-- [ ] TASK-NB-002: Criar router `/api/v1/interop/` no br-acc (FastAPI)
+- [ ] TASK-NB-002: Criar router `/api/v1/interop/` no egos-inteligencia (FastAPI)
 - [ ] TASK-NB-003: Endpoint `GET /interop/entity/{cnpj}` — busca empresa + sócios
 - [ ] TASK-NB-004: Endpoint `GET /interop/network/{cnpj}` — grafo de rede (1 hop)
 - [ ] TASK-NB-005: Endpoint `GET /interop/pep/{cpf_or_name}` — check PEP
 - [ ] TASK-NB-006: Endpoint `GET /interop/sanctions/{cnpj}` — sanções CEIS/CNEP
 - [ ] TASK-NB-007: Endpoint `GET /interop/health` — status do Neo4j + contagens
-- [ ] TASK-NB-008: Criar `bracc-client.ts` no egos-lab (`packages/shared/src/`)
-- [ ] TASK-NB-009: Criar tool `bracc.query-entity` no MCP do egos-lab
+- [ ] TASK-NB-008: Criar `egos_inteligencia-client.ts` no egos-lab (`packages/shared/src/`)
+- [ ] TASK-NB-009: Criar tool `egos_inteligencia.query-entity` no MCP do egos-lab
 - [ ] TASK-NB-010: Integrar no Telegram bot — consultar VPS quando user perguntar sobre empresa
 - [ ] TASK-NB-011: Client no carteira-livre para KYC enrichment
 - [ ] TASK-NB-012: Audit log de queries interop
@@ -1265,7 +1265,7 @@
 > **Arquivo:** `docs/standards/REPORT_STANDARDS.md`
 
 ### TASK-136: Provenance/Não-Repúdio — Integrar em Pipelines ⬜ (P0)
-- [x] Módulo `bracc_etl/provenance.py` criado com SHA-256 determinístico
+- [x] Módulo `egos_inteligencia_etl/provenance.py` criado com SHA-256 determinístico
 - [x] Testes unitários (`tests/test_provenance.py`)
 - [ ] Integrar `build_audit_fields()` no pipeline CNPJ/QSA
 - [ ] Integrar no pipeline Sanctions (CEIS/CNEP)
@@ -1273,12 +1273,12 @@
 - [ ] Marcar dados legados como `audit_status = "legacy"` via script Cypher
 - [ ] Criar nó `:DataSource` + rel `[:PROVENANCE]` no grafo para fontes críticas
 - [ ] Validar que hash é estável (mesmo input → mesmo hash) em produção
-> **Arquivo:** `etl/src/bracc_etl/provenance.py`
+> **Arquivo:** `etl/src/egos_inteligencia_etl/provenance.py`
 > **Plano:** `docs/analysis/MYCELIUM_AUDIT_TRAIL_2026-03.md`
 
 ### TASK-137: Mapa de Bases Governamentais + Posicionamento ⬜ (P1)
 - [x] Criar mapa de bases públicas vs restritas (`docs/standards/GOVERNMENT_DATABASES_MAP.md`)
-- [ ] Adicionar seção "Para Autoridades" na landing page do br-acc
+- [ ] Adicionar seção "Para Autoridades" na landing page do egos-inteligencia
 - [ ] Criar página `/authorities` no frontend com proposta de valor
 - [ ] Incluir mapa de bases na documentação do README
 - [ ] Preparar one-pager PDF para envio a órgãos (MP, CGU, TCU, PF)
@@ -1290,7 +1290,7 @@
 - [ ] Executar `download_datajud.py` com filtros por entidades do caso Vorcaro
 - [ ] Rodar pipeline DataJud para carregar processos no Neo4j
 - [ ] Cruzar processos judiciais com entidades já mapeadas (Master, Viking, Entre)
-> **Pipeline:** `etl/src/bracc_etl/pipelines/datajud.py` (existe, 0 dados carregados)
+> **Pipeline:** `etl/src/egos_inteligencia_etl/pipelines/datajud.py` (existe, 0 dados carregados)
 > **Depende de:** Acesso à API DataJud
 
 ### TASK-139: Caso Vorcaro v3 — Expansão com Dados Cruzados ⬜ (P1)

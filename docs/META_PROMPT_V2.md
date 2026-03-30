@@ -69,7 +69,7 @@ NÚMEROS-CHAVE:
 - 2 bots AI (Discord + Telegram)
 - Custo total: ~$36/mês (100% autofinanciado)
 - Licença: AGPL v3 (copyleft)
-- Fork do World-Open-Graph/br-acc com divergência significativa
+- Fork do World-Open-Graph/egos-inteligencia com divergência significativa
 
 STACK TÉCNICO:
 - Backend: Python 3.12 + FastAPI (assíncrono)
@@ -90,7 +90,7 @@ INFRAESTRUTURA (Docker Compose):
 ┌─────────────┬──────────────────┬───────────┬────────────────────────────────┐
 │ Container   │ Image            │ Port      │ Função                         │
 ├─────────────┼──────────────────┼───────────┼────────────────────────────────┤
-│ bracc-neo4j │ neo4j:5          │ 7474,7687 │ Banco de grafo (9.2M nós)      │
+│ egos-inteligencia-neo4j │ neo4j:5          │ 7474,7687 │ Banco de grafo (9.2M nós)      │
 │ redis       │ redis:7-alpine   │ 6379      │ Cache (512MB, LRU)             │
 │ api         │ python:3.12-slim │ 8000      │ FastAPI backend                │
 │ frontend    │ node:20-alpine   │ 5173      │ React 18 + Vite                │
@@ -190,7 +190,7 @@ BOTS EXTERNOS:
 
 PARTE 1: VISÃO GERAL
 📋 1.1 — Resumo Executivo (3 parágrafos: o que é, pra que serve, impacto social)
-🌍 1.2 — Contexto e Inspirações (fork do br-acc, comparação com OpenSanctions, Aleph/OCCRP, Serenata de Amor)
+🌍 1.2 — Contexto e Inspirações (fork do egos-inteligencia, comparação com OpenSanctions, Aleph/OCCRP, Serenata de Amor)
 📊 1.3 — Números e Métricas Atuais (tabela com todos os números-chave)
 
 PARTE 2: ANÁLISE TÉCNICA POR ÁREA
@@ -366,7 +366,7 @@ PARTE 5: APRENDIZADOS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. Leia TODO o repositório: README.md, ROADMAP.md, ETHICS.md, LGPD.md, docs/, código-fonte
-2. Cite SEMPRE o arquivo e caminho exato (ex: "api/src/bracc/routers/chat.py")
+2. Cite SEMPRE o arquivo e caminho exato (ex: "api/src/egos_inteligencia/routers/chat.py")
 3. Mostre snippets de código reais quando relevante
 4. Use linguagem clara em português brasileiro
 5. Seja honesto sobre pontos fracos — o projeto valoriza transparência
@@ -390,7 +390,7 @@ Priorize a leitura destes arquivos (em ordem):
 6. ETHICS.md — Política de ética
 7. LGPD.md — Compliance de dados pessoais
 8. docs/HONEST_ASSESSMENT_2026-03.md — Auto-avaliação honesta
-9. api/src/bracc/routers/chat.py — Coração do chatbot
+9. api/src/egos_inteligencia/routers/chat.py — Coração do chatbot
 10. frontend/src/pages/Landing.tsx — Página principal
 
 Agora comece a análise completa do repositório https://github.com/enioxt/EGOS-Inteligencia seguindo EXATAMENTE esta estrutura.

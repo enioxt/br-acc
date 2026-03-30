@@ -32,19 +32,19 @@ ssh root@217.216.95.126
 df -h
 
 # 3. Verificar estado atual dos containers
-docker compose -f /opt/bracc/infra/docker-compose.prod.yml ps
+docker compose -f /opt/egos_inteligencia/infra/docker-compose.prod.yml ps
 
 # 4. Executar backup Neo4j (script já existe)
-/opt/bracc/scripts/neo4j-backup.sh
+/opt/egos_inteligencia/scripts/neo4j-backup.sh
 
 # 5. Verificar que backup foi criado
-ls -lh /opt/bracc/backups/neo4j_data_*.tar.gz | tail -3
+ls -lh /opt/egos_inteligencia/backups/neo4j_data_*.tar.gz | tail -3
 
 # 6. Criar backup adicional dos dados ETL
-tar czf /tmp/etl_data_backup.tar.gz /opt/bracc/etl/ 2>/dev/null || true
+tar czf /tmp/etl_data_backup.tar.gz /opt/egos_inteligencia/etl/ 2>/dev/null || true
 
 # 7. Verificar size total a transferir
-du -sh /opt/bracc/backups/neo4j_data_*.tar.gz | tail -1
+du -sh /opt/egos_inteligencia/backups/neo4j_data_*.tar.gz | tail -1
 ```
 
 **⚠️ ATENÇÃO:** Neo4j data deve ser ~20-50GB comprimido. Transferência via SCP pode levar 1-3h.
@@ -89,8 +89,8 @@ usermod -aG docker $USER
 apt install docker-compose-plugin -y
 
 # Criar estrutura
-mkdir -p /opt/bracc/{infra,backups,etl,scripts}
-cd /opt/bracc
+mkdir -p /opt/egos_inteligencia/{infra,backups,etl,scripts}
+cd /opt/egos_inteligencia
 
 # Instalar Caddy (ou usar nginx)
 apt install caddy -y
@@ -105,15 +105,15 @@ apt install caddy -y
 # (Contabo → Hetzner via SCP intermediado pela sua máquina, ou usar rsync)
 
 # Opção A: Via máquina local (mais seguro)
-scp root@217.216.95.126:/opt/bracc/backups/neo4j_data_LATEST.tar.gz /tmp/
-scp /tmp/neo4j_data_LATEST.tar.gz root@<HETZNER_IP>:/opt/bracc/backups/
+scp root@217.216.95.126:/opt/egos_inteligencia/backups/neo4j_data_LATEST.tar.gz /tmp/
+scp /tmp/neo4j_data_LATEST.tar.gz root@<HETZNER_IP>:/opt/egos_inteligencia/backups/
 
 # Opção B: SSH tunneling direto (mais rápido se Contabo→Hetzner na mesma DC)
-ssh root@217.216.95.126 "cat /opt/bracc/backups/neo4j_data_LATEST.tar.gz" | \
-  ssh root@<HETZNER_IP> "cat > /opt/bracc/backups/neo4j_data_LATEST.tar.gz"
+ssh root@217.216.95.126 "cat /opt/egos_inteligencia/backups/neo4j_data_LATEST.tar.gz" | \
+  ssh root@<HETZNER_IP> "cat > /opt/egos_inteligencia/backups/neo4j_data_LATEST.tar.gz"
 
 # Transferir infra configs (sem .env com secrets)
-rsync -av /home/enio/br-acc/infra/ root@<HETZNER_IP>:/opt/bracc/infra/ \
+rsync -av /home/enio/egos-inteligencia/infra/ root@<HETZNER_IP>:/opt/egos_inteligencia/infra/ \
   --exclude='.env'
 ```
 
@@ -125,7 +125,7 @@ rsync -av /home/enio/br-acc/infra/ root@<HETZNER_IP>:/opt/bracc/infra/ \
 # No Hetzner:
 
 # 1. Configurar .env (criar com secrets reais)
-cat > /opt/bracc/infra/.env << 'EOF'
+cat > /opt/egos_inteligencia/infra/.env << 'EOF'
 NEO4J_PASSWORD=<COPIAR_DO_CONTABO>
 JWT_SECRET_KEY=<COPIAR_DO_CONTABO>
 DOMAIN=inteligencia.egos.ia.br
@@ -135,7 +135,7 @@ TELEGRAM_CHAT_ID=<COPIAR>
 EOF
 
 # 2. Subir Neo4j vazio primeiro
-cd /opt/bracc/infra
+cd /opt/egos_inteligencia/infra
 docker compose -f docker-compose.prod.yml up -d neo4j
 
 # 3. Aguardar Neo4j iniciar (30s)
@@ -146,13 +146,13 @@ docker compose -f docker-compose.prod.yml ps
 # Parar neo4j, extrair volume, reiniciar
 docker compose -f docker-compose.prod.yml stop neo4j
 VOLUME=$(docker volume ls | grep neo4j | awk '{print $2}')
-tar xzf /opt/bracc/backups/neo4j_data_LATEST.tar.gz \
+tar xzf /opt/egos_inteligencia/backups/neo4j_data_LATEST.tar.gz \
   -C /var/lib/docker/volumes/${VOLUME}/
 docker compose -f docker-compose.prod.yml start neo4j
 
 # 5. Verificar count de nós
 sleep 60
-docker exec bracc-neo4j cypher-shell -u neo4j -p "$NEO4J_PASSWORD" \
+docker exec egos-inteligencia-neo4j cypher-shell -u neo4j -p "$NEO4J_PASSWORD" \
   "MATCH (n) RETURN labels(n)[0] AS tipo, count(n) AS total ORDER BY total DESC LIMIT 5"
 
 # 6. Subir resto dos containers
@@ -189,11 +189,11 @@ curl https://inteligencia.egos.ia.br/health
 docker compose -f docker-compose.prod.yml ps
 
 # Verificar Neo4j com dados
-docker exec bracc-neo4j cypher-shell -u neo4j -p "$NEO4J_PASSWORD" \
+docker exec egos-inteligencia-neo4j cypher-shell -u neo4j -p "$NEO4J_PASSWORD" \
   "MATCH (n:Company) RETURN count(n) AS empresas"
 # Esperado: ~59,573,749
 
-docker exec bracc-neo4j cypher-shell -u neo4j -p "$NEO4J_PASSWORD" \
+docker exec egos-inteligencia-neo4j cypher-shell -u neo4j -p "$NEO4J_PASSWORD" \
   "MATCH ()-[r:SOCIO_DE]->() RETURN count(r) AS socios"
 # Esperado: ~25,091,492
 
@@ -212,7 +212,7 @@ curl "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getMe"
 ```bash
 # No Contabo — parar containers mas NÃO deletar ainda
 ssh root@217.216.95.126
-docker compose -f /opt/bracc/infra/docker-compose.prod.yml stop
+docker compose -f /opt/egos_inteligencia/infra/docker-compose.prod.yml stop
 
 # Aguardar 48h confirmando Hetzner estável
 # Depois: Acessar console Contabo → Cancelar servidor
@@ -258,7 +258,7 @@ def run_linking_hooks(run_id=None):
 
 ```bash
 # Reiniciar ETL no Hetzner
-cd /opt/bracc/etl
+cd /opt/egos_inteligencia/etl
 python runner.py --phase 4 --run-id $(uuidgen)
 ```
 

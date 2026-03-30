@@ -192,7 +192,7 @@ npm run dev
 - Example: `await emitReport({ title: 'Agent Run', system: 'egos-lab', agent: agentName })`
 - No UI needed (headless)
 
-#### br-acc (FastAPI/Neo4j)
+#### egos-inteligencia (FastAPI/Neo4j)
 - Python client for Supabase
 - Emit events from API routes
 - Optional dashboard (could use iframe from Forja)
@@ -265,7 +265,7 @@ const filteredReports = reports.filter(r => {
 | 852 | 🟡 Extend existing | 6h | Next |
 | Carteira Libre | 🟢 Straight copy | 4h | After 852 |
 | egos-lab | 🟠 Headless emit | 3h | Parallel |
-| br-acc | 🟠 Python SDK | 4h | Parallel |
+| egos-inteligencia | 🟠 Python SDK | 4h | Parallel |
 | smartbuscas | ❓ TBD | TBD | Later |
 | intelink | ❓ TBD | TBD | Later |
 

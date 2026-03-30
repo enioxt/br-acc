@@ -7,7 +7,7 @@
 
 ## 1. CARREGADAS (36 fontes)
 
-Todas as fontes abaixo possuem pipelines ETL funcionais em `etl/src/bracc_etl/pipelines/` e estão carregadas no Neo4j de produção.
+Todas as fontes abaixo possuem pipelines ETL funcionais em `etl/src/egos_inteligencia_etl/pipelines/` e estão carregadas no Neo4j de produção.
 
 | # | Fonte | Pipeline | Nós Criados | Relacionamentos | Notas |
 |---|-------|----------|-------------|-----------------|-------|

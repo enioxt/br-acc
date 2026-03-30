@@ -4,7 +4,7 @@ Use this template for X/LinkedIn/Discord when publishing a release.
 
 ## Short post (PT-BR)
 
-`[WTG/br-acc] Lançamos {version}`
+`[WTG/egos-inteligencia] Lançamos {version}`
 
 Resumo:
 - {highlight_pt_1}
@@ -17,7 +17,7 @@ Observação de integridade: os sinais refletem coocorrências em bases pública
 
 ## Short post (EN)
 
-`[WTG/br-acc] We shipped {version}`
+`[WTG/egos-inteligencia] We shipped {version}`
 
 Summary:
 - {highlight_en_1}

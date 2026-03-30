@@ -10,7 +10,7 @@
 
 **NexusBridge** é a camada de integração que permite que os 3 repositórios do ecossistema EGOS compartilhem dados de forma segura, sem duplicação:
 
-- **EGOS Inteligência (br-acc):** Provedor de dados (Neo4j 59M+ empresas, PEPs, sanções)
+- **EGOS Inteligência (egos-inteligencia):** Provedor de dados (Neo4j 59M+ empresas, PEPs, sanções)
 - **egos-lab:** Orquestrador de agentes + bots (Telegram, Discord)
 - **Carteira Livre:** Produto final B2C (marketplace de instrutores)
 - **Forja (futuro):** ERP chat-first que consumirá dados públicos para enriquecer cadastros
@@ -33,7 +33,7 @@
 ┌──────────────────────────────────────────────────────────┐
 │              VPS Contabo (217.216.95.126)                  │
 │  ┌──────────────────────────────────────────────────┐    │
-│  │  EGOS Inteligência (br-acc)                       │    │
+│  │  EGOS Inteligência (egos-inteligencia)                       │    │
 │  │  FastAPI + Neo4j (59M empresas, 133K PEPs)        │    │
 │  │                                                    │    │
 │  │  /api/v1/interop/entity/{cnpj}   ← busca empresa │    │
@@ -61,7 +61,7 @@
 
 ## 4) Módulos Reaproveitáveis
 
-### No `br-acc` (Provedor — criar endpoints interop)
+### No `egos-inteligencia` (Provedor — criar endpoints interop)
 
 | Existente | Como reaproveitar |
 |-----------|-------------------|
@@ -77,8 +77,8 @@
 |-----------|-------------------|
 | `packages/shared/src/ai-client.ts` | Modelo de como criar um HTTP client com retry/pricing |
 | `packages/shared/src/rate-limiter.ts` | Rate limit do lado cliente |
-| `packages/mcp/src/index.ts` | Tool Runner pattern — criar tool `bracc.query-entity` |
-| `apps/telegram-bot/src/index.ts` | Integração bot + Supabase + AI. Adicionar tool de consulta br-acc |
+| `packages/mcp/src/index.ts` | Tool Runner pattern — criar tool `egos_inteligencia.query-entity` |
+| `apps/telegram-bot/src/index.ts` | Integração bot + Supabase + AI. Adicionar tool de consulta egos-inteligencia |
 
 ### No `carteira-livre` (Consumidor — KYC enrichment)
 
@@ -99,7 +99,7 @@ Definidos no PR #56 (`PERSISTENCIA_E_INTEROP.md`):
 interface EgosEvent {
   event_id: string;          // UUID
   event_type: string;        // "entity.queried" | "sanction.found" | "pep.matched"
-  source_repo: string;       // "br-acc" | "egos-lab" | "carteira-livre"
+  source_repo: string;       // "egos-inteligencia" | "egos-lab" | "carteira-livre"
   timestamp: string;         // ISO 8601
   payload: Record<string, unknown>;
   actor?: string;            // service key identifier
@@ -112,7 +112,7 @@ interface EgosEvent {
 
 ### Fase 0 — Fundação
 - [ ] TASK-NB-001: Criar SERVICE_KEY no .env da VPS + middleware de validação
-- [ ] TASK-NB-002: Criar router `/api/v1/interop/` no br-acc (FastAPI)
+- [ ] TASK-NB-002: Criar router `/api/v1/interop/` no egos-inteligencia (FastAPI)
 - [ ] TASK-NB-003: Endpoint `GET /interop/entity/{cnpj}` — busca empresa + sócios
 - [ ] TASK-NB-004: Endpoint `GET /interop/network/{cnpj}` — grafo de rede (1 hop)
 - [ ] TASK-NB-005: Endpoint `GET /interop/pep/{cpf_or_name}` — check PEP
@@ -120,15 +120,15 @@ interface EgosEvent {
 - [ ] TASK-NB-007: Endpoint `GET /interop/health` — status do Neo4j + contagens
 
 ### Fase 1 — Clientes
-- [ ] TASK-NB-008: Criar `bracc-client.ts` no egos-lab (`packages/shared/src/`)
-- [ ] TASK-NB-009: Criar tool `bracc.query-entity` no MCP do egos-lab
+- [ ] TASK-NB-008: Criar `egos_inteligencia-client.ts` no egos-lab (`packages/shared/src/`)
+- [ ] TASK-NB-009: Criar tool `egos_inteligencia.query-entity` no MCP do egos-lab
 - [ ] TASK-NB-010: Integrar no Telegram bot — quando user perguntar sobre empresa, consultar VPS
 - [ ] TASK-NB-011: Criar client no carteira-livre para KYC enrichment
 
 ### Fase 2 — Governança
 - [ ] TASK-NB-012: Audit log de todas as queries interop (quem, quando, o quê)
 - [ ] TASK-NB-013: Rate limit por SERVICE_KEY (ex: 100 req/min por repo)
-- [ ] TASK-NB-014: Dashboard de uso interop no br-acc frontend
+- [ ] TASK-NB-014: Dashboard de uso interop no egos-inteligencia frontend
 - [ ] TASK-NB-015: Alertas Telegram quando limite de uso é alto
 
 ---

@@ -143,7 +143,7 @@ CREATE TABLE osint_patterns (
   "title": "Consulta: Grupo Patense",
   "generated_at": "2026-03-02T04:00:00Z",
   "ai_model": "Gemini 2.0 Flash",
-  "tools_used": ["bndes_search", "bracc_company_graph", "web_search"],
+  "tools_used": ["bndes_search", "egos_inteligencia_company_graph", "web_search"],
   "query": "patense racoes bndes",
   "sections": [
     {
