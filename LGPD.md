@@ -1,3 +1,10 @@
+# [EGOS-MERGE] 🟢 MOVED: Copiado para egos-inteligencia/docs/legal/LGPD.md
+# SOURCE: /home/enio/br-acc/LGPD.md
+# TARGET: /home/enio/egos-lab/apps/egos-inteligencia/docs/legal/LGPD.md
+# OWNER: cascade-agent
+# TIMESTAMP: 2026-04-01
+# DELETE_AFTER: 2026-06-01
+
 # LGPD BASELINE POLICY — World Transparency Graph (WTG)
 
 Policy-Version: v1.0.0  

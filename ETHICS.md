@@ -1,3 +1,11 @@
+# [EGOS-MERGE] 🟢 MOVED: Copiado para egos-inteligencia/docs/legal/ETHICS.md
+# SOURCE: /home/enio/br-acc/ETHICS.md
+# TARGET: /home/enio/egos-lab/apps/egos-inteligencia/docs/legal/ETHICS.md
+# OWNER: cascade-agent
+# TIMESTAMP: 2026-04-01
+# STATUS: Documentação legal adotada integralmente no produto unificado
+# DELETE_AFTER: 2026-06-01
+
 # ETHICS POLICY — World Transparency Graph (WTG)
 
 Policy-Version: v1.0.0  

@@ -1,4 +1,12 @@
+# [EGOS-MERGE] 🟢 MOVED: Copiado para egos-inteligencia/docs/legal/PRIVACY.md
+# SOURCE: /home/enio/br-acc/PRIVACY.md
+# TARGET: /home/enio/egos-lab/apps/egos-inteligencia/docs/legal/PRIVACY.md
+# OWNER: cascade-agent
+# TIMESTAMP: 2026-04-01
+# DELETE_AFTER: 2026-06-01
+
 # PRIVACY POLICY — World Transparency Graph (WTG)
+# [EGOS-MERGE] 🟢 MOVED: Copiado para egos-inteligencia/docs/legal/PRIVACY.md
 
 Policy-Version: v1.0.0  
 Effective-Date: 2026-02-28  
