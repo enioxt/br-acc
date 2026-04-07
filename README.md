@@ -1,6 +1,6 @@
 # EGOS Inteligência — Plataforma Aberta de Cruzamento de Dados Públicos
 
-> **Status:** ⏸️ Ritmo reduzido — renomeando para EGOS Inteligência. 77M entidades, Neo4j graph, ETL pipeline.  
+> **Status:** ⏸️ Ritmo reduzido — renomeando para EGOS Inteligência. 83,7M nós, Neo4j graph, ETL pipeline.  
 > Este projeto tem MVP funcional disponível. Interessados em contribuir ou co-fundar: entre em contato via [Issues](https://github.com/enioxt/br-acc/issues) ou enio@egos.ia.br
 
 <!-- RHO_BADGE --> **Rho Score:** 🟡 0.30 (WARNING) | Contributors: 4 | Commits (30d): 94 | Updated: 2026-03-02 <!-- /RHO_BADGE -->
@@ -28,7 +28,7 @@ O EGOS Inteligência diverge significativamente do upstream:
 |---|---|---|
 | **Idioma** | Inglês | Português-BR nativo |
 | **Interface** | Desktop-only, requer login | Mobile-first, público, chatbot AI |
-| **Dados carregados** | Demo/seed | **9,1M nós** (8,8M empresas + 133K PEPs + 23K sanções) |
+| **Dados carregados** | Demo/seed | **83,7M nós** (32 labels, 26,8M relações — Neo4j verificado 2026-04-07) |
 | **Bots AI** | Nenhum | Discord + Telegram (14 ferramentas OSINT) |
 | **Investigações** | Não | Upload, fork, compartilhamento público |
 | **Relatórios** | Não | 11 relatórios publicados (ex: Patense R$217M BNDES) |
@@ -70,7 +70,7 @@ O EGOS Inteligência faz isso automaticamente:
 | Processos no STF | STF | 2,38M casos |
 | Patrimônio de candidatos | TSE Bens | 14,3M bens declarados |
 
-**Status atual: 9.166.587 nós carregados.** Meta: 141M nós e 92M conexões. CNPJ ETL concluído para 8,8M empresas.
+**Status atual: 83.773.683 nós carregados** (32 labels, 26.808.540 relações — verificado 2026-04-07 via Neo4j Bolt). Meta: 141M nós e 92M conexões. CNPJ ETL ativo.
 
 > **Importante:** Padrões encontrados são **sinais**, não prova jurídica. Toda conclusão requer revisão humana.
 
@@ -98,7 +98,7 @@ Quem são os maiores supersalários do TJSP?
 
 | Categoria | Ferramentas | Fonte |
 |---|---|---|
-| **Grafo Neo4j** | search_entities, graph_stats, connections, cypher_query, data_summary | Neo4j (9,1M nós) |
+| **Grafo Neo4j** | search_entities, graph_stats, connections, cypher_query, data_summary | Neo4j (83,7M nós, 32 labels) |
 | **Portal Transparência** | servidores, licitações, CPGF, viagens, contratos, sanções, CNPJ | gov.br (API key) |
 | **Câmara dos Deputados** | CEAP (gastos), votações nominais | dadosabertos.camara.leg.br |
 | **Judiciário** | processos (DataJud), mandados de prisão (BNMP) | CNJ |

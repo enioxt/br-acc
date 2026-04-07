@@ -89,11 +89,10 @@ claims:
     description: "Python source files in api/ and etl/ packages"
     readme_location: "README.md Stack"
     command: "find api/ etl/ -name '*.py' 2>/dev/null | wc -l | tr -d ' '"
-    tolerance: "±10"
-    last_value: "0"
+    tolerance: "±500"
+    last_value: "7248"
     last_verified_at: "2026-04-07"
     category: "custom"
-    note: "Baseline TBD — sentinel will populate"
 
 domains:
   - url: "https://inteligencia.egos.ia.br/"
