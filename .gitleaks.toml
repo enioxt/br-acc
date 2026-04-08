@@ -1,0 +1,69 @@
+title = "EGOS Inteligência — Gitleaks Config"
+
+# Extends EGOS kernel rules
+[[rules]]
+id = "supabase-personal-access-token"
+description = "Supabase Personal Access Token"
+regex = '''sbp_[0-9a-f]{40}'''
+keywords = ["sbp_"]
+
+[[rules]]
+id = "neo4j-password"
+description = "Neo4j password in code"
+regex = '''NEO4J_PASSWORD\s*=\s*["'][^"']{8,}["']'''
+keywords = ["NEO4J_PASSWORD"]
+
+[[rules]]
+id = "jwt-secret-hardcoded"
+description = "JWT secret hardcoded"
+regex = '''JWT_SECRET(?:_KEY)?\s*=\s*["'][^"']{16,}["']'''
+keywords = ["JWT_SECRET"]
+
+[[rules]]
+id = "openrouter-key"
+description = "OpenRouter API key"
+regex = '''sk-or-[a-zA-Z0-9]{32,}'''
+keywords = ["sk-or-"]
+
+[[rules]]
+id = "openai-key"
+description = "OpenAI API key"
+regex = '''sk-[a-zA-Z0-9]{48}'''
+keywords = ["sk-"]
+
+[[rules]]
+id = "cpf-in-code"
+description = "CPF in source code (PII)"
+regex = '''\d{3}\.\d{3}\.\d{3}-\d{2}'''
+keywords = ["cpf"]
+
+[[rules]]
+id = "telegram-bot-token"
+description = "Telegram Bot Token (Critical)"
+regex = '''\d{9,11}:[A-Za-z0-9_-]{35}'''
+keywords = ["bot_token", "telegram", "bot"]
+
+[allowlist]
+description = "Allowed paths — synthetic/example CPFs in source are not PII"
+paths = [
+    '''\.env\.example''',
+    '''\.gitleaks\.toml''',
+    '''tests/fixtures/synthetic''',
+    '''tests/unit/test_pii''',
+    '''tests/integration/test_health''',
+    '''docs/ARCHITECTURE\.md''',
+    '''middleware/cpf_masking\.py''',
+    '''services/nlp/spacy_ner\.py''',
+    '''routers/entity\.py''',
+    '''components/intelink/AddEntityModal''',
+    '''components/intelink/DocumentUploadModal''',
+    '''components/investigation/entity-forms/''',
+    '''frontend/src/lib/inputMasks''',
+    '''frontend/src/lib/masks''',
+    '''frontend/src/lib/pii-masking''',
+    '''frontend/src/lib/intelligence/matcher''',
+    '''frontend/src/lib/intelligence/evidence-validation''',
+    '''frontend/src/lib/intelligence/system-prompt''',
+    '''api/scripts/seed_synthetic_data\.py''',
+    '''docs/security/INCIDENT.*\.md''',
+]
