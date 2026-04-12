@@ -1,9 +1,10 @@
 # EGOS-KERNEL-PROPAGATED: 2026-04-12
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: a3c7cd6 | 1 rule section(s) changed -->
+<!-- Kernel commit: 3e1349c | 2 rule section(s) changed -->
 <!-- Kernel rules: ~/.claude/CLAUDE.md (always authoritative) -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md → ## Cross-Repo Context (16 repos, pull-based) (10 lines) -->
+<!-- - CLAUDE.md (1 lines) -->
+<!-- ~ CLAUDE.md → ## SINGLE PURSUIT (2026-04-12 → 2026-05-12) (27 lines) -->
 
 > **EGOS Kernel rules apply to this repo.** See `~/.claude/CLAUDE.md` for full rules.
 > Critical non-negotiables: no force-push main, no secret logging, no git add -A in agents.
