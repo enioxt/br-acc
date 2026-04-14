@@ -1,10 +1,10 @@
 # EGOS-KERNEL-PROPAGATED: 2026-04-14
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: e62226d | 2 rule section(s) changed -->
+<!-- Kernel commit: fe3d947 | 2 rule section(s) changed -->
 <!-- Kernel rules: ~/.claude/CLAUDE.md (always authoritative) -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md → ## 12c. CHATBOT CORE (2026-04-14) (13 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Migration Status (CHATBOT-CORE-002..005) (7 lines) -->
+<!-- + CAPABILITY_REGISTRY.md (1 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §33 — OmniView v0.1 — Local Video Analysis (2026-04-14) (42 lines) -->
 
 > **EGOS Kernel rules apply to this repo.** See `~/.claude/CLAUDE.md` for full rules.
 > Critical non-negotiables: no force-push main, no secret logging, no git add -A in agents.
