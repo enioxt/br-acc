@@ -1,9 +1,10 @@
 # EGOS-KERNEL-PROPAGATED: 2026-04-18
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 630705c | 1 rule section(s) changed -->
+<!-- Kernel commit: ae0a6a9 | 2 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + .windsurfrules (1 lines) -->
+<!-- ~ .windsurfrules → ## MULTI-IDE SYNC RULES (2026-04-08 — MANDATORY) (6 lines) -->
+<!-- ~ CLAUDE.md → ## Limites de arquivo (multi-IDE sync) (3 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
