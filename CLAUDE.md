@@ -1,9 +1,9 @@
-# EGOS-KERNEL-PROPAGATED: 2026-04-18
+# EGOS-KERNEL-PROPAGATED: 2026-04-22
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 06afa0b | 1 rule section(s) changed -->
+<!-- Kernel commit: 892bd8b | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- ~ CAPABILITY_REGISTRY.md (10 lines) -->
+<!-- + .windsurfrules (1 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
@@ -61,8 +61,35 @@ This section is the single source of truth for agent rules. Claude Code reads th
 | INC-004 | Supabase Realtime quota — rate limiter + retention |
 | INC-005 | External LLM narrative — classify REAL/CONCEPT/PHANTOM |
 | INC-006 | Subagent phantoms + scored SSOT tables — see R1.3, R2.1-2 |
+| INC-007 | API key exposure via `|| fallback` pattern — never commit secrets |
+| INC-008 | Phantom compliance stubs — see R7 below |
 
 Full postmortems: `docs/INCIDENTS/INC-XXX-*.md`. Index: `docs/INCIDENTS/INDEX.md`.
+
+### R7 — Behavioral eval required for claimed capabilities (INC-008, 2026-04-22)
+
+**Rule:** Any capability a system claims (in manifest, README, docs, CAPABILITY_REGISTRY, or `/api/*/discover` response) MUST have a **behavioral eval** proving it at runtime.
+
+- **"Behavioral"** = simulates real usage (full input→output pipeline), not shape assertions on pure functions.
+- Unit test of `detectPII()` returning correct findings is **NOT** enough — it doesn't prove `detectPII()` is being called in the code path that claims PII masking.
+- Golden case that POSTs a chat message containing a CPF and asserts the response has no unmasked CPF **IS** behavioral.
+
+**Why (INC-008, 2026-04-22):** Intelink's `lib/shared.ts` exported stub implementations of `scanForPII`/`sanitizeText`/`createAtrianValidator` that returned `[]`/unchanged/always-passed. Route imported these expecting real work. Manifest claimed `pii-masking` + `atrian-validation`. Type checker, linter, 151 unit tests all green. For weeks/months, PII leaked in every production response. Golden eval's first live run caught it in 1 day.
+
+**How to apply:**
+1. **New capability in manifest/README → ≥3 golden cases before merge.** If the capability is `X`, at least one case must be designed so that if the underlying code were a stub, the case would fail.
+2. **Stubs in compliance/safety code paths are FORBIDDEN in main.** Use `throw new Error('NOT IMPLEMENTED — see TODO-XXX')` during refactors so CI fails loudly, not a silent no-op returning `[]`/`true`/unchanged input.
+3. **`try { compliance() } catch { /* non-fatal */ }` patterns MUST log + alert.** Silent swallow is how stubs hide.
+4. **Weekly eval against production.** Pass-rate drop = something regressed silently. See `@egos/eval-runner` + `intelink/tests/eval/` for reference.
+5. **Canonical eval harness:** `packages/eval-runner/` (extracted from 852's battle-tested runner + trajectory + judge-LLM). Adopt it, don't reinvent. promptfoo layers on top for YAML cases + redteam (Phase B of EVAL track).
+
+**Pattern to detect in code review:**
+- File named `*.shared.ts`, `*.stubs.ts`, `*-placeholder.ts` exporting functions with non-trivial signatures returning trivial defaults
+- Capability listed in manifest with no corresponding `tests/eval/golden/*.ts` case
+- Green CI + green typecheck + green unit tests but no end-to-end eval
+
+Full postmortem: `docs/INCIDENTS/INC-008-phantom-compliance-stubs.md`.
+Canonical eval strategy: `docs/knowledge/AI_EVAL_STRATEGY.md` (being written — see EVAL-X2).
 
 <!-- === END KERNEL RULES BODY === -->
 
