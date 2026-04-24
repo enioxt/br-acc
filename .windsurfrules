@@ -1,9 +1,18 @@
 # EGOS-KERNEL-PROPAGATED: 2026-04-24
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: c781aac | 1 rule section(s) changed -->
+<!-- Kernel commit: 2918866 | 10 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md → ## 🌊 OPUS MODE — Modo operacional padrão (22 lines) -->
+<!-- ~ .windsurfrules (10 lines) -->
+<!-- ~ .windsurfrules → ## PROTECTED SURFACES (39 lines) -->
+<!-- ~ CLAUDE.md → # CLAUDE.md — EGOS Kernel Context (5 lines) -->
+<!-- ~ CLAUDE.md → ## 🌊 OPUS MODE — Modo operacional padrão (23 lines) -->
+<!-- ~ CLAUDE.md → ## Quick Context (35 lines) -->
+<!-- ~ CLAUDE.md → ## Arquitetura (7 lines) -->
+<!-- ~ CLAUDE.md → ## Convenções (18 lines) -->
+<!-- ~ CLAUDE.md → ## SINGLE PURSUIT (2026-04-12 → 2026-05-12) (7 lines) -->
+<!-- ~ CLAUDE.md → ## SSOT Map (18 lines) -->
+<!-- ~ CLAUDE.md → ## Limites de arquivo (11 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
