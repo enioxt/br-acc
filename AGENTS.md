@@ -1,16 +1,10 @@
-# EGOS-KERNEL-PROPAGATED: 2026-04-26
+# EGOS-KERNEL-PROPAGATED: 2026-04-27
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 843b6c8 | 8 rule section(s) changed -->
+<!-- Kernel commit: c19facd | 2 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md (1 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §36 — CRC-PATTERN-v1 — Cross-Repo Coordination Protocol (2026-04-26) (33 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §36 — Cross-Repo Coordination Pattern v1 (CRC-PATTERN-v1) (2026-04-26) (6 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Summary (2 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Components (9 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Reference run (first validated execution) (4 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Adoption checklist for new leaf-apps (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Anti-patterns (recorded) (4 lines) -->
+<!-- + CLAUDE.md (4 lines) -->
+<!-- + CLAUDE.md → ## docs/ Root — Regra de Acesso Restrito (30 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
