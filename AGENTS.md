@@ -1,10 +1,17 @@
-# EGOS-KERNEL-PROPAGATED: 2026-04-27
+# EGOS-KERNEL-PROPAGATED: 2026-05-01
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: c19facd | 2 rule section(s) changed -->
+<!-- Kernel commit: b9461af | 9 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md (4 lines) -->
-<!-- + CLAUDE.md → ## docs/ Root — Regra de Acesso Restrito (30 lines) -->
+<!-- ~ CAPABILITY_REGISTRY.md (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §37 — HQ Live Dashboard — Agent Events + Hermes Panel (2026-04-30) (19 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §38 — Full-System Health-Check + Periodic Monitor (2026-04-30) (15 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §39 — Intelink Agente — Local Police LLM (2026-04-29) (18 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §40 — Instagram Caption Generator + Lead Capture (2026-05-01) (17 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §41 — EGOS Practitioner Certification (2026-04-30) (15 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §42 — Intelink Intelligence Modules (2026-04-12 → 2026-05-01) (24 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §43 — Capability Registry Scanner (2026-05-01) (16 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §44 — README Cross-Reference System (2026-05-01) (13 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
