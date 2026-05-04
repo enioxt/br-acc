@@ -1,9 +1,14 @@
-# EGOS-KERNEL-PROPAGATED: 2026-05-03
+# EGOS-KERNEL-PROPAGATED: 2026-05-04
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: b031c54 | 1 rule section(s) changed -->
+<!-- Kernel commit: 3cb2337 | 6 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md (3 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §45 — Chatbot Portal Multi-Agente (2026-05-03) (16 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §46 — BISP/REDS Ingestion Pipeline (2026-05-04) (14 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §47 — Cross-Ref Nightly v2 (7 steps) (2026-05-04) (19 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §48 — Tool Registry de Investigação (2026-05-03) (14 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §49 — Chat Central Neo4j Conectado (2026-05-04) (12 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
