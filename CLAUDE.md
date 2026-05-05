@@ -1,13 +1,15 @@
 # EGOS-KERNEL-PROPAGATED: 2026-05-05
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: b13604d | 5 rule section(s) changed -->
+<!-- Kernel commit: b1ecabe | 7 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
 <!-- + CAPABILITY_REGISTRY.md (3 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §65 — Trading Multi-Exchange Layer + Ticker Customization (2026-05-04) (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Multi-Exchange (`trading-exchanges.ts`) (11 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Ticker Customization (7 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### `/fx-rate` endpoint (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §66 — Trading Sprint 1 Hardening (2026-05-04) (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Encryption at rest (`trading-crypto.ts`) (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Number whitelist (`trading-evolution.ts`) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Price Alerts (`trading-alerts.ts`) (8 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Rate Limiting (`trading.ts` middleware) (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Cron VPS (manual setup) (6 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
