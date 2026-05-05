@@ -1,19 +1,12 @@
 # EGOS-KERNEL-PROPAGATED: 2026-05-05
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: af3a7b3 | 12 rule section(s) changed -->
+<!-- Kernel commit: a9fb2a2 | 4 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md (3 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §60 — Trading Storage (Supabase Persistence) (2026-05-04) (6 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Tabelas criadas (11 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Pattern multi-tenant (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Endpoints (8 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §61 — Trading Bot Creator (DCA + Grid via Bybit API) (2026-05-04) (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Tipos de bot (6 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Endpoints (8 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Multi-Timeframe Backtest (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Validação real (3 lines) -->
-<!-- ... and 2 more -->
+<!-- + CAPABILITY_REGISTRY.md (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §62 — Trading Evolution (WhatsApp QR inline) (2026-05-04) (21 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §63 — Trading Centralized Credentials (2026-05-04) (16 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §64 — Trading RLS Hardening (2026-05-04) (9 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
