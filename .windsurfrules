@@ -1,15 +1,16 @@
 # EGOS-KERNEL-PROPAGATED: 2026-05-05
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 32b2428 | 7 rule section(s) changed -->
+<!-- Kernel commit: a019761 | 8 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
 <!-- + CAPABILITY_REGISTRY.md (3 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §55 — EGOS Trading Dashboard (2026-05-04) (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Capacidades implementadas (v2.0) (22 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### LLM integration (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Notification system (11 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §56 — Trading AI Engine (OpenRouter/Gemini) (2026-05-04) (17 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §57 — Trading Notification System (2026-05-04) (17 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §58 — Trading Backtest Engine + Indicators (2026-05-04) (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Indicadores implementados (pure TS) (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Backtest Engine (8 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Pre-built strategies (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Customização (frontend) (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Visualização (lightweight-charts via CDN) (14 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §59 — Trading Risk Calculator (2026-05-04) (19 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
