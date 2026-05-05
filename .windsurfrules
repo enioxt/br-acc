@@ -1,15 +1,19 @@
 # EGOS-KERNEL-PROPAGATED: 2026-05-05
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: b1ecabe | 7 rule section(s) changed -->
+<!-- Kernel commit: 98e8dda | 13 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
 <!-- + CAPABILITY_REGISTRY.md (3 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §66 — Trading Sprint 1 Hardening (2026-05-04) (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Encryption at rest (`trading-crypto.ts`) (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Number whitelist (`trading-evolution.ts`) (4 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Price Alerts (`trading-alerts.ts`) (8 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Rate Limiting (`trading.ts` middleware) (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Cron VPS (manual setup) (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §67 — Trading News Aggregator (2026-05-04) (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Fontes default (12) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Custom sources (per user) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Endpoints (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Custo (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §68 — Trading Sprint 2 Strategy Deploy (2026-05-04) (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### STR-001: Backtest history viewer (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### STR-002: Deploy as webhook (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### STR-004: TP/SL auto-setup (5 lines) -->
+<!-- ... and 3 more -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
