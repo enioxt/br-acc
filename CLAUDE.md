@@ -1,14 +1,15 @@
-# EGOS-KERNEL-PROPAGATED: 2026-05-04
+# EGOS-KERNEL-PROPAGATED: 2026-05-05
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: e501422 | 6 rule section(s) changed -->
+<!-- Kernel commit: 32b2428 | 7 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
 <!-- + CAPABILITY_REGISTRY.md (3 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §50 — EGOS Project Atlas (2026-05-04) (15 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §51 — Atlas Semantic Search + pgvector RPC (2026-05-04) (13 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §52 — llm.egos.ia.br — Ollama Gateway (2026-05-04) (14 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §53 — CBC-PATTERN-v1 — Capability Card System (2026-05-04) (15 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §54 — CRON_SECRET + Intelink Cross-Ref Nightly (2026-05-04) (10 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §55 — EGOS Trading Dashboard (2026-05-04) (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Capacidades implementadas (v2.0) (22 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### LLM integration (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Notification system (11 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §56 — Trading AI Engine (OpenRouter/Gemini) (2026-05-04) (17 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §57 — Trading Notification System (2026-05-04) (17 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
