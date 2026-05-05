@@ -1,19 +1,10 @@
 # EGOS-KERNEL-PROPAGATED: 2026-05-05
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 98e8dda | 13 rule section(s) changed -->
+<!-- Kernel commit: b9773d8 | 2 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md (3 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §67 — Trading News Aggregator (2026-05-04) (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Fontes default (12) (4 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Custom sources (per user) (4 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Endpoints (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Custo (6 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §68 — Trading Sprint 2 Strategy Deploy (2026-05-04) (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### STR-001: Backtest history viewer (4 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### STR-002: Deploy as webhook (6 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### STR-004: TP/SL auto-setup (5 lines) -->
-<!-- ... and 3 more -->
+<!-- + CAPABILITY_REGISTRY.md → ### Intelink Capacidades Únicas (Audit 2026-05-05) (17 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## 12c. CHATBOT SETORIAL — ESPIRAL DE ESCUTA (2026-05-05) (12 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
