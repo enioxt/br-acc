@@ -1,10 +1,10 @@
-# EGOS-KERNEL-PROPAGATED: 2026-05-05
+# EGOS-KERNEL-PROPAGATED: 2026-05-06
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: b9773d8 | 2 rule section(s) changed -->
+<!-- Kernel commit: 6a6b6bd | 2 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md → ### Intelink Capacidades Únicas (Audit 2026-05-05) (17 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## 12c. CHATBOT SETORIAL — ESPIRAL DE ESCUTA (2026-05-05) (12 lines) -->
+<!-- - CLAUDE.md (1 lines) -->
+<!-- ~ CLAUDE.md → ## SINGLE PURSUIT — Central EGOS (2026-05-06 → ?) (7 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
@@ -61,11 +61,14 @@ This section is the single source of truth for agent rules. Claude Code reads th
 | INC-003 | TASKS.md — verify artifact before adding, mark `[x]` same commit |
 | INC-004 | Supabase Realtime quota — rate limiter + retention |
 | INC-005 | External LLM narrative — classify REAL/CONCEPT/PHANTOM |
-| INC-006 | Subagent phantoms + scored SSOT tables — see R1.3, R2.1-2 |
+| INC-006 | RLS policy role validation (28 tables `{public}`) — see R-RLS-001; subagent phantoms + scored SSOT tables — see R1.3, R2.1-2 |
 | INC-007 | API key exposure via `|| fallback` pattern — never commit secrets |
 | INC-008 | Phantom compliance stubs — see R7 below |
 
 Full postmortems: `docs/INCIDENTS/INC-XXX-*.md`. Index: `docs/INCIDENTS/INDEX.md`.
+
+### R-RLS-001 — Row-Level Security (INC-006, 2026-05-05)
+Every RLS policy MUST have explicit `TO <role>`. No `{public}` on sensitive tables (`users`, `*_keys`, `*_secrets`, `admin_*`). Validator: `scripts/security/rls-validator.ts`. Continuous auditor: `scripts/security/rls-auditor-comprehensive.ts` (VPS cron daily 2 AM UTC). Setup: `docs/jobs/SUPABASE_RLS_AUDIT_SETUP.md`. Override: `RLS-POLICY-OVERRIDE: <reason>`.
 
 ### R7 — Behavioral eval required for claimed capabilities (INC-008, 2026-04-22)
 
