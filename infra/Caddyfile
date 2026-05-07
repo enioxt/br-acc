@@ -3,7 +3,7 @@
 	handle /api/* {
 		reverse_proxy api:8000
 	}
-	handle /health {
+handle /health {
 		reverse_proxy api:8000
 	}
 	handle {
@@ -28,4 +28,318 @@
 		-Server
 		-X-Powered-By
 	}
+}
+
+guard.egos.ia.br {
+    # API routes → Hetzner backend (guard-brasil-api container)
+    handle /v1/* {
+        reverse_proxy guard-brasil-api:3099
+    }
+    handle /health {
+        reverse_proxy guard-brasil-api:3099
+    }
+    handle /openapi.json {
+        reverse_proxy guard-brasil-api:3099
+    }
+    handle /llms.txt {
+        reverse_proxy guard-brasil-api:3099
+    }
+
+    # Root → API (Vercel frontend decommissioned)
+    handle {
+        reverse_proxy guard-brasil-api:3099
+    }
+
+    header {
+        X-Content-Type-Options nosniff
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "POST, GET, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+        -Server
+        -X-Powered-By
+    }
+}
+
+eagleeye.egos.ia.br {
+    reverse_proxy eagle-eye:3001
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+        -Server
+        -X-Powered-By
+    }
+}
+
+gemhunter.egos.ia.br {
+    reverse_proxy gem-hunter-landing:3070
+
+    header {
+        X-Content-Type-Options nosniff
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+        -Server
+        -X-Powered-By
+    }
+}
+
+hq.egos.ia.br {
+    reverse_proxy egos-hq:3060
+}
+
+
+852.egos.ia.br {
+    reverse_proxy 852-app:3000
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        -Server
+        -X-Powered-By
+    }
+}
+
+
+
+egos.ia.br {
+    # EGOS main site — homepage + /timeline
+    reverse_proxy egos-site:3071 {
+        health_uri /health
+        health_interval 30s
+        health_timeout 5s
+    }
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        -Server
+        -X-Powered-By
+    }
+}
+
+
+video.egos.ia.br {
+    reverse_proxy video-editor:8090
+}
+
+
+api.egos.ia.br {
+    reverse_proxy egos-gateway:3050
+
+    header {
+        X-Content-Type-Options nosniff
+        -Server
+        -X-Powered-By
+    }
+}
+
+gateway.egos.ia.br {
+    reverse_proxy egos-gateway:3050
+
+    header {
+        X-Content-Type-Options nosniff
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+        -Server
+        -X-Powered-By
+    }
+}
+chatbot.egos.ia.br {
+    handle_path /api/* {
+        reverse_proxy egos-lab-chat:3095
+    }
+
+    handle {
+        root * /opt/chatbot-portal
+        file_server
+    }
+
+
+    header {
+        X-Content-Type-Options nosniff
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        Access-Control-Allow-Origin *
+        -Server
+        -X-Powered-By
+    }
+}
+
+
+
+# Evolution API — WhatsApp Runtime (adicionado 2026-04-15)
+# Fix: Expor localhost:8080 externamente via reverse proxy
+evolution.egos.ia.br {
+    reverse_proxy evolution-api:8080
+
+    header {
+        X-Content-Type-Options nosniff
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+        -Server
+        -X-Powered-By
+    }
+}
+status.egos.ia.br {
+    reverse_proxy egos-site:3071
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        -Server
+        -X-Powered-By
+    }
+}
+
+trust.egos.ia.br {
+    reverse_proxy trust-page:3060
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        -Server
+        -X-Powered-By
+    }
+}
+
+commons.egos.ia.br {
+    reverse_proxy egos-commons:80
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        -Server
+        -X-Powered-By
+    }
+}
+
+intelink.ia.br, www.intelink.ia.br {
+    request_body {
+        max_size 100MB
+    }
+    reverse_proxy intelink-web:3000
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        -Server
+        -X-Powered-By
+    }
+}
+
+council.egos.ia.br {
+    reverse_proxy egos-council:3095
+}
+
+# CLEANUP-DNS-009: arch.egos.ia.br → egos-arch:3098
+arch.egos.ia.br {
+    reverse_proxy egos-arch:3000
+}
+
+# CLEANUP-DNS-010: bracc.egos.ia.br (basic auth + routing)
+bracc.egos.ia.br {
+    basic_auth /* {
+        admin $2a$04$jawJCPhUmR2qJcrRLt43.TuVrVQXI1VXIX1SbkJqMGJaM3c1bjE=
+    }
+    reverse_proxy bracc-neo4j:7474
+}
+
+# CLEANUP-DNS-011: waha.egos.ia.br → waha-santiago:3002
+waha.egos.ia.br {
+    reverse_proxy waha-santiago:3002
+}
+
+# INTELINK Agente — LLM API (token auth)
+llm.egos.ia.br {
+    @authorized header Authorization "Bearer ec97c6a72be8b44c9a457d9b1f907c29e1a97189c59cb7b37f0ea25cbcf012ad"
+    handle @authorized {
+        reverse_proxy 172.19.0.1:11434 {
+            transport http {
+                response_header_timeout 180s
+                read_timeout 240s
+                write_timeout 240s
+            }
+        }
+    }
+    respond 401
+}
+
+# PixelArt — Estúdio de vídeos comerciais com IA
+pixelart.egos.ia.br {
+    # Webhook e API do bot → processo local porta 3099
+    handle /webhook/* {
+        reverse_proxy 172.19.0.1:3099
+    }
+    handle /api/* {
+        reverse_proxy 172.19.0.1:3099
+    }
+    handle /health {
+        reverse_proxy 172.19.0.1:3099
+    }
+
+    # Site estático — landing page
+    handle {
+        root * /opt/pixelart/site
+        file_server
+    }
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+        -Server
+        -X-Powered-By
+    }
+}
+
+
+# EGOS Lab landing page + chat API
+lab.egos.ia.br {
+    # Chat API — strip /api prefix before proxying
+    handle_path /api/* {
+        reverse_proxy egos-lab-chat:3095
+    }
+
+    # Static pages
+    handle {
+        root * /opt/egos-lab
+        try_files {path} /index.html
+        file_server
+    }
+
+    header {
+        X-Content-Type-Options nosniff
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type"
+        -Server
+        -X-Powered-By
+    }
+}
+
+forja.egos.ia.br {
+    reverse_proxy 172.19.0.1:3062
+    header {
+        -Server
+        -X-Powered-By
+    }
 }
