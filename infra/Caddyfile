@@ -30,6 +30,26 @@ handle /health {
 	}
 }
 
+# STAGING — remove após go-live
+landing-v3.egos.ia.br {
+    handle /assets/* {
+        root * /opt/egos-lab/landing-v3
+        file_server
+    }
+    handle {
+        root * /opt/egos-lab/landing-v3
+        try_files {path} /index.html
+        file_server
+    }
+    header {
+        X-Content-Type-Options nosniff
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        -Server
+    }
+}
+
+
+
 guard.egos.ia.br {
     # API routes → Hetzner backend (guard-brasil-api container)
     handle /v1/* {
@@ -110,11 +130,61 @@ hq.egos.ia.br {
 
 
 egos.ia.br {
-    # EGOS main site — homepage + /timeline
-    reverse_proxy egos-site:3071 {
-        health_uri /health
-        health_interval 30s
-        health_timeout 5s
+    # Redirects legado
+    redir /lab https://lab.egos.ia.br/sobre-o-lab 301
+    redir /implementacoes-gratuitas /parcerias 301
+
+    # Rotas preservadas no Hono (timeline, showcase, skills, EN, status, llms, robots)
+    handle /timeline* {
+        reverse_proxy egos-site:3071
+    }
+    handle /en/* {
+        reverse_proxy egos-site:3071
+    }
+    handle /showcase {
+        reverse_proxy egos-site:3071
+    }
+    handle /skills {
+        reverse_proxy egos-site:3071
+    }
+    handle /status* {
+        reverse_proxy egos-site:3071
+    }
+    handle /llms.txt {
+        reverse_proxy egos-site:3071
+    }
+    handle /health {
+        reverse_proxy egos-site:3071
+    }
+
+    # Assets estáticos da nova landing
+    handle /assets/* {
+        root * /opt/egos-lab/landing-v3
+        file_server
+    }
+
+    # SPA routes (nova landing comercial)
+    handle /privacidade {
+        root * /opt/egos-lab/landing-v3
+        rewrite * /privacidade.html
+        file_server
+    }
+    handle /termos {
+        root * /opt/egos-lab/landing-v3
+        rewrite * /termos.html
+        file_server
+    }
+    handle /parcerias {
+        root * /opt/egos-lab/landing-v3
+        rewrite * /parcerias.html
+        file_server
+    }
+
+    # Homepage nova (tudo que não casou acima)
+    handle {
+        root * /opt/egos-lab/landing-v3
+        try_files {path} /index.html
+        file_server
     }
 
     header {
