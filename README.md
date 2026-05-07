@@ -1,11 +1,16 @@
 # EGOS Inteligência — Plataforma Aberta de Cruzamento de Dados Públicos
 
-> **Versão:** 0.8.0 | **Atualizado:** 2026-05-01 | **Status:** PAUSA
+> **Versão:** 0.8.0 | **Atualizado:** 2026-05-07 | **Status:** PAUSA (features)
+> **Repo:** `github.com/enioxt/br-acc` | **Fork de:** `github.com/World-Open-Graph/br-acc`
 > **Parte do ecossistema [EGOS](https://github.com/enioxt/egos)**
 
 Plataforma open-source para cruzamento de dados públicos brasileiros em grafo — 83M+ nós Neo4j, ETL pipeline, FastAPI, chatbot AI com 26 ferramentas OSINT.
 
 **Live:** [inteligencia.egos.ia.br](https://inteligencia.egos.ia.br) · **API:** [health check](http://204.168.217.125/health)
+
+> ⚠️ **Nota para agentes IA:** Este repo (`br-acc`) é o canonical do EGOS Inteligência.
+> `egos-lab/apps/egos-inteligencia` está **ARQUIVADO** (migração abandonada de 2026-04). Não confundir.
+> O pacote Python interno chama-se `egos_inteligencia` (namespace), mas vive dentro deste repo em `api/src/egos_inteligencia/`.
 
 ---
 
