@@ -318,7 +318,13 @@ lab.egos.ia.br {
         reverse_proxy egos-lab-chat:3095
     }
 
-    # Static pages
+    # Assets: serve direto, sem fallback (evita CSS cache-break)
+    handle /assets/* {
+        root * /opt/egos-lab
+        file_server
+    }
+
+    # SPA routes: fallback para index.html
     handle {
         root * /opt/egos-lab
         try_files {path} /index.html
