@@ -1,9 +1,9 @@
-# EGOS-KERNEL-PROPAGATED: 2026-05-06
+# EGOS-KERNEL-PROPAGATED: 2026-05-08
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 32c27a0 | 1 rule section(s) changed -->
+<!-- Kernel commit: 9833602 | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- ~ CLAUDE.md (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## CAP-INT-002: @egos/whatsapp-kernel (SSOT WhatsApp/Evolution API) (14 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
