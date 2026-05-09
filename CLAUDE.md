@@ -1,9 +1,17 @@
-# EGOS-KERNEL-PROPAGATED: 2026-05-08
+# EGOS-KERNEL-PROPAGATED: 2026-05-09
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 9833602 | 1 rule section(s) changed -->
+<!-- Kernel commit: 4374c36 | 9 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md → ## CAP-INT-002: @egos/whatsapp-kernel (SSOT WhatsApp/Evolution API) (14 lines) -->
+<!-- + CAPABILITY_REGISTRY.md (1 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §69 — Central EGOS Template — Marketplace Storefront + Admin (2026-05-08/09) (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### O que é (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Storefront (cliente final) (9 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Admin (dono da loja — protegido por middleware) (8 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### APIs (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Componentes `gpecas/` (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Conexões ao kernel EGOS (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Gaps (pré-produção) (8 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
