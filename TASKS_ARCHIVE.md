@@ -855,3 +855,237 @@ Seções completas arquivadas de TASKS.md para manter o arquivo ativo conciso.
 > **Root cause (session 26):** Containers were in "Created" state after `docker compose up` dependency chain failure.
 > **Prevention:** Script detects Created/Exited/Dead containers and force-starts them.
 
+
+## Archived 2026-05-11
+
+### TASK-001: CNPJ ETL — 53.6M empresas ⏳ 🚨 CRITICAL
+- [x] Upload 6.8GB zip para Contabo
+- [x] Extrair dados (26GB descomprimido)
+- [x] Phase 2: Create Company nodes (8,860,601 loaded)
+- [x] Fix local do pós-load `run_id` → `linking_hooks.py`/`runner.py` + teste de regressão (06/03/2026)
+
+### TASK-002: Neo4j Performance Optimization ⏳
+- [x] Criar script `neo4j-memory-upgrade.sh` (16G heap, 22G pagecache)
+- [x] Criar script `post-etl-optimize.sh` (13 indexes: 9 B-tree + 2 fulltext + 2 composite)
+- [x] Documentar arquitetura: `docs/analysis/PERFORMANCE_ARCHITECTURE_2026-03.md`
+- [x] Scripts deployed to VPS (`/opt/egos_inteligencia/scripts/`) — session 17
+
+### TASK-074: Caso Vorcaro — Mapa Público de Entidades e Sinais (GitHub #57) 🔄 (06/03/2026)
+- [x] Levantar entidades e CNPJs publicamente citáveis relacionados ao caso
+- [x] Separar fatos confirmados, sinais, lacunas e próximos passos de verificação
+- [x] Produzir relatório com fontes, timestamps e caveats legais explícitos
+
+### TASK-015: Bot Integration — Discord/Telegram (GitHub #8) ✅ (02/03/2026)
+- [x] Discord: `EGOS Intelligence#2881` — 14 OSINT tools, slash commands, Supabase persistence
+- [x] Telegram: `@EGOSin_bot` — 14 OSINT tools, long polling, conversation memory
+- [x] Both bots stable via PM2 ecosystem.config.cjs with .env loading
+- [x] Model fallback: paid Gemini 2.0 Flash first, free tier as backup
+- [x] Auto-create GitHub issues from user feedback (||TASK|| markers)
+
+### TASK-028: Investigações — Export Formats ✅ (03/03/2026)
+- [x] Formatos de exportação: MD, JSON, HTML, PDF (4 formatos)
+- [x] `export_service.py` — Markdown + HTML renderers com CPF masking
+- [x] `_resolve_entities()` — helper compartilhado com PEP guard
+
+### TASK-030: Gem Hunter Agent ✅ (GitHub #23) (04/03/2026)
+- [x] Construir modular no egos-lab framework (Feito como v2 agents/gem_hunter)
+- [x] Scanner de repos GitHub brasileiros de transparência (gem_hunter_tags.json + API)
+- [x] Pesquisa inicial: 9 projetos encontrados (02/03/2026)
+
+### TASK-036: Pipeline Social Integrado (/postar) ⏳
+- [x] Workflow /postar criado (X.com, Telegram, Discord)
+- [x] Telegram e Discord postando com sucesso
+
+### TASK-037: Bot Self-Healing ✅ (02/03/2026)
+- [x] Cron healthcheck cada 5 min (/opt/egos-bot/healthcheck.sh)
+- [x] Auto-restart de bots crashados via PM2
+- [x] Logging em /var/log/egos-bot-health.log
+- [x] Alertas via Telegram quando bot restartar (envia para @ethikin)
+- [x] Healthcheck v2: pm2 describe + awk para status correto
+
+### TASK-047: Chat Links New Tab + Journey System ✅ (02/03/2026)
+- [x] Chat: entity clicks abrem em nova aba (window.open _blank) em vez de navegar
+- [x] Chat: URLs no markdown recebem target=_blank automaticamente
+- [x] Chat: links markdown [text](url) renderizados corretamente
+- [x] Journey: lib/journey.ts — localStorage com 500 entries max, dedup 60s, export JSON/MD
+- [x] Journey: JourneyPanel.tsx — painel flutuante com stats, lista, export, share, clear
+- [x] Journey: integrado no ChatInterface (tracks queries + entity views)
+- [x] Journey: exportavel como JSON ou Markdown, compartilhavel via Web Share API
+
+### TASK-042: /app — Plataforma de Pesquisa Colaborativa ⏳ (P1)
+- [x] /app/search: Busca no grafo (JA EXISTE, public mode)
+- [x] /app/analysis/:entityId: Analise de entidade (JA EXISTE)
+- [x] /app/graph/:entityId: Explorador de grafo (JA EXISTE)
+- [x] /app/patterns: Deteccao de padroes (JA EXISTE)
+- [x] /app/baseline/:entityId: Baseline de entidade (JA EXISTE)
+- [x] /app/investigations: Caderno de pesquisa (JA EXISTE, auth-gated)
+- [x] /app/shared/:token: Compartilhamento publico de investigacoes (JA EXISTE)
+- [x] Dashboard com pesquisas recentes + busca rapida (JA EXISTE)
+- [x] Historico de pesquisas: Journey system (localStorage, export JSON/MD, share) ✅ (02/03/2026)
+
+### TASK-049: Avaliação Unikraft + ESAA ✅ (02/03/2026)
+- [x] Unikraft avaliado: NÃO aplicável (unikernels para microserviços stateless, nosso stack é Docker + Neo4j + Python)
+- [x] ESAA avaliado: EXCELENTE padrão para egos-lab (event sourcing para agentes AI, audit trail, contracts)
+
+### TASK-050: Observabilidade — Analytics + Error Tracking ✅ (02/03/2026)
+- [x] Self-hosted analytics: `/api/v1/analytics/pageview` + `/api/v1/analytics/summary`
+- [x] Redis-backed: page views por dia, unique visitors (IP hash), hourly, 7-day history
+- [x] Frontend tracking: App.tsx useLocation → POST pageview em cada navegação
+- [x] Microsoft Clarity ativado (project ID: vpkwrlf847) — session recordings, heatmaps
+- [x] Analytics dashboard page: `/app/analytics` (page views, UV, hourly, 7-day chart) ✅ (02/03/2026)
+
+### TASK-062: Sincronização GitHub Issues ↔ Tasks ✅ (02/03/2026)
+- [x] Issue #25 (Portal Transparência): CLOSED — integrado
+- [x] Issue #26 (DataJud): CLOSED — integrado
+- [x] Issue #27 (ReceitaWS): CLOSED wontfix — ETL melhor
+- [x] Issue #28 (SerpAPI/Brave): CLOSED — Brave integrado
+
+### TASK-073: Website Overhaul — SEO + Copy + Crawlers ✅ (02/03/2026)
+- [x] SEO meta tags: OG, Twitter Card, Schema.org JSON-LD, AI crawler meta
+- [x] `robots.txt`: permitir AI crawlers (GPTBot, ChatGPT-User, Anthropic, Google-Extended)
+- [x] `sitemap.xml`: landing + 4 relatórios
+- [x] Landing page: custo corrigido $36 → $105/mês
+- [x] Header/navbar com links para Pesquisar, Relatórios, Estatísticas, GitHub ✅ (03/03/2026)
+- [x] Copy melhorada: CTA "Abrir Plataforma" (era "Open Explorer"), GitHub URL atualizada ✅ (03/03/2026)
+
+### TASK-074: Chatbot Intelligence — Reports + Proactive ✅ (02/03/2026)
+- [x] System prompt: awareness de 4 relatórios com URLs
+- [x] 6 sugestões inteligentes no welcome (em vez de 4 genéricas)
+- [x] Regras proativas: "NUNCA peça se pode buscar, INVESTIGUE primeiro"
+- [x] Testado: agora lista relatórios corretamente quando perguntado
+- [x] Usa tools antes de responder (evidence chain ativa)
+
+### TASK-043: Gem Hunter v2 — Melhorar Busca de Projetos ⏳ (P2)
+- [x] Adicionar keywords semanticas: "accountability", "civic tech", "open government"
+- [x] Busca automatizada via GitHub Search API (5 categorias, 02/03/2026)
+- [x] LMCache avaliado: NAO aplicavel (usamos API OpenRouter)
+- [x] Bruin avaliado: framework ETL declarativo — NAO aplicavel AGORA (sem Neo4j), util futuro para DuckDB analytics
+- [x] OSINT-BIBLE (299★), WebRecon (250★), OSINTel-Dashboard (39★) encontrados
+- [x] synapse-lite (Neo4j fraud detection) encontrado — pequeno mas relevante
+- [x] **Transparencia-360** analisado (04/03): Super Reports, anomaly workers, deduplicação — complementar
+- [x] **Brazil Visible** analisado (04/03): 92 APIs catalogadas, health check, receitas cruzamento, 550+ tags
+
+### TASK-118: Transparency Report + Pattern Engine ✅ (03/03/2026)
+- [x] Comprehensive transparency/methodology HTML report (10 sections)
+- [x] All 38 active data sources documented with volumes
+- [x] 41+ planned sources documented with status
+- [x] 26 AI tools, 10 pattern detectors, roadmap, limitations, call to participate
+- [x] Pattern detection engine enabled (config: patterns_enabled=True)
+- [x] Report added to Reports page as first item
+
+### TASK-090: UI Polish — Scrollbar, Reports HTML, Privacy, Sidebar ✅ (03/03/2026)
+- [x] Dark scrollbar matching site palette (scrollbar-color: bg-surface/bg-secondary)
+- [x] Reports page: cards now open HTML in new tab (removed raw MD viewer)
+- [x] 3 new HTML report pages (SUPERAR, Manaus, Recuperação Judicial) — standardized template
+- [x] Activity feed: hide search terms/entity names for user privacy
+- [x] Sidebar: fix "EGOS Inteligência" text cutoff (font-size-sm + ellipsis)
+- [x] ReportsShowcase landing: all 4 reports shown (was showing only Patense)
+- [x] PR #24 mobile responsive CSS merged + deployed
+- [x] PR #29 spam bot closed
+- [x] GitHub issues #6 + #7 closed (resolved by PR #30)
+- [x] FAQ PT-BR created (docs/pt-BR/FAQ.md, closes issue #4)
+- [x] Analytics verified: 21 unique visitors, 5270 views — REAL (Redis in-memory)
+
+### TASK-100: Review PR #39 — Índice Central de Documentação ⏳ (P1 — Split)
+- [x] **Autor:** @enioxt (Codex-generated)
+- [x] **Análise:** 354 adições — docs + código ETL misturados
+- [x] **Stack Decision:** Documento CRÍTICO — manter Python, não migrar para Go (ver análise abaixo)
+
+### TASK-102: Review PR #31 — BR-ACC Upstream Monitor ⏳ (P1 — Split Pedido)
+- [x] **Autor:** @Douglas-Strey (comunidade)
+- [x] **Análise:** 1.624 adições — script útil mas escopo grande demais
+- [x] **Comentário postado:** Pedido split em (A) script+workflow, (B) docs SSOT
+
+### TASK-103: Intelink Copy — Linguagem Neutra (só no que migrarmos) ⏳ (P1)
+- [x] "investigação/investigações" → "pesquisa/pesquisas" (i18n PT-BR já estava neutro, EN corrigido)
+- [x] Reports.tsx, Dashboard.tsx, PartnershipCTA.tsx — texto hardcoded corrigido
+- [x] i18n EN: "Investigate in depth" → "Research in depth"
+- [x] NÃO renomear variáveis código (Investigation, investigations) — mantido para API compat
+- [x] Manter ambos sites funcionando (intelink.ia.br + inteligencia.egos.ia.br)
+
+### TASK-105: Rotacionar API Keys Expostas ✅ (03/03/2026)
+- [x] Rotacionar key Portal da Transparência (nova key aplicada na VPS)
+- [x] DataJud — API pública, sem necessidade de rotação (https://datajud-wiki.cnj.jus.br/api-publica/acesso)
+- [x] Brave Search — rotacionada pelo usuário (aguardando nova key para atualizar VPS)
+- [x] Atualizar `.env` na VPS (`/opt/egos_inteligencia/infra/.env`)
+
+### TASK-106: Whitelist Cypher Injection em `_tool_cypher` ✅ (03/03/2026)
+- [x] Substituir blacklist (`CREATE, DELETE, MERGE...`) por whitelist
+- [x] Permitir APENAS: `MATCH`, `RETURN`, `WITH`, `UNWIND`, `ORDER`, `LIMIT`, `WHERE`, `OPTIONAL`, `AS`, `DISTINCT`, `COUNT`, `SUM`, `AVG`, `COLLECT`
+- [x] Bloquear: `CALL`, `LOAD CSV`, `FOREACH`, `CREATE`, `DELETE`, `MERGE`, `SET`, `REMOVE`, `DROP`, `DETACH`
+
+### TASK-107: Migrar Conversas para Redis ⏳ (parcial)
+- [x] Conversas já tinham Redis persistence via `conversations.py` (30-day TTL, CRUD, ownership)
+
+### TASK-108: Split `chat.py` em Módulos ✅ (03/03/2026)
+- [x] Extrair `chat_tools.py` — 26 tool definitions (TOOLS array, 393 lines)
+- [x] Extrair `chat_models.py` — Pydantic models (ChatMessage, EntityCard, etc.)
+- [x] Extrair `chat_prompt.py` — SYSTEM_PROMPT (67 lines)
+- [x] `chat.py` reduzido de 1330 → 845 linhas (36% redução)
+
+### TASK-109: Testes Backend — Integration Tests ⏳
+- [x] Setup pytest + httpx AsyncClient fixtures (conftest.py with mock Neo4j)
+- [x] 219 unit tests passing (session 17: fixed 3 stale assertions)
+- [x] Test patterns endpoint (list, 503 disabled, 404 invalid, include_probable)
+- [x] Test CPF masking middleware (mask, PEP exception)
+- [x] Test public_guard (CPF blocked, Person hidden, props stripped)
+- [x] Test search endpoint against live VPS (fulltext, CNPJ, empty query, pagination)
+- [x] Test chat endpoint (simple query, empty rejection)
+- [x] Test entity lookup (CNPJ, invalid format, graph traversal)
+- [x] Test patterns against live VPS (list 10, invalid 404)
+- [x] Test health/meta/activity/cache endpoints
+- [x] 955 ETL unit tests passing (0 warnings after Pandas fix)
+
+### TASK-111: Circuit Breaker para APIs Externas ✅ (03/03/2026)
+- [x] `circuit_breaker.py` — per-host circuit breaker (CLOSED→OPEN→HALF_OPEN)
+- [x] Config: 5 failures in 2min window → 60s cooldown
+- [x] `safe_get()` helper in `transparency_tools.py` wraps httpx + circuit breaker
+- [x] `get_status()` method for monitoring all circuits
+
+### TASK-112: Input Sanitization (Prompt Injection) ✅ (03/03/2026)
+- [x] 10 regex patterns: ignore instructions, system prompt reveal, jailbreak, DAN mode, special tokens
+- [x] Soft detection: log suspicious inputs via activity feed (não bloqueia)
+- [x] 13 unit tests cobrindo todos os patterns + queries normais PT/EN
+
+### TASK-114: DSAR Workflow Automatizado ⏳ (P2)
+- [x] GitHub issue template `dsar_request.yml` — 6 request types, identity, evidence, attestation (session 18)
+
+### TASK-123: Multi-hop Connection Finder (Tool #27) ✅ (03/03/2026)
+- [x] find_connection_path — shortestPath with configurable depth (1-6 hops)
+- [x] Fuzzy entity matching via fulltext index
+- [x] Evidence chain integration
+- [x] Deployed to VPS (docker cp + restart)
+
+### TASK-125: Codex CLI Integration ✅ (04/03/2026)
+- [x] Define 6 roles: Code Review, Test Writer, Doc Updater, Bug Fixer, Async Refactor, Security Audit
+- [x] Add delegation rules to `.windsurfrules` (v2.0.0)
+- [x] Update `/start` workflow with Codex status check (Section 6)
+- [x] Update `/end` workflow with Codex cleanup step (Section 8)
+- [x] Add Section 9 to pre-commit (Codex CLI reminder, 10 sections total)
+
+### TASK-126: Análise Transparencia-360 ✅ (04/03/2026)
+- [x] Repo analisado: Spring Boot + Neo4j + Python workers, 26-step pipeline
+- [x] Comparação: 8 fontes vs nossas 108, sem AI chat, com Super Reports automatizados
+- [x] Features valiosas: GhostEmployee/RachadinhaWorker, deduplicação, SpatialAnomaly
+- [x] Nosso diferencial: 4.5x mais fontes, AI chatbot 27 tools, evidence chain
+
+### TASK-127: Análise Brazil Visible ✅ (04/03/2026)
+- [x] Repo + site analisados: 92 APIs em 22 categorias, 5 receitas cruzamento
+- [x] Features valiosas: health check automático (6h), 550+ tags, Jupyter notebooks
+- [x] Inspirado pela comunidade br/acc (mesma que nosso fork original)
+- [x] Nosso diferencial: executamos cruzamentos interativamente, eles documentam
+
+### TASK-135: Padrão de Relatórios — Disclaimers, Fontes, Colaboração ⬜ (P1)
+- [x] Criar template padrão de relatórios (`docs/standards/REPORT_STANDARDS.md`)
+
+### TASK-136: Provenance/Não-Repúdio — Integrar em Pipelines ⬜ (P0)
+- [x] Módulo `egos_inteligencia_etl/provenance.py` criado com SHA-256 determinístico
+- [x] Testes unitários (`tests/test_provenance.py`)
+
+### TASK-137: Mapa de Bases Governamentais + Posicionamento ⬜ (P1)
+- [x] Criar mapa de bases públicas vs restritas (`docs/standards/GOVERNMENT_DATABASES_MAP.md`)
+
+### TASK-139: Caso Vorcaro v3 — Expansão com Dados Cruzados ⬜ (P1)
+- [x] v1: Fatos oficiais + entidades manuais (06/03/2026)
+- [x] v2: Neo4j cross-reference — 8 CNPJs, 15 empresas Vorcaro, 8 sócios, 0 sanções CEIS/CNEP
+
