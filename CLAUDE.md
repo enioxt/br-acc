@@ -1,17 +1,10 @@
-# EGOS-KERNEL-PROPAGATED: 2026-05-09
+# EGOS-KERNEL-PROPAGATED: 2026-05-11
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 4374c36 | 9 rule section(s) changed -->
+<!-- Kernel commit: 2fb5fe0 | 2 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md (1 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §69 — Central EGOS Template — Marketplace Storefront + Admin (2026-05-08/09) (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### O que é (4 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Storefront (cliente final) (9 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Admin (dono da loja — protegido por middleware) (8 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### APIs (6 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Componentes `gpecas/` (4 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Conexões ao kernel EGOS (6 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Gaps (pré-produção) (8 lines) -->
+<!-- ~ .windsurfrules (2 lines) -->
+<!-- ~ CLAUDE.md (2 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
@@ -40,6 +33,13 @@ This section is the single source of truth for agent rules. Claude Code reads th
 2. **Use-case scoped scoring** — before applying a uniform rubric across products, declare each product's primary use case. Mark rubric rows REQUIRED/OPTIONAL/N/A per use case. `N/A (use case: X)` is valid, not a fail. Cannot use single score column across heterogeneous use cases (INC-006).
 3. **ONE SSOT per domain** — see "SSOT Map" section below. New content goes to existing SSOT, never new file. Prohibited: `docs/business/`, `docs/sales/`, `docs/notes/`, `docs/tmp/`, timestamped docs, `AUDIT*.md`, `REPORT*.md`, `DIAGNOSTIC*.md` (except in `_archived/`).
 4. **Evidence-first** — every claim in durable docs (README, SSOT, article) needs: automated test exercising it, metric confirming the number, entry in manifest (`.egos-manifest.yaml` or `CAPABILITY_REGISTRY.md`), or dashboard tile. Unproven claims marked `unverified:`.
+5. **Reuse-first em leaf-repos (INC-009).** Antes de criar `<leaf>/docs/governance/X.md`, `<leaf>/docs/specs/X.md`, ou qualquer doc descrevendo agente/sistema prompt/registry/capability:
+   1. Glob `<leaf>/lib/prompts/*.ts`, `<leaf>/lib/config/*.ts`, `<leaf>/lib/agents/*.ts` — existe sistema prompt / tool registry / agent canonical?
+   2. Read `<leaf>/AGENTS.md` (full — não só PROPAGATE block) e `<leaf>/CLAUDE.md`
+   3. Read `<leaf>/lib/prompts/PROMPT_REGISTRY.md` se existir
+   4. Read `<leaf>/docs/UPSTREAM_KERNEL.md` se existir
+   5. Grep similar em `egos/docs/CAPABILITY_REGISTRY.md` (kernel)
+   Se 1+ existe → **ESTENDER (mesmo arquivo, nova section)**, não duplicar. Sprint cross-repo (kernel + leaf na mesma sessão) → criar entry `COORD-YYYY-MM-DD-X` em `egos/docs/COORDINATION.md` antes de qualquer commit. Postmortem: `docs/INCIDENTS/INC-009-leaf-silo-work.md`.
 
 ### R3 — Edit safety
 1. Read before Edit (at least the relevant section). Confirm exact string. Re-read after edit.
@@ -71,6 +71,7 @@ This section is the single source of truth for agent rules. Claude Code reads th
 | INC-006 | RLS policy role validation (28 tables `{public}`) — see R-RLS-001; subagent phantoms + scored SSOT tables — see R1.3, R2.1-2 |
 | INC-007 | API key exposure via `|| fallback` pattern — never commit secrets |
 | INC-008 | Phantom compliance stubs — see R7 below |
+| INC-009 | Leaf-repo silo-work (agente cria SSOT paralelo ignorando canonical existente) — see R2.5 above. `/start` LAYER 4.6 força leitura de SSOTs do leaf antes de qualquer write |
 
 Full postmortems: `docs/INCIDENTS/INC-XXX-*.md`. Index: `docs/INCIDENTS/INDEX.md`.
 
