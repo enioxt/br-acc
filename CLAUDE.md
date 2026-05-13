@@ -1,9 +1,19 @@
 # EGOS-KERNEL-PROPAGATED: 2026-05-13
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 47f6258 | 1 rule section(s) changed -->
+<!-- Kernel commit: dff688e | 19 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md → ## CAP-INT-003: Multi-LLM Orchestration (Claude + Codex pipeline) (13 lines) -->
+<!-- ~ CAPABILITY_REGISTRY.md → # EGOS Capability Registry (12 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §75 — Meta-Prompts Discovery Layer (2026-05-13) (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Componentes (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Problema resolvido (7 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §76 — Trace-to-Skill Codification (CONCEITO — 2026-05-13) (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Gap atual (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Referências (7 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §77 — ISO 42001 AIMS Module (PARCIAL — 2026-05-13) (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### O que já existe (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### O que falta (9 lines) -->
+<!-- ... and 9 more -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
