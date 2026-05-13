@@ -1,10 +1,9 @@
-# EGOS-KERNEL-PROPAGATED: 2026-05-11
+# EGOS-KERNEL-PROPAGATED: 2026-05-13
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 2fb5fe0 | 2 rule section(s) changed -->
+<!-- Kernel commit: 47f6258 | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- ~ .windsurfrules (2 lines) -->
-<!-- ~ CLAUDE.md (2 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## CAP-INT-003: Multi-LLM Orchestration (Claude + Codex pipeline) (13 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
@@ -47,6 +46,8 @@ This section is the single source of truth for agent rules. Claude Code reads th
 3. Rename/signature change → grep all callers first.
 4. Large files (>300 LOC): remove dead code first (separate commit), break into phases (max 5 files).
 5. **Simplicity First (Karpathy):** minimum code that solves. No speculative abstractions. Wait for 3rd repetition before extracting. Test: "Would a senior engineer call this overcomplicated?"
+6. **Fail Visibly (Karpathy/Mnilax):** never `|| true` on non-trivial operations. Errors must surface. Prefer `|| { echo "[ERROR] <context>"; exit 1; }`. Silent failures hide real bugs.
+7. **State Assumptions First (Karpathy):** before implementing anything ambiguous, write out assumptions as a message or comment BEFORE writing code. If unclear, ask — don't guess silently.
 
 ### R4 — Git safety
 1. Force-push forbidden on main/master/production/prod/release/hotfix. Exception: `EGOS_ALLOW_FORCE_PUSH=1` in shell only.
