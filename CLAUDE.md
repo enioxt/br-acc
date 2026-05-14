@@ -1,16 +1,9 @@
 # EGOS-KERNEL-PROPAGATED: 2026-05-14
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: aeee9939 | 8 rule section(s) changed -->
+<!-- Kernel commit: aa4ee664 | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- - CAPABILITY_REGISTRY.md (1 lines) -->
-<!-- ~ CAPABILITY_REGISTRY.md → ## §81 — EGOS MCP Layer — 9 Servers LIVE no VPS + 144 Behavioral Evals (2026-05-14) (9 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Servidores (portas 7001-7009) (13 lines) -->
-<!-- ~ CAPABILITY_REGISTRY.md → ### Infra (7 lines) -->
-<!-- - CAPABILITY_REGISTRY.md → ### Como usar (4 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → # Todos os 9 MCPs disponíveis automaticamente no Claude Code (1 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → # VPS via HTTPS (1 lines) -->
-<!-- ~ CAPABILITY_REGISTRY.md → # → {"ok":true,"mcp":"governance","sessions":0} (4 lines) -->
+<!-- ~ CAPABILITY_REGISTRY.md (17 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
@@ -20,6 +13,11 @@
 ## 📋 Canonical Rules (authoritative across ALL IDEs)
 
 This section is the single source of truth for agent rules. Claude Code reads this. Windsurf reads this. Cursor reads this. Codex reads this. GitHub Copilot reads this. When `~/.claude/CLAUDE.md`, `.windsurfrules`, or repo-level `CLAUDE.md` diverge from this file, **AGENTS.md wins**.
+
+### Highest-Leverage Rule
+EGOS maximizes value when it turns proven operational capability into governed reusable infrastructure.
+Default path: prove in a real leaf or runtime → extract what is reusable → register canonical ownership → enforce evidence and eval → reduce replication cost for the next repo, agent, or client.
+When in doubt, prefer extraction over duplication, canon over parallel docs, and deploy traceability over informal runtime assumptions.
 
 ### R0 — Critical non-negotiables (irreversible damage prevention)
 1. **NEVER `git push --force` to main/master/production** — use `bash scripts/safe-push.sh` (INC-001)
