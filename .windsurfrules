@@ -1,18 +1,18 @@
 # EGOS-KERNEL-PROPAGATED: 2026-05-19
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 21be35df | 10 rule section(s) changed -->
+<!-- Kernel commit: 7a281b98 | 10 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
 <!-- + CAPABILITY_REGISTRY.md (3 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §83 — MCP G Peças Admin Layer — ChatGPT Actions + Write Tools (2026-05-19) (7 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Componentes (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Como usar (1 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → # API direta: POST /tools/kpi_summary -H "Authorization: Bearer <TOKEN>" (6 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §84 — MCP-FULL-ADMIN Sprint — Service Layer + 40 Write Tools (2026-05-20) (9 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Fase 1 — Foundation ✅ (commit 246ef139) (12 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Fases 2-7 (em execução / planejado) (7 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Princípios de design (não-negociáveis) (7 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ### Critério "MCP Admin Completo" (9 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §85 — Espiral de Escuta como Método-Mãe do EGOS (2026-05-20) (7 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Fluxo genérico (10 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Aplicações no EGOS (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### NÃO é (9 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §86 — GPT Espiral + MCP Enio Personal (2026-05-20) (7 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### MCP Enio Personal (MCP-ENIO-001) (11 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### GPT "Espiral de Escuta" (ESPIRAL-GPT-001) (9 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Por que P1 (não P0) (3 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Evolução do egos-lab-chat existente (ESPIRAL-CHATBOT-EVOLVE-001) (4 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
