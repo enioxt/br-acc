@@ -1,1 +1,1 @@
-/home/enio/.egos/.claude/commands/agents.md
+/home/enio/.claude/commands/agents.md
