@@ -104,3 +104,4 @@ docs/ECOSYSTEM_DIAGNOSTIC_2026-03.md
 # Context persistence state (local only)
 docs/_context_snapshots/.state.json
 .claude/commands/
+.eos
