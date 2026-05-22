@@ -109,6 +109,17 @@ Every RLS policy MUST have explicit `TO <role>`. No `{public}` on sensitive tabl
 Full postmortem: `docs/INCIDENTS/INC-008-phantom-compliance-stubs.md`.
 Canonical eval strategy: `docs/knowledge/AI_EVAL_STRATEGY.md` (being written — see EVAL-X2).
 
+### R8 — DB Discipline (INC-DB-001 — 2026-05-22)
+
+> SSOT completo: `docs/governance/DB_DISCIPLINE.md`. Pre-commit enforcement: `scripts/pre-commit-db-discipline.sh`.
+
+1. **R-DB-001 Schema-First** — scripts Supabase usam tipos gerados / zod. Nunca literal solto `{ is_active: true }` (PostgREST ignora colunas erradas em silêncio → bug invisível).
+2. **R-DB-002 Smoke ANON pós-write** — todo seed/migration termina com SELECT count usando ANON, assertando ≥ expected.
+3. **R-DB-003 RLS anon explícito** — migration de tabela usada por storefront DEVE incluir `CREATE POLICY ... TO anon, authenticated USING (...)` no mesmo arquivo. Nunca `current_setting('app.*')`.
+4. **R-DB-004 SSOT-only** — fixes em `central-egos/template/` (ou equivalente leaf). Nunca em `clients/<slug>/src/`.
+
+**Incidente origem:** FVP seed v2 usou `is_active`, 32 rows defaultaram `active=false`, storefront 0 produtos 12h. Combinado com RLS exigindo session var não-setada.
+
 <!-- === END KERNEL RULES BODY === -->
 
 ---
