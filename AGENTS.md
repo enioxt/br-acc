@@ -1,9 +1,19 @@
-# EGOS-KERNEL-PROPAGATED: 2026-05-19
+# EGOS-KERNEL-PROPAGATED: 2026-05-22
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 24f4bb75 | 1 rule section(s) changed -->
+<!-- Kernel commit: 4072aaeb | 69 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- ~ CAPABILITY_REGISTRY.md → ## §84 — MCP-FULL-ADMIN Sprint — Service Layer + 40 Write Tools (2026-05-20) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §19 — Partial Masking Mode (Guard Brasil) (2026-04-07) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §20 — Schema-Driven Prompt Assembler (2026-04-07) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §21 — MemoryStore Adapter (2026-04-07) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §22 — Eval Harness (2026-04-07) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §23 — Timeline + AI Publishing System (2026-04-08) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §24 — X.com Post HITL Approval + LLM Learning (2026-04-08) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §25 — Auto-Disseminate Pipeline (2026-04-08) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §26 — Kernel Change Scanner + Heartbeat Loop (2026-04-08) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §27 — KBS — Knowledge Base as a Service (2026-04-08) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §29 — Platform Monitor (2026-04-09) (4 lines) -->
+<!-- ... and 59 more -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
