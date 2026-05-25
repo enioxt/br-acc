@@ -1,9 +1,19 @@
-# EGOS-KERNEL-PROPAGATED: 2026-05-22
+# EGOS-KERNEL-PROPAGATED: 2026-05-25
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: cfdea31d | 1 rule section(s) changed -->
+<!-- Kernel commit: b12a9b9e | 11 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md → ## DB Discipline [T1 — INC-DB-001 2026-05-22] (11 lines) -->
+<!-- + CAPABILITY_REGISTRY.md (1 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §87 — Tenant Lifecycle Ops API — Phases 2-3-5 (2026-05-25) (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Endpoints (9 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### tenant-seed (Phase 2) (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### tenant-config (Phase 3) (7 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### tenant-smoke (Phase 5) (10 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §88 — EGOS API Mestra v0.1 — /v1/* Unified Control Plane (2026-05-25) (7 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Routes (12 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Auth (2 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Validated in production (6 lines) -->
+<!-- ... and 1 more -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
