@@ -1,10 +1,11 @@
 # EGOS-KERNEL-PROPAGATED: 2026-05-27
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 1754558e | 9 rule section(s) changed -->
+<!-- Kernel commit: 1b406c43 | 10 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- ~ CLAUDE.md (5 lines) -->
-<!-- + CAPABILITY_REGISTRY.md (1 lines) -->
+<!-- + CAPABILITY_REGISTRY.md (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## Cobertura do Registry (auto-gerada) (11 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## CAP-INT-003: Multi-LLM Orchestration (Claude + Codex pipeline) (1 lines) -->
 <!-- + CAPABILITY_REGISTRY.md → ## §89 — NotebookLM MCP Integration — Artifact Generation via Claude Code (2026-05-27) (4 lines) -->
 <!-- + CAPABILITY_REGISTRY.md → ### Instalação (6 lines) -->
 <!-- + CAPABILITY_REGISTRY.md → ### Notebooks registrados (aliases) (9 lines) -->
