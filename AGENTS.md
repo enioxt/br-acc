@@ -1,10 +1,17 @@
 # EGOS-KERNEL-PROPAGATED: 2026-05-27
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: c3b7d6bc | 2 rule section(s) changed -->
+<!-- Kernel commit: 1754558e | 9 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- ~ CLAUDE.md (4 lines) -->
-<!-- + CLAUDE.md → ### Regra de versionamento de apresentações [T1 — GOV-PRES-001] (19 lines) -->
+<!-- ~ CLAUDE.md (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md (1 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §89 — NotebookLM MCP Integration — Artifact Generation via Claude Code (2026-05-27) (4 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Instalação (6 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Notebooks registrados (aliases) (9 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Capacidades disponíveis via `nlm` (9 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Artefatos gerados (smoke test 2026-05-27) (7 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Limites e fronteiras (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ### Fronteira de uso (4 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
