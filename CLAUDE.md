@@ -1,9 +1,9 @@
-# EGOS-KERNEL-PROPAGATED: 2026-05-29
+# EGOS-KERNEL-PROPAGATED: 2026-05-30
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: be36ff4d | 1 rule section(s) changed -->
+<!-- Kernel commit: bafb4402 | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md (2 lines) -->
+<!-- + CLAUDE.md → ## NotebookLM Obrigatório [T1 — 2026-05-30] (11 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
