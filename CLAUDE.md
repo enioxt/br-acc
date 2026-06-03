@@ -1,10 +1,9 @@
-# EGOS-KERNEL-PROPAGATED: 2026-06-02
+# EGOS-KERNEL-PROPAGATED: 2026-06-03
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 28f277dc | 2 rule section(s) changed -->
+<!-- Kernel commit: 702629bd | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md (3 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §108 — A2A Security Audit & Cryptographic Signer (2026-06-02) (10 lines) -->
+<!-- + CAPABILITY_REGISTRY.md (8 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
