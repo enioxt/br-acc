@@ -1,6 +1,6 @@
 # EGOS-KERNEL-PROPAGATED: 2026-06-03
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 5cad3274 | 1 rule section(s) changed -->
+<!-- Kernel commit: 15e145a2 | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
 <!-- ~ CAPABILITY_REGISTRY.md → ## §109 — Item Intake (cardápio/foto → planilha Kyte) (2026-06-03) (6 lines) -->
