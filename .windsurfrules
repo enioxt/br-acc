@@ -1,9 +1,9 @@
 # EGOS-KERNEL-PROPAGATED: 2026-06-03
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 732e061c | 1 rule section(s) changed -->
+<!-- Kernel commit: 5f92c30b | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md → ## 🔁 SYNC DISCIPLINE [T1 — corte Enio 2026-06-03] (11 lines) -->
+<!-- + CLAUDE.md (2 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
