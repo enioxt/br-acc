@@ -1,9 +1,10 @@
 # EGOS-KERNEL-PROPAGATED: 2026-06-04
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 6c7eb595 | 1 rule section(s) changed -->
+<!-- Kernel commit: 6ce39557 | 2 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md (1 lines) -->
+<!-- + CAPABILITY_REGISTRY.md (2 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §111 — Hardcoded Sensitive Data Scanner (R-SEC-001) (2026-06-04) (10 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
@@ -17,8 +18,7 @@ This section is the single source of truth for agent rules. Claude Code reads th
 > 🃏 **4 pilares (TL;DR — resume R0-R8; conflito→texto completo. Corte Enio 2026-06-03):** **1)** §R0 safe-push, sem segredo, sem publish-sem-HITL, sem `git add -A`, commit TASKS.md já · **2)** §R1/R7 memory-mcp p/ código, externo=REAL/CONCEPT/PHANTOM, subagente=síntese, capacidade=≥3 golden cases · **3)** §R3/R4/R8/RLS frozen via Prime/`EGOS_FROZEN_OVERRIDE`, Guarani propõe/Prime commita, DB schema-first+RLS anon · **4)** §R2/Karpathy mínimo código, falhe visível, SSOT>duplicação.
 ### Highest-Leverage Rule
 EGOS maximizes value when it turns proven operational capability into governed reusable infrastructure.
-Default path: prove in a real leaf or runtime → extract what is reusable → register canonical ownership → enforce evidence and eval → reduce replication cost for the next repo, agent, or client.
-When in doubt, prefer extraction over duplication, canon over parallel docs, and deploy traceability over informal runtime assumptions.
+Default path: prove in a real leaf/runtime → extract what is reusable → register canonical ownership → enforce evidence and eval → reduce replication cost for the next repo/agent/client. When in doubt, prefer extraction over duplication, canon over parallel docs, deploy traceability over informal runtime assumptions.
 
 ### R0 — Critical non-negotiables (irreversible damage prevention)
 1. **NEVER `git push --force` to main/master/production** — use `bash scripts/safe-push.sh` (INC-001)
@@ -32,6 +32,7 @@ When in doubt, prefer extraction over duplication, canon over parallel docs, and
 2. **External LLM paste** (ChatGPT/Gemini/Grok/Kimi/Perplexity output) → every named feature, commit, file, version = UNVERIFIED CLAIM. Classify REAL/CONCEPT/PHANTOM via `git log --grep` + `Glob`. High-density buzzword lists (8+ capitalized "systems") = phantom signal (INC-005).
 3. **Subagent audits** (Agent/Explore/Plan outputs) = SYNTHESIS, not evidence. Before citing in commit/SSOT edit: re-verify top 3 structural claims via `codebase-memory-mcp`. Absolute audit claims ("X doesn't exist", "Y is skeleton") without file:line anchor = PHANTOM until verified (INC-006).
 4. **When spawning Agent/Explore/Plan** → prompt MUST include: "return evidence tuples `{claim, evidence_path, evidence_line}`; prefix unanchored with `UNVERIFIED:`".
+5. **Proveniência-por-ação [T1 — Enio 2026-06-04, vale p/ TODO agente: Prime/Guarani/Codex/EVA/Hermes]:** antes de afirmar QUALQUER coisa sobre o sistema, cite a fonte consultada (`file:line`/comando). "Não existe X" exige busca **machine-wide**, não 1 diretório. **Marcar task `[x]` (done) exige EVIDÊNCIA verificável** (SHA do commit, arquivo gerado, `Closes/Fixes`, ou prova reproduzível) — `[x]` sem evidência = **phantom-done** (caso real: LANDING-EVOLVE-001 marcado done por Guarani sem `egos-web` ter mudado, 2026-06-04). Enforcement: gate `phantom-done` no `.husky/pre-commit` + espelha `provenance.py`/`.ts` (rigor de dados → afirmações). SSOT: `~/.claude/CLAUDE.md` §1.
 
 ### R2 — SSOT integrity
 1. **Scored SSOT tables** (columns: `Compliance`/`Score`/`%`/`Coverage`/`Maturity`/`Readiness`/`Grade`) MUST be wrapped in `<!-- AUTO-GEN-BEGIN:<agent> -->` / `<!-- AUTO-GEN-END -->` populated by a compliance agent, OR every row MUST carry `VERIFIED_AT` + `method` + `evidence` (file:line or cmd output SHA). Handwritten scored tables are PHANTOM VECTORS. Pre-commit blocks after MSSOT-002 ships (INC-006).
