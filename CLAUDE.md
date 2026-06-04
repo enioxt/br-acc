@@ -1,10 +1,10 @@
 # EGOS-KERNEL-PROPAGATED: 2026-06-04
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 6ce39557 | 2 rule section(s) changed -->
+<!-- Kernel commit: d8be5bd6 | 2 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md (2 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §111 — Hardcoded Sensitive Data Scanner (R-SEC-001) (2026-06-04) (10 lines) -->
+<!-- ~ CAPABILITY_REGISTRY.md (5 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §112 — Visual Audit (Playwright End-to-End) (2026-06-04) (9 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
