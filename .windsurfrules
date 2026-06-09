@@ -1,12 +1,9 @@
-# EGOS-KERNEL-PROPAGATED: 2026-06-08
+# EGOS-KERNEL-PROPAGATED: 2026-06-09
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 88201591 | 4 rule section(s) changed -->
+<!-- Kernel commit: 84130718 | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md (3 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §115 — Apresentação HTML por cliente (padrão EGOS) (2026-06-08) (14 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §116 — Pseudonimização de CPF no gateway (Option A) (2026-06-08) (14 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §117 — Fluxo unificado HTML + NotebookLM por cliente (2026-06-08) (11 lines) -->
+<!-- + CLAUDE.md → ## R-DIAG-001 — Diagnóstico Antes de Demo [T1 — Enio 2026-06-09] (25 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
@@ -41,13 +38,8 @@ Default path: prove in a real leaf/runtime → extract what is reusable → regi
 2. **Use-case scoped scoring** — before applying a uniform rubric across products, declare each product's primary use case. Mark rubric rows REQUIRED/OPTIONAL/N/A per use case. `N/A (use case: X)` is valid, not a fail. Cannot use single score column across heterogeneous use cases (INC-006).
 3. **ONE SSOT per domain** — see "SSOT Map" section below. New content goes to existing SSOT, never new file. Prohibited: `docs/business/`, `docs/sales/`, `docs/notes/`, `docs/tmp/`, timestamped docs, `AUDIT*.md`, `REPORT*.md`, `DIAGNOSTIC*.md` (except in `_archived/`).
 4. **Evidence-first** — every claim in durable docs (README, SSOT, article) needs: automated test exercising it, metric confirming the number, entry in manifest (`.egos-manifest.yaml` or `CAPABILITY_REGISTRY.md`), or dashboard tile. Unproven claims marked `unverified:`.
-5. **Reuse-first em leaf-repos (INC-009).** Antes de criar `<leaf>/docs/governance/X.md`, `<leaf>/docs/specs/X.md`, ou qualquer doc descrevendo agente/sistema prompt/registry/capability:
-   1. Glob `<leaf>/lib/prompts/*.ts`, `<leaf>/lib/config/*.ts`, `<leaf>/lib/agents/*.ts` — existe sistema prompt / tool registry / agent canonical?
-   2. Read `<leaf>/AGENTS.md` (full — não só PROPAGATE block) e `<leaf>/CLAUDE.md`
-   3. Read `<leaf>/lib/prompts/PROMPT_REGISTRY.md` se existir
-   4. Read `<leaf>/docs/UPSTREAM_KERNEL.md` se existir
-   5. Grep similar em `egos/docs/CAPABILITY_REGISTRY.md` (kernel)
-   Se 1+ existe → **ESTENDER (mesmo arquivo, nova section)**, não duplicar. Sprint cross-repo (kernel + leaf na mesma sessão) → criar entry `COORD-YYYY-MM-DD-X` em `egos/docs/COORDINATION.md` antes de qualquer commit. Postmortem: `docs/INCIDENTS/INC-009-leaf-silo-work.md`.
+5. **Reuse-first em leaf-repos (INC-009).** Antes de criar `<leaf>/docs/governance|specs/X.md` ou doc de agente/prompt/registry/capability: glob `<leaf>/lib/{prompts,config,agents}/*.ts` + read `<leaf>/AGENTS.md`(full)/`CLAUDE.md`/`UPSTREAM_KERNEL.md`/`PROMPT_REGISTRY.md` + grep kernel `CAPABILITY_REGISTRY.md`. 1+ existe → **ESTENDER, não duplicar**. Sprint cross-repo → entry `COORD-YYYY-MM-DD-X` em `COORDINATION.md` antes do commit. Postmortem: `docs/INCIDENTS/INC-009-leaf-silo-work.md`.
+6. **Arquivos essenciais = roteadores enxutos, não enciclopédias (2026-06-09).** CLAUDE.md/AGENTS.md/MEMORY.md/memory-files são índice→temático→profundo→evidência. Orçamento de instrução: arquivo carregado toda sessão <200L (warn 300); comandos/skills warn-only (nunca bloqueiam). **Loop de captura:** toda decisão/aprendizado validado → memória → regra-quando-estável (não morre no transcript). Raiz do sprawl de memória = dedup/supersessão (não contagem de linha). Freshness mínima: `last_update`+`status`. SSOT: `docs/governance/ESSENTIAL_FILES_ARCHITECTURE.md`.
 
 ### R3 — Edit safety
 1. Read before Edit (at least the relevant section). Confirm exact string. Re-read after edit.
