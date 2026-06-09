@@ -74,6 +74,7 @@ Default path: prove in a real leaf/runtime → extract what is reusable → regi
 | INC-007 | API key exposure via `|| fallback` pattern — never commit secrets |
 | INC-008 | Phantom compliance stubs — see R7 below |
 | INC-009 | Leaf-repo silo-work (agente cria SSOT paralelo ignorando canonical existente) — see R2.5 above. `/start` LAYER 4.6 força leitura de SSOTs do leaf antes de qualquer write |
+| INC-GATEWAY-001 | HTTP header values devem ser ASCII puro — em dash `—` e outros não-ASCII causam Hono 500 (2026-06-09). Strings estáticas em `c.header()` → verificar. |
 
 Full postmortems: `docs/INCIDENTS/INC-XXX-*.md`. Index: `docs/INCIDENTS/INDEX.md`.
 
