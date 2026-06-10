@@ -114,3 +114,24 @@ bash ~/.egos/hooks/readme-freshness.sh "${1:-}" || exit 1
 
 TOTAL=$(( $(date +%s) - PRE_START ))
 printf "${GREEN}✅ br-acc pre-commit: ${TOTAL}s${NC}\n"
+
+# BEGIN egos-phantom-done
+# DISSEMINATE-INTEGRITY-002 — Propagated from kernel 2026-06-10
+# Bloqueia task [x] marcada sem evidencia verificavel em TASKS.md (phantom-done).
+# Evidencia aceita: SHA hex 7-40 chars | Closes/Fixes/Resolves | PR # | URL | "commit <sha>"
+# Override consciente: EGOS_PROVENANCE_OVERRIDE=1
+if [ -f "TASKS.md" ]; then
+  _new_done=$(git diff --cached -U0 -- TASKS.md 2>/dev/null | grep -E '^\+- \[x\]' || true)
+  if [ -n "$_new_done" ]; then
+    _phantom=$(echo "$_new_done" | grep -vE '\b[0-9a-f]{7,40}\b|Closes|Fixes|Resolves|PR #|https?://|commit ' || true)
+    if [ -n "$_phantom" ]; then
+      echo "  PROVENANCIA (phantom-done): task(s) marcada(s) [x] SEM evidencia verificavel:"
+      echo "$_phantom" | sed 's/^\+- \[x\] \?/    /' | cut -c1-100 | head -5
+      echo "     Regra: done exige SHA, arquivo, Closes/Fixes ou prova. Bare data nao conta."
+      echo "     -> Reabra [ ] OU adicione evidencia na linha. Override: EGOS_PROVENANCE_OVERRIDE=1"
+      [ "${EGOS_PROVENANCE_OVERRIDE:-0}" = "1" ] || { echo "  BLOCKED: phantom-done."; exit 1; }
+      echo "  EGOS_PROVENANCE_OVERRIDE=1 -- phantom-done permitido conscientemente."
+    fi
+  fi
+fi
+# END egos-phantom-done
