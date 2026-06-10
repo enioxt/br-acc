@@ -1,6 +1,6 @@
 # EGOS-KERNEL-PROPAGATED: 2026-06-10
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: dfc70d78 | 1 rule section(s) changed -->
+<!-- Kernel commit: 5bcc06c8 | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
 <!-- + CLAUDE.md (1 lines) -->
