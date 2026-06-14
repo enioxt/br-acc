@@ -1,9 +1,10 @@
-# EGOS-KERNEL-PROPAGATED: 2026-06-13
+# EGOS-KERNEL-PROPAGATED: 2026-06-14
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: d9b6fa5b | 1 rule section(s) changed -->
+<!-- Kernel commit: a4ef544c | 2 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md (1 lines) -->
+<!-- + CAPABILITY_REGISTRY.md (1 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §118 — Cadeia de Custódia Tamper-Evident (DOC-CHAIN-OF-CUSTODY-001) (2026-06-14) (11 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
