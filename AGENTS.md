@@ -1,9 +1,9 @@
-# EGOS-KERNEL-PROPAGATED: 2026-06-14
+# EGOS-KERNEL-PROPAGATED: 2026-06-15
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: ab5e93fa | 1 rule section(s) changed -->
+<!-- Kernel commit: 482a2912 | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md → ### Núcleo compartilhado multi-LLM (FABLE-OR-001 — 2026-06-14) (10 lines) -->
+<!-- + CLAUDE.md (5 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
