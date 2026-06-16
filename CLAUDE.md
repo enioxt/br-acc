@@ -1,9 +1,9 @@
-# EGOS-KERNEL-PROPAGATED: 2026-06-15
+# EGOS-KERNEL-PROPAGATED: 2026-06-16
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: fdff21ef | 1 rule section(s) changed -->
+<!-- Kernel commit: 11a25b95 | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md (1 lines) -->
+<!-- + CLAUDE.md → ## ENV Discipline [T1 — ENV-MASTER-001 2026-06-16] (12 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
@@ -110,7 +110,6 @@ Full postmortem: `docs/INCIDENTS/INC-008-phantom-compliance-stubs.md`.
 Canonical eval strategy: `docs/knowledge/AI_EVAL_STRATEGY.md` (being written — see EVAL-X2).
 
 ### R8 — DB Discipline (INC-DB-001 — 2026-05-22)
-
 > SSOT completo: `docs/governance/DB_DISCIPLINE.md`. Pre-commit enforcement: `scripts/pre-commit-db-discipline.sh`.
 
 1. **R-DB-001 Schema-First** — scripts Supabase usam tipos gerados / zod. Nunca literal solto `{ is_active: true }` (PostgREST ignora colunas erradas em silêncio → bug invisível).
@@ -123,6 +122,7 @@ Canonical eval strategy: `docs/knowledge/AI_EVAL_STRATEGY.md` (being written —
 **R-SEC-002 [T0] — Dado soberano nunca sai da máquina (INC-PII-001 2026-06-04):** dado real de investigação / PII de terceiros / dado PCMG NUNCA versionado em git (nem privado), NUNCA servido em domínio público, NUNCA em VPS/nuvem. Git = apenas dados sintéticos; dado real = local cifrado. App com dado real → nunca domínio público aberto. Scanner pré-commit: `bun scripts/security/scan-hardcoded-sensitive.ts --staged`.
 **R-ARCH-001 [T1] — EGOS mostra o FLUXO, não decide pelo cliente (Enio 2026-06-10):** vendor/preço/prazo/stack/canal de CLIENTE sem confirmação = PARE → placeholder (`{PAYMENT_PROVIDER}`/`{PRICE}`/`{TIMELINE}`) + trade-off; cliente escolhe no diagnóstico. Consolida R-DIAG-002..006+VENDOR. Full: `egos/CLAUDE.md §R-ARCH-001`.
 **R-SEC-003 [T1] — Segurança = enforcement:** toda regra de segurança DEVE ter gate executável. Scanner sem wiring = doc morto. Sugestão mock/fixture: `// scan-ok: mock` ou `<!-- scan-ok -->`. SSOT: `docs/INCIDENTS/INC-PII-001_investigation-data-leak.md`.
+**R-ENV-001..005 [T1] — ENV Discipline (ENV-MASTER-001 2026-06-16):** SSOT `docs/governance/ENV_DISCIPLINE.md`; inventário `docs/governance/ENV_MASTER_MAP.md` (commitável, zero valores); gerador `scripts/env-master.ts`; master local `egos/.env.master` (chmod 600, gitignored). **(1) [T0]** `.env`/`.env.local`/`.env.master`/`.env.*.local` NUNCA no git — gate pre-commit `[1.55/5]` bloqueia por nome (pega `git add -f`); permitidos `.example`/`.template`/cifrados; override logado `EGOS_ENV_OVERRIDE=1`. **(2)** master é gerado, não editado à mão (mudar valor = editar `.env` do repo + regenerar). **(3)** trava local chmod 600 + transferência só cifrada (`gpg --symmetric`). **(4)** só o mapa vai pro git. **(5)** MCP/config sem secret hardcoded (`$VAR`, herda `ENVIRONMENT_REGISTRY.md §2`). Master SECCIONADO por repo: 79 chaves divergem entre projetos, merge achatado corromperia.
 **R-DISCOVER-001 [T2] — Discover-before-create (2026-06-08):** antes de criar capability nova (package/command/skill/CBC/registry), rodar `bun scripts/discover-capability.ts <termo>` e incluir `CONSULTED-SSOT: <resultado>` no commit body. Gate 14 bloqueia sem prova. Escape: `DISCOVER-GATE-SKIP: <razão>`. Evita INC-009-leaf-silo.
 **R11 [T2] — Observabilidade warn-not-block (2026-06-05):** falha em telemetria/agent-observatory = warn-only, nunca bloqueia execução de agente. SSOT: `docs/governance/MULTI_AGENT_OBSERVABILITY.md`.
 **R12 [T2] — Núcleo multi-LLM replicável (FABLE-OR-001 — 2026-06-14):** Banda Cognitiva (`/banda`), Council (`/council`) e chamadas avulsas a LLM rodam sobre o módulo compartilhado `packages/shared/src/llm-providers/` (zero hardcode de path/slug). Qualquer repo/agente da frota usa copiando o módulo + os scripts desejados, definindo `OPENROUTER_API_KEY` e (se não for `egos`) `EGOS_HOME=<raiz>`. Slugs/modelos sobrescrevíveis por env (`BANDA_MAESTRO_MODEL`, `COUNCIL_SYNTHESIZER_MODEL`, etc.). **Maestro da Banda = Opus pela assinatura (`cli:claude:opus`), permanente; Fable nunca é maestro.** Guia de replicação: `packages/shared/src/llm-providers/README.md`. Não pagar Opus via OpenRouter — temos a assinatura.
