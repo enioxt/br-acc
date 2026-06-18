@@ -1,10 +1,10 @@
 # EGOS-KERNEL-PROPAGATED: 2026-06-18
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 65e955cd | 2 rule section(s) changed -->
+<!-- Kernel commit: a09cb9cb | 2 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- - CLAUDE.md (1 lines) -->
-<!-- + CLAUDE.md → ## R-DIAG-001 — Diagnóstico Antes de Demo [T1 — Enio 2026-06-09, reforçado 2026-06-18] (7 lines) -->
+<!-- + CAPABILITY_REGISTRY.md (1 lines) -->
+<!-- + CAPABILITY_REGISTRY.md → ## §120 — Central de Conteúdo (HQ Content Distribution) (2026-06-18) (11 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
