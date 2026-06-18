@@ -1,10 +1,10 @@
-# EGOS-KERNEL-PROPAGATED: 2026-06-16
+# EGOS-KERNEL-PROPAGATED: 2026-06-18
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: 16711a31 | 2 rule section(s) changed -->
+<!-- Kernel commit: 65e955cd | 2 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CAPABILITY_REGISTRY.md (1 lines) -->
-<!-- + CAPABILITY_REGISTRY.md → ## §119 — @egos/salic-client — Assistente Lei Rouanet + API SALIC (2026-06-16) (11 lines) -->
+<!-- - CLAUDE.md (1 lines) -->
+<!-- + CLAUDE.md → ## R-DIAG-001 — Diagnóstico Antes de Demo [T1 — Enio 2026-06-09, reforçado 2026-06-18] (7 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
