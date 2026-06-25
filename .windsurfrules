@@ -1,9 +1,9 @@
-# EGOS-KERNEL-PROPAGATED: 2026-06-19
+# EGOS-KERNEL-PROPAGATED: 2026-06-22
 <!-- AUTO-INJECTED by disseminate-propagator.ts — DO NOT EDIT THIS BLOCK MANUALLY -->
-<!-- Kernel commit: a3a28669 | 1 rule section(s) changed -->
+<!-- Kernel commit: c82f3515 | 1 rule section(s) changed -->
 <!-- Source of rules: egos/AGENTS.md (canonical). Kernel-only authoritative copy: ~/.claude/CLAUDE.md -->
 <!-- Re-run: bun ~/egos/scripts/disseminate-propagator.ts --all to update -->
-<!-- + CLAUDE.md (1 lines) -->
+<!-- ~ CLAUDE.md (2 lines) -->
 
 > ⚠️ **PROPAGATED FROM KERNEL** — Edits to this block are overwritten by next `bun governance:sync:exec`.
 > Edit kernel `egos/AGENTS.md` section between `<!-- PROPAGATE-RULES-BEGIN -->` and `<!-- PROPAGATE-RULES-END -->` instead.
@@ -12,15 +12,13 @@
 
 ## 📋 Canonical Rules (authoritative across ALL IDEs)
 
-This section is the single source of truth for agent rules. Claude Code reads this. Windsurf reads this. Cursor reads this. Codex reads this. GitHub Copilot reads this. When `~/.claude/CLAUDE.md`, `.windsurfrules`, or repo-level `CLAUDE.md` diverge from this file, **AGENTS.md wins**. **Cláusula-árbitro (C1/C2 — Fable 2026-06-09):** Regras de agente (comportamento/código/SSOT): AGENTS.md vence. `.guarani` = índice de descoberta + enforcement de frozen-zones/pipeline; em conflito de REGRA, AGENTS.md vence; em conflito de PROCESSO/orquestração (`.guarani/orchestration/`), `.guarani` vence.
+This section is the single source of truth for agent rules. Claude Code reads this. Windsurf reads this. Cursor reads this. Codex reads this. GitHub Copilot reads this. When `~/.claude/CLAUDE.md`, `.windsurfrules`, or repo-level `CLAUDE.md` diverge from this file, **AGENTS.md wins**.
 
-> 🃏 **4 pilares (TL;DR — resume R0-R8; conflito→texto completo. Corte Enio 2026-06-03):** **1)** §R0 safe-push, sem segredo, sem publish-sem-HITL, sem `git add -A`, commit TASKS.md já · **2)** §R1/R7 memory-mcp p/ código, externo=REAL/CONCEPT/PHANTOM, subagente=síntese, capacidade=≥3 golden cases, avaliador (Banda/Codex/Council) exige metaprompt MP-R1..R6 senão recusa (`docs/governance/METAPROMPT_STANDARD.md`) · **3)** §R3/R4/R8/RLS frozen via Prime/`EGOS_FROZEN_OVERRIDE`, Guarani propõe/Prime commita, DB schema-first+RLS anon · **4)** §R2/Karpathy mínimo código, falhe visível, SSOT>duplicação.
+> 🃏 **4 pilares (TL;DR — resume R0-R8; conflito→texto completo. Corte Enio 2026-06-03):** **1)** §R0 safe-push, sem segredo, sem publish-sem-HITL, sem `git add -A`, commit TASKS.md já · **2)** §R1/R7 memory-mcp p/ código, externo=REAL/CONCEPT/PHANTOM, subagente=síntese, capacidade=≥3 golden cases · **3)** §R3/R4/R8/RLS frozen via Prime/`EGOS_FROZEN_OVERRIDE`, Guarani propõe/Prime commita, DB schema-first+RLS anon · **4)** §R2/Karpathy mínimo código, falhe visível, SSOT>duplicação.
 ### Highest-Leverage Rule
 EGOS maximizes value when it turns proven operational capability into governed reusable infrastructure.
-Default path: prove in a real leaf/runtime → extract what is reusable → register canonical ownership → enforce evidence and eval → reduce replication cost for the next repo/agent/client. When in doubt, prefer extraction over duplication, canon over parallel docs, deploy traceability over informal runtime assumptions.
-
-### R-DEV-001 — 100% AI-Driven Developer (No-Code Master) [T0 — 2026-06-10]
-**Enio não escreve nem lê código cru** — dev 100% por IAs, que assumem total responsabilidade técnica (NUNCA pedir copy/paste ou edição manual; editar direto com tools). Comunicação no nível de comportamento de sistema/fluxos/interfaces renderizadas (HTML/dashboards) — nunca snippets ou prosa técnica de baixo nível na conversa.
+Default path: prove in a real leaf or runtime → extract what is reusable → register canonical ownership → enforce evidence and eval → reduce replication cost for the next repo, agent, or client.
+When in doubt, prefer extraction over duplication, canon over parallel docs, and deploy traceability over informal runtime assumptions.
 
 ### R0 — Critical non-negotiables (irreversible damage prevention)
 1. **NEVER `git push --force` to main/master/production** — use `bash scripts/safe-push.sh` (INC-001)
@@ -34,15 +32,19 @@ Default path: prove in a real leaf/runtime → extract what is reusable → regi
 2. **External LLM paste** (ChatGPT/Gemini/Grok/Kimi/Perplexity output) → every named feature, commit, file, version = UNVERIFIED CLAIM. Classify REAL/CONCEPT/PHANTOM via `git log --grep` + `Glob`. High-density buzzword lists (8+ capitalized "systems") = phantom signal (INC-005).
 3. **Subagent audits** (Agent/Explore/Plan outputs) = SYNTHESIS, not evidence. Before citing in commit/SSOT edit: re-verify top 3 structural claims via `codebase-memory-mcp`. Absolute audit claims ("X doesn't exist", "Y is skeleton") without file:line anchor = PHANTOM until verified (INC-006).
 4. **When spawning Agent/Explore/Plan** → prompt MUST include: "return evidence tuples `{claim, evidence_path, evidence_line}`; prefix unanchored with `UNVERIFIED:`".
-5. **Proveniência-por-ação [T1 — Enio 2026-06-04, vale p/ TODO agente: Prime/Guarani/Codex/EVA/Hermes]:** antes de afirmar QUALQUER coisa sobre o sistema, cite a fonte consultada (`file:line`/comando). "Não existe X" exige busca **machine-wide**, não 1 diretório. **Marcar task `[x]` (done) exige EVIDÊNCIA verificável** (SHA do commit, arquivo gerado, `Closes/Fixes`, ou prova reproduzível) — `[x]` sem evidência = **phantom-done** (caso real: LANDING-EVOLVE-001 marcado done por Guarani sem `egos-web` ter mudado, 2026-06-04). Enforcement: gate `phantom-done` no `.husky/pre-commit` + espelha `provenance.py`/`.ts` (rigor de dados → afirmações). SSOT: `~/.claude/CLAUDE.md` §1. **§5b PHANTOM-CLOSE [T1 — Enio 2026-06-11, incidentes 83ce33bc/81386682]:** task ABERTA (`- [ ]`/`- [/]` com **ID**) NUNCA é deletada do TASKS.md nem arquivada sem prova — fechar = marcar `[x]` com evidência dura DEPOIS do ✅ (`✅ YYYY-MM-DD <SHA|URL|PR #>`); o auto-archive move. Evidência no corpo da task NÃO conta (corpo carrega URLs/SHAs de anotação). Enforcement executável (7/7 golden 2026-06-11): gate `0pre-b` no `.husky/pre-commit` + guard `PHANTOM-CLOSE` no `.husky/pre-push` (pega `--no-verify` e commits de fora). Override consciente: `EGOS_TASK_DELETE_OK=1` (logado). Outra janela marcou done? NÃO confie — verifique a prova; sem prova, reabra citando o SHA do fechamento phantom.
 
 ### R2 — SSOT integrity
 1. **Scored SSOT tables** (columns: `Compliance`/`Score`/`%`/`Coverage`/`Maturity`/`Readiness`/`Grade`) MUST be wrapped in `<!-- AUTO-GEN-BEGIN:<agent> -->` / `<!-- AUTO-GEN-END -->` populated by a compliance agent, OR every row MUST carry `VERIFIED_AT` + `method` + `evidence` (file:line or cmd output SHA). Handwritten scored tables are PHANTOM VECTORS. Pre-commit blocks after MSSOT-002 ships (INC-006).
 2. **Use-case scoped scoring** — before applying a uniform rubric across products, declare each product's primary use case. Mark rubric rows REQUIRED/OPTIONAL/N/A per use case. `N/A (use case: X)` is valid, not a fail. Cannot use single score column across heterogeneous use cases (INC-006).
 3. **ONE SSOT per domain** — see "SSOT Map" section below. New content goes to existing SSOT, never new file. Prohibited: `docs/business/`, `docs/sales/`, `docs/notes/`, `docs/tmp/`, timestamped docs, `AUDIT*.md`, `REPORT*.md`, `DIAGNOSTIC*.md` (except in `_archived/`).
 4. **Evidence-first** — every claim in durable docs (README, SSOT, article) needs: automated test exercising it, metric confirming the number, entry in manifest (`.egos-manifest.yaml` or `CAPABILITY_REGISTRY.md`), or dashboard tile. Unproven claims marked `unverified:`.
-5. **Reuse-first em leaf-repos (INC-009).** Antes de criar `<leaf>/docs/governance|specs/X.md` ou doc de agente/prompt/registry/capability: glob `<leaf>/lib/{prompts,config,agents}/*.ts` + read `<leaf>/AGENTS.md`(full)/`CLAUDE.md`/`UPSTREAM_KERNEL.md`/`PROMPT_REGISTRY.md` + grep kernel `CAPABILITY_REGISTRY.md`. 1+ existe → **ESTENDER, não duplicar**. Sprint cross-repo → entry `COORD-YYYY-MM-DD-X` em `COORDINATION.md` antes do commit. Postmortem: `docs/INCIDENTS/INC-009-leaf-silo-work.md`.
-6. **Arquivos essenciais = roteadores enxutos, não enciclopédias (2026-06-09).** CLAUDE.md/AGENTS.md/MEMORY.md/memory-files são índice→temático→profundo→evidência. Orçamento de instrução: arquivo carregado toda sessão <200L (warn 300); comandos/skills warn-only (nunca bloqueiam). **Loop de captura:** toda decisão/aprendizado validado → memória → regra-quando-estável (não morre no transcript). Raiz do sprawl de memória = dedup/supersessão (não contagem de linha). Freshness mínima: `last_update`+`status`. SSOT: `docs/governance/ESSENTIAL_FILES_ARCHITECTURE.md`.
+5. **Reuse-first em leaf-repos (INC-009).** Antes de criar `<leaf>/docs/governance/X.md`, `<leaf>/docs/specs/X.md`, ou qualquer doc descrevendo agente/sistema prompt/registry/capability:
+   1. Glob `<leaf>/lib/prompts/*.ts`, `<leaf>/lib/config/*.ts`, `<leaf>/lib/agents/*.ts` — existe sistema prompt / tool registry / agent canonical?
+   2. Read `<leaf>/AGENTS.md` (full — não só PROPAGATE block) e `<leaf>/CLAUDE.md`
+   3. Read `<leaf>/lib/prompts/PROMPT_REGISTRY.md` se existir
+   4. Read `<leaf>/docs/UPSTREAM_KERNEL.md` se existir
+   5. Grep similar em `egos/docs/CAPABILITY_REGISTRY.md` (kernel)
+   Se 1+ existe → **ESTENDER (mesmo arquivo, nova section)**, não duplicar. Sprint cross-repo (kernel + leaf na mesma sessão) → criar entry `COORD-YYYY-MM-DD-X` em `egos/docs/COORDINATION.md` antes de qualquer commit. Postmortem: `docs/INCIDENTS/INC-009-leaf-silo-work.md`.
 
 ### R3 — Edit safety
 1. Read before Edit (at least the relevant section). Confirm exact string. Re-read after edit.
@@ -77,7 +79,6 @@ Default path: prove in a real leaf/runtime → extract what is reusable → regi
 | INC-007 | API key exposure via `|| fallback` pattern — never commit secrets |
 | INC-008 | Phantom compliance stubs — see R7 below |
 | INC-009 | Leaf-repo silo-work (agente cria SSOT paralelo ignorando canonical existente) — see R2.5 above. `/start` LAYER 4.6 força leitura de SSOTs do leaf antes de qualquer write |
-| INC-GATEWAY-001 | HTTP header values devem ser ASCII puro — em dash `—` e outros não-ASCII causam Hono 500 (2026-06-09). Strings estáticas em `c.header()` → verificar. |
 
 Full postmortems: `docs/INCIDENTS/INC-XXX-*.md`. Index: `docs/INCIDENTS/INDEX.md`.
 
@@ -110,6 +111,7 @@ Full postmortem: `docs/INCIDENTS/INC-008-phantom-compliance-stubs.md`.
 Canonical eval strategy: `docs/knowledge/AI_EVAL_STRATEGY.md` (being written — see EVAL-X2).
 
 ### R8 — DB Discipline (INC-DB-001 — 2026-05-22)
+
 > SSOT completo: `docs/governance/DB_DISCIPLINE.md`. Pre-commit enforcement: `scripts/pre-commit-db-discipline.sh`.
 
 1. **R-DB-001 Schema-First** — scripts Supabase usam tipos gerados / zod. Nunca literal solto `{ is_active: true }` (PostgREST ignora colunas erradas em silêncio → bug invisível).
@@ -118,14 +120,6 @@ Canonical eval strategy: `docs/knowledge/AI_EVAL_STRATEGY.md` (being written —
 4. **R-DB-004 SSOT-only** — fixes em `central-egos/template/` (ou equivalente leaf). Nunca em `clients/<slug>/src/`. **Incidente origem:** FVP seed v2 usou `is_active`, 32 rows defaultaram `active=false`, storefront 0 produtos 12h (RLS exigindo session var não-setada).
 
 **R9 — Agentic Governance & Scopes (2026-05-30):** agentes seguem escopos/permissões/notificação de [agent_scopes_and_governance.md](docs/governance/agent_scopes_and_governance.md). Out-of-scope → lock `.egos-lock` + escalar Council/HITL (Telegram/WhatsApp). Anti-repetição: checar `TASKS.md` + `git log` antes de planejar.
-**R10 — Cooperação e Banda Cognitiva (Guarani ↔ Prime - 2026-06-04):** O Guarani (runtime Antigravity/Gemini) propõe código e correções técnicas, mas NUNCA realiza commits diretamente. Toda alteração de produção proposta pelo Guarani DEVE passar pela revisão final do Prime (Claude Code/Opus). Decisões de segurança crítica, modificações no schema de Banco de Dados, regras de RLS ou arquivos em Frozen Zones exigem obrigatoriamente a invocação da Banda Cognitiva (`/banda`) com Força Total (`--council` acionando Opus/Gemini Pro/GPT-5 via OpenRouter), assegurando verificação estrutural e AST anti-phantom.
-**R-SEC-002 [T0] — Dado soberano nunca sai da máquina (INC-PII-001 2026-06-04):** dado real de investigação / PII de terceiros / dado PCMG NUNCA versionado em git (nem privado), NUNCA servido em domínio público, NUNCA em VPS/nuvem. Git = apenas dados sintéticos; dado real = local cifrado. App com dado real → nunca domínio público aberto. Scanner pré-commit: `bun scripts/security/scan-hardcoded-sensitive.ts --staged`.
-**R-ARCH-001 [T1] — EGOS mostra o FLUXO, não decide pelo cliente (Enio 2026-06-10):** vendor/preço/prazo/stack/canal de CLIENTE sem confirmação = PARE → placeholder (`{PAYMENT_PROVIDER}`/`{PRICE}`/`{TIMELINE}`) + trade-off; cliente escolhe no diagnóstico. Consolida R-DIAG-002..006+VENDOR. Full: `egos/CLAUDE.md §R-ARCH-001`.
-**R-SEC-003 [T1] — Segurança = enforcement:** toda regra de segurança DEVE ter gate executável. Scanner sem wiring = doc morto. Sugestão mock/fixture: `// scan-ok: mock` ou `<!-- scan-ok -->`. SSOT: `docs/INCIDENTS/INC-PII-001_investigation-data-leak.md`.
-**R-ENV-001..005 [T1] — ENV Discipline (ENV-MASTER-001 2026-06-16):** SSOT `docs/governance/ENV_DISCIPLINE.md`; inventário `docs/governance/ENV_MASTER_MAP.md` (commitável, zero valores); gerador `scripts/env-master.ts`; master local `egos/.env.master` (chmod 600, gitignored). **(1) [T0]** `.env`/`.env.local`/`.env.master`/`.env.*.local` NUNCA no git — gate pre-commit `[1.55/5]` bloqueia por nome (pega `git add -f`); permitidos `.example`/`.template`/cifrados; override logado `EGOS_ENV_OVERRIDE=1`. **(2)** master é gerado, não editado à mão (mudar valor = editar `.env` do repo + regenerar). **(3)** trava local chmod 600 + transferência só cifrada (`gpg --symmetric`). **(4)** só o mapa vai pro git. **(5)** MCP/config sem secret hardcoded (`$VAR`, herda `ENVIRONMENT_REGISTRY.md §2`). Master SECCIONADO por repo: 79 chaves divergem entre projetos, merge achatado corromperia.
-**R-DISCOVER-001 [T2] — Discover-before-create (2026-06-08):** antes de criar capability nova (package/command/skill/CBC/registry), rodar `bun scripts/discover-capability.ts <termo>` e incluir `CONSULTED-SSOT: <resultado>` no commit body. Gate 14 bloqueia sem prova. Escape: `DISCOVER-GATE-SKIP: <razão>`. Evita INC-009-leaf-silo.
-**R11 [T2] — Observabilidade warn-not-block (2026-06-05):** falha em telemetria/agent-observatory = warn-only, nunca bloqueia execução de agente. SSOT: `docs/governance/MULTI_AGENT_OBSERVABILITY.md`.
-**R12 [T2] — Núcleo multi-LLM replicável (FABLE-OR-001 — 2026-06-14):** Banda Cognitiva (`/banda`), Council (`/council`) e chamadas avulsas a LLM rodam sobre o módulo compartilhado `packages/shared/src/llm-providers/` (zero hardcode de path/slug). Qualquer repo/agente da frota usa copiando o módulo + os scripts desejados, definindo `OPENROUTER_API_KEY` e (se não for `egos`) `EGOS_HOME=<raiz>`. Slugs/modelos sobrescrevíveis por env (`BANDA_MAESTRO_MODEL`, `COUNCIL_SYNTHESIZER_MODEL`, etc.). **Maestro da Banda = Opus pela assinatura (`cli:claude:opus`), permanente; Fable nunca é maestro.** Guia de replicação: `packages/shared/src/llm-providers/README.md`. Não pagar Opus via OpenRouter — temos a assinatura.
 
 <!-- === END KERNEL RULES BODY === -->
 
